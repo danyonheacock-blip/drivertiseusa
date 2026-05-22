@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Schedule a free 15-minute demo with Drivertise USA. Talk directly to Danyon about which ad zones fit your Utah County business. No commitment required.">
+  <title>Contact &amp; Demo — Drivertise USA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 440px;
+      gap: 72px;
+      align-items: start;
+      padding: var(--section-pad) 0;
+    }
+    .contact-form-wrap {
+      background: var(--bg3);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .contact-form-header {
+      background: var(--yellow);
+      padding: 28px 36px;
+    }
+    .contact-form-header h2 {
+      color: #0A0D12;
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+    .contact-form-header p {
+      color: rgba(10,13,18,0.65);
+      font-size: 14px;
+    }
+    .contact-form-body {
+      padding: 36px;
+    }
+    .contact-form-body .form-grid {
+      margin-bottom: 16px;
+    }
+
+    /* What to expect */
+    .expect-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      margin-top: 40px;
+    }
+    .expect-step {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .expect-num {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--yellow-dim);
+      border: 1px solid rgba(230,223,26,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--yellow);
+      flex-shrink: 0;
+    }
+    .expect-body h4 { margin-bottom: 6px; font-size: 16px; }
+    .expect-body p  { font-size: 14px; line-height: 1.6; }
+
+    /* Direct contact card */
+    .direct-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-top: 40px;
+    }
+    .direct-card h4 {
+      font-size: 15px;
+      margin-bottom: 16px;
+      color: var(--cream);
+    }
+    .direct-contact-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .direct-contact-row:last-child { border-bottom: none; }
+    .direct-contact-icon { font-size: 18px; flex-shrink: 0; }
+    .direct-contact-label { color: var(--w38); font-size: 12px; margin-bottom: 2px; }
+    .direct-contact-val {
+      color: var(--cream);
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    .direct-contact-val:hover { color: var(--yellow); }
+
+    /* Response promise */
+    .response-promise {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--green-dim);
+      border: 1px solid rgba(77,232,160,0.20);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      font-size: 14px;
+      color: var(--green);
+      font-weight: 600;
+      margin-top: 24px;
+    }
+    .response-promise span { font-size: 20px; }
+
+    /* Success state */
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 48px 36px;
+    }
+    .form-success.show { display: block; }
+    .form-success-icon { font-size: 56px; margin-bottom: 20px; }
+    .form-success h3 { color: var(--yellow); margin-bottom: 12px; }
+    .form-success p { font-size: 15px; }
+
+    @media (max-width: 1024px) {
+      .contact-layout { grid-template-columns: 1fr; gap: 48px; }
+      .contact-form-wrap { max-width: 600px; }
+    }
+    @media (max-width: 600px) {
+      .contact-form-header,
+      .contact-form-body { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo">DRIVERTISE<span class="text-yellow">.</span></a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="services.html">Services</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="zones.html">Zones</a>
+      <a href="faq.html">FAQ</a>
+      <a href="about.html">About</a>
+    </nav>
+    <a href="contact.html" class="btn btn-primary nav-cta">Get a Demo</a>
+    <button class="nav-toggle" aria-label="Open navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<nav class="nav-mobile" id="nav-mobile" aria-label="Mobile navigation">
+  <a href="services.html">Services</a>
+  <a href="pricing.html">Pricing</a>
+  <a href="zones.html">Zones</a>
+  <a href="faq.html">FAQ</a>
+  <a href="about.html">About</a>
+  <a href="contact.html" class="btn btn-primary btn-lg">Get a Demo</a>
+</nav>
+
+<!-- PAGE HERO -->
+<div style="margin-top: var(--nav-h);"></div>
+<section class="page-hero">
+  <div class="container">
+    <span class="eyebrow">Contact &amp; Demo</span>
+    <h1>Let's talk about<br><em class="display-italic">your zone.</em></h1>
+    <p style="margin-top:20px;">Schedule a free 15-minute call. No pitch, no pressure — just a straight conversation about which zones make sense for your business and what you can expect.</p>
+  </div>
+</section>
+
+<!-- CONTACT LAYOUT -->
+<div class="container">
+  <div class="contact-layout">
+
+    <!-- LEFT: What to Expect -->
+    <div>
+      <h2 class="reveal" style="font-size:clamp(24px,3vw,36px); margin-bottom:8px;">What happens after you submit</h2>
+      <p class="reveal" style="font-size:16px;">No automated email sequences. No hand-off to a sales rep. Just a real conversation.</p>
+
+      <div class="expect-steps">
+        <div class="expect-step reveal">
+          <div class="expect-num">1</div>
+          <div class="expect-body">
+            <h4>You'll hear from Danyon within 24 hours</h4>
+            <p>Usually same day. Text or call — whichever you prefer. He'll confirm the details you submitted and suggest a time to connect.</p>
+          </div>
+        </div>
+        <div class="expect-step reveal reveal-delay-1">
+          <div class="expect-num">2</div>
+          <div class="expect-body">
+            <h4>A 15-minute call to understand your goals</h4>
+            <p>What's your business, your area, your advertising budget? Danyon will ask a few questions to figure out which zone setup actually makes sense for you — not just which one costs more.</p>
+          </div>
+        </div>
+        <div class="expect-step reveal reveal-delay-2">
+          <div class="expect-num">3</div>
+          <div class="expect-body">
+            <h4>A clear recommendation — and a simple decision</h4>
+            <p>After the call, you'll know which zone fits, what the weekly routes look like, what your estimated impressions are, and exactly what it costs. You decide if you want to move forward. No pressure either way.</p>
+          </div>
+        </div>
+        <div class="expect-step reveal reveal-delay-3">
+          <div class="expect-num">4</div>
+          <div class="expect-body">
+            <h4>Active in 5–10 business days if you're in</h4>
+            <p>Once you submit your creative and make your first payment, we set up your QR tracking, confirm your zone routes, and your campaign is live.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Direct contact -->
+      <div class="direct-card reveal">
+        <h4>Prefer to reach out directly?</h4>
+        <div class="direct-contact-row">
+          <span class="direct-contact-icon">📱</span>
+          <div>
+            <div class="direct-contact-label">Call or Text</div>
+            <a href="tel:+13852046561" class="direct-contact-val">(385) 204-6561</a>
+          </div>
+        </div>
+        <div class="direct-contact-row">
+          <span class="direct-contact-icon">✉️</span>
+          <div>
+            <div class="direct-contact-label">Email</div>
+            <a href="mailto:hello@drivertiseusa.com" class="direct-contact-val">hello@drivertiseusa.com</a>
+          </div>
+        </div>
+        <div class="direct-contact-row">
+          <span class="direct-contact-icon">📍</span>
+          <div>
+            <div class="direct-contact-label">Service Area</div>
+            <span class="direct-contact-val" style="cursor:default;">Utah County, Utah</span>
+          </div>
+        </div>
+      </div>
+      <div class="response-promise reveal">
+        <span>⚡</span>
+        Response guaranteed within 24 hours — usually same day.
+      </div>
+    </div>
+
+    <!-- RIGHT: Form -->
+    <div class="contact-form-wrap reveal">
+      <div class="contact-form-header">
+        <h2>Schedule a Free Demo</h2>
+        <p>15 minutes. No commitment. Just clarity.</p>
+      </div>
+      <div class="contact-form-body" id="contact-form-body">
+        <form
+          id="contact-form"
+          action="mailto:hello@drivertiseusa.com"
+          method="POST"
+          enctype="text/plain"
+          onsubmit="handleSubmit(event)"
+          novalidate
+        >
+          <div class="form-grid" style="margin-bottom:16px;">
+            <div class="form-group">
+              <label class="form-label" for="name">Your Name *</label>
+              <input class="form-input" type="text" id="name" name="name" placeholder="Jane Smith" required autocomplete="name">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="business">Business Name *</label>
+              <input class="form-input" type="text" id="business" name="business" placeholder="Smith HVAC Co." required>
+            </div>
+          </div>
+          <div class="form-grid" style="margin-bottom:16px;">
+            <div class="form-group">
+              <label class="form-label" for="phone">Phone Number *</label>
+              <input class="form-input" type="tel" id="phone" name="phone" placeholder="(385) 204-6561" required autocomplete="tel">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="email">Email Address</label>
+              <input class="form-input" type="email" id="email" name="email" placeholder="jane@smithhvac.com" autocomplete="email">
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom:16px;">
+            <label class="form-label" for="city">Which city are you in or targeting? *</label>
+            <select class="form-select" id="city" name="city" required>
+              <option value="" disabled selected>Select a city</option>
+              <option value="Lehi">Lehi</option>
+              <option value="American Fork">American Fork</option>
+              <option value="Saratoga Springs">Saratoga Springs</option>
+              <option value="Highland">Highland</option>
+              <option value="Eagle Mountain">Eagle Mountain</option>
+              <option value="Pleasant Grove">Pleasant Grove</option>
+              <option value="Multiple cities">Multiple cities</option>
+              <option value="Not sure">Not sure yet</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom:16px;">
+            <label class="form-label" for="zone-field">Interested in a specific zone? (optional)</label>
+            <input class="form-input" type="text" id="zone-field" name="zone" placeholder="e.g. Lehi Zone A, or leave blank">
+            <span class="form-hint">You can also browse all zones at <a href="zones.html" style="color:var(--gold);">zones page</a>.</span>
+          </div>
+          <div class="form-group" style="margin-bottom:24px;">
+            <label class="form-label" for="message">Anything else? (optional)</label>
+            <textarea class="form-textarea" id="message" name="message" placeholder="Tell us about your business, your goals, or any questions you have..." style="min-height:100px;"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; font-size:15px; padding:16px;">
+            Request My Free Demo <span class="btn-arrow">→</span>
+          </button>
+          <p style="font-size:12px; color:var(--w38); text-align:center; margin-top:14px;">We'll never share your info. No spam, ever.</p>
+        </form>
+        <div class="form-success" id="form-success">
+          <div class="form-success-icon">🎉</div>
+          <h3>Request received!</h3>
+          <p>Danyon will reach out within 24 hours — usually the same day. Check your phone and email. Looking forward to connecting.</p>
+          <a href="index.html" class="btn btn-secondary" style="margin-top:24px;">Back to home</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SERVICE AREA -->
+<section class="section-pad section-light">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">Service Area</span>
+      <h2>Currently serving Utah County</h2>
+      <p>All 12 ad zones are concentrated in and around the following cities. Launching in 2026 — zones are first-come, first-served.</p>
+    </div>
+    <div class="grid-3 reveal">
+      <div style="background:#fff; border:1px solid rgba(10,13,18,0.10); border-radius:12px; padding:24px;">
+        <div style="font-family:var(--font-display); font-weight:800; font-size:18px; color:#0A0D12; margin-bottom:6px;">Lehi</div>
+        <div style="font-size:13px; color:rgba(10,13,18,0.55);">Utah County's fastest-growing city. High foot traffic near Costco, Smith's, major retail corridors.</div>
+      </div>
+      <div style="background:#fff; border:1px solid rgba(10,13,18,0.10); border-radius:12px; padding:24px;">
+        <div style="font-family:var(--font-display); font-weight:800; font-size:18px; color:#0A0D12; margin-bottom:6px;">American Fork</div>
+        <div style="font-size:13px; color:rgba(10,13,18,0.55);">Main Street corridor, residential neighborhoods, and major grocery store routes through the heart of the city.</div>
+      </div>
+      <div style="background:#fff; border:1px solid rgba(10,13,18,0.10); border-radius:12px; padding:24px;">
+        <div style="font-family:var(--font-display); font-weight:800; font-size:18px; color:#0A0D12; margin-bottom:6px;">Saratoga Springs</div>
+        <div style="font-size:13px; color:rgba(10,13,18,0.55);">One of the fastest-growing zip codes in Utah. Families, new homes, high discretionary spending.</div>
+      </div>
+      <div style="background:#fff; border:1px solid rgba(10,13,18,0.10); border-radius:12px; padding:24px;">
+        <div style="font-family:var(--font-display); font-weight:800; font-size:18px; color:#0A0D12; margin-bottom:6px;">Highland</div>
+        <div style="font-size:13px; color:rgba(10,13,18,0.55);">Established community with strong local business culture. High household income, loyal to local brands they recognize.</div>
+      </div>
+      <div style="background:#fff; border:1px solid rgba(10,13,18,0.10); border-radius:12px; padding:24px;">
+        <div style="font-family:var(--font-display); font-weight:800; font-size:18px; color:#0A0D12; margin-bottom:6px;">Eagle Mountain</div>
+        <div style="font-size:13px; color:rgba(10,13,18,0.55);">Rapidly expanding residential area with growing demand for local services and limited existing advertising saturation.</div>
+      </div>
+      <div style="background:#fff; border:1px solid rgba(10,13,18,0.10); border-radius:12px; padding:24px;">
+        <div style="font-family:var(--font-display); font-weight:800; font-size:18px; color:#0A0D12; margin-bottom:6px;">Pleasant Grove</div>
+        <div style="font-size:13px; color:rgba(10,13,18,0.55);">Strong community ties, active local economy, consistent traffic through shopping districts and commercial corridors.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <a href="index.html" class="nav-logo" style="margin-bottom:16px; display:inline-block;">DRIVERTISE<span class="text-yellow">.</span></a>
+      <p>Mobile advertising for Utah County businesses. We put your brand everywhere your customers already go.</p>
+      <div class="footer-contact" style="margin-top:20px;">
+        <a href="tel:+13852046561">(385) 204-6561</a>
+        <a href="mailto:hello@drivertiseusa.com">hello@drivertiseusa.com</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <span class="footer-col-title">Services</span>
+      <a href="services.html#car-wrap">Car Wrap Ads</a>
+      <a href="services.html#billboard">Electric Billboard</a>
+      <a href="services.html#direct-mail">Direct Mail Co-op</a>
+      <a href="pricing.html">View Pricing</a>
+    </div>
+    <div class="footer-col">
+      <span class="footer-col-title">Company</span>
+      <a href="about.html">About Drivertise</a>
+      <a href="zones.html">Available Zones</a>
+      <a href="faq.html">FAQ</a>
+      <a href="contact.html">Contact / Demo</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container footer-bottom-inner">
+      <p>© 2026 Drivertise USA. All rights reserved. Serving Utah County, Utah.</p>
+      <div class="footer-legal">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+  function handleSubmit(e) {
+    e.preventDefault();
+    const form = document.getElementById('contact-form');
+    const success = document.getElementById('form-success');
+    // Build the mailto link with form data
+    const name     = document.getElementById('name').value;
+    const business = document.getElementById('business').value;
+    const phone    = document.getElementById('phone').value;
+    const email    = document.getElementById('email').value;
+    const city     = document.getElementById('city').value;
+    const zone     = document.getElementById('zone-field').value;
+    const message  = document.getElementById('message').value;
+    const body = `Name: ${name}\nBusiness: ${business}\nPhone: ${phone}\nEmail: ${email}\nCity: ${city}\nZone Interest: ${zone || 'Not specified'}\n\nMessage:\n${message}`;
+    const subject  = encodeURIComponent(`Demo Request from ${name} — ${business}`);
+    const bodyEnc  = encodeURIComponent(body);
+    window.location.href = `mailto:hello@drivertiseusa.com?subject=${subject}&body=${bodyEnc}`;
+    // Show success state
+    form.style.display = 'none';
+    success.classList.add('show');
+  }
+</script>
+</body>
+</html>

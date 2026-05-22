@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Answers to every question about Drivertise USA mobile advertising — pricing, ROI, tracking, contracts, creative, and more. Honest answers, no sales spin.">
+  <title>FAQ — Drivertise USA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .faq-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 64px;
+      align-items: start;
+      padding: var(--section-pad) 0;
+    }
+    /* Sticky sidebar nav */
+    .faq-sidebar {
+      position: sticky;
+      top: calc(var(--nav-h) + 24px);
+    }
+    .faq-sidebar-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--w38);
+      margin-bottom: 16px;
+    }
+    .faq-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .faq-nav a {
+      font-size: 13px;
+      color: var(--w55);
+      padding: 8px 12px;
+      border-radius: 6px;
+      transition: background 0.2s, color 0.2s;
+      border-left: 2px solid transparent;
+    }
+    .faq-nav a:hover {
+      color: var(--cream);
+      background: var(--w04);
+    }
+    .faq-nav a.active {
+      color: var(--yellow);
+      border-color: var(--yellow);
+      background: var(--yellow-dim);
+    }
+
+    /* FAQ category sections */
+    .faq-category {
+      margin-bottom: 64px;
+      scroll-margin-top: calc(var(--nav-h) + 24px);
+    }
+    .faq-category:last-child { margin-bottom: 0; }
+    .faq-category-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--cream);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .faq-category-icon { font-size: 24px; }
+
+    @media (max-width: 900px) {
+      .faq-layout { grid-template-columns: 1fr; gap: 40px; }
+      .faq-sidebar { position: static; }
+      .faq-nav { flex-direction: row; flex-wrap: wrap; gap: 8px; }
+      .faq-nav a { border-left: none; border-bottom: 2px solid transparent; }
+      .faq-nav a.active { border-bottom-color: var(--yellow); border-left: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo">DRIVERTISE<span class="text-yellow">.</span></a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="services.html">Services</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="zones.html">Zones</a>
+      <a href="faq.html">FAQ</a>
+      <a href="about.html">About</a>
+    </nav>
+    <a href="contact.html" class="btn btn-primary nav-cta">Get a Demo</a>
+    <button class="nav-toggle" aria-label="Open navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<nav class="nav-mobile" id="nav-mobile" aria-label="Mobile navigation">
+  <a href="services.html">Services</a>
+  <a href="pricing.html">Pricing</a>
+  <a href="zones.html">Zones</a>
+  <a href="faq.html">FAQ</a>
+  <a href="about.html">About</a>
+  <a href="contact.html" class="btn btn-primary btn-lg">Get a Demo</a>
+</nav>
+
+<!-- PAGE HERO -->
+<div style="margin-top: var(--nav-h);"></div>
+<section class="page-hero">
+  <div class="container">
+    <span class="eyebrow">FAQ</span>
+    <h1>Every question.<br><em class="display-italic">Honest answers.</em></h1>
+    <p style="margin-top:20px; max-width:540px;">No sales spin, no half-answers. If something important isn't covered here, text Danyon directly — he'll answer the same day.</p>
+  </div>
+</section>
+
+<!-- FAQ LAYOUT -->
+<div class="container">
+  <div class="faq-layout">
+
+    <!-- Sidebar nav -->
+    <aside class="faq-sidebar">
+      <div class="faq-sidebar-title">Jump to section</div>
+      <nav class="faq-nav" aria-label="FAQ categories">
+        <a href="#getting-started">Getting Started</a>
+        <a href="#pricing-contracts">Pricing &amp; Contracts</a>
+        <a href="#results-tracking">Results &amp; Tracking</a>
+        <a href="#creative-logistics">Creative &amp; Logistics</a>
+        <a href="#vs-alternatives">vs. Other Ads</a>
+        <a href="#support">Support &amp; Changes</a>
+      </nav>
+    </aside>
+
+    <!-- FAQ categories -->
+    <div>
+
+      <!-- GETTING STARTED -->
+      <div class="faq-category reveal" id="getting-started">
+        <div class="faq-category-title"><span class="faq-category-icon">🚀</span> Getting Started</div>
+        <div class="faq-list">
+          <div class="faq-item">
+            <button class="faq-question">How do I get started? What's the first step?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">The first step is a free 15-minute call with Danyon. You can request that at the <a href="contact.html" style="color:var(--yellow);">contact page</a>. On the call, he'll learn about your business, recommend the zone(s) that make sense for your goals, and walk you through exactly what your campaign would look like. If you want to move forward, you'll submit your creative and make your first payment. You can be active within 5–10 business days.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">How quickly can I get my ad live?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Typically 5–10 business days from first payment and creative submission. This covers finalizing the wrap or display materials, setting up your QR/promo code tracking, and confirming your zone routes. If you're doing a digital billboard only (no wrap), turnaround is faster — sometimes 2–3 business days.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">Do I need to commit to a long contract to try this?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">No. The month-to-month plan requires no long-term commitment — you can cancel with 30 days notice. The 6-month plan is paid upfront in exchange for a discounted rate ($250/mo instead of $300/mo), but there's no auto-renewal or lock-in beyond that. We'd rather you stay because it's working than because you're trapped in a contract.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">What information do you need from me to get started?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Three things: (1) your business name, category, and target city/zone, (2) your ad creative — logo, message, any relevant design files, and (3) payment. If your creative isn't ready yet, that's fine — we can discuss timelines on the call. We don't need anything else to get the conversation going.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRICING & CONTRACTS -->
+      <div class="faq-category reveal" id="pricing-contracts">
+        <div class="faq-category-title"><span class="faq-category-icon">💵</span> Pricing &amp; Contracts</div>
+        <div class="faq-list">
+          <div class="faq-item">
+            <button class="faq-question">Are there any fees beyond what's listed on the pricing page?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">No. What you see on the <a href="pricing.html" style="color:var(--yellow);">pricing page</a> is what you pay. There are no setup fees, onboarding fees, or management fees. If you want us to help with creative design, we'll point you to affordable resources, but we don't charge for that ourselves. The only additional cost would be if you add on services (electric billboard or a direct mail drop) beyond your base zone plan.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">What does "cancel anytime" actually mean?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">For month-to-month plans: give 30 days written notice via text or email, and your zone is released at the end of that billing cycle. No penalties, no collections, no awkward exit process. For 6-month plans: you paid upfront for the full term — that's how you got the discount — but there are no automatic renewals. When the 6 months are up, it simply ends unless you choose to renew.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">Do you offer discounts for multiple zones?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Yes. Multi-zone bundles receive 15% off the standard rate per additional zone. So: 1 zone = $300/mo, 2 zones = $510/mo ($255/zone), 3 zones = $765/mo ($255/zone). For 4+ zones, contact Danyon directly for custom bundle pricing.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">How do I pay? Do you accept credit cards?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Payment details are handled directly on the demo call. We accept credit cards, ACH bank transfer, and check. Monthly plans are billed at the start of each month. Upfront 6-month plans are a single payment. Payment processing setup will be confirmed before you go live.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">Is there a prorated refund if I cancel mid-month?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Month-to-month plans are billed per full month. If you cancel with 30 days notice mid-month, your zone runs through the end of the current billing period — no prorated charge or refund. For 6-month plans paid upfront, there is no refund on remaining months if you exit early, as the discount was contingent on the full commitment.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESULTS & TRACKING -->
+      <div class="faq-category reveal" id="results-tracking">
+        <div class="faq-category-title"><span class="faq-category-icon">📊</span> Results &amp; Tracking</div>
+        <div class="faq-list">
+          <div class="faq-item">
+            <button class="faq-question">How do I know my ad is actually being driven around?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">We use Google Timeline to log every route driven. You receive a weekly report that includes the locations hit, estimated impressions, and confirmation that your zone's designated routes were covered. On request, you can also be given access to view the route history yourself. Transparency is a core part of how we operate — there's no reason to hide what we're doing.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">How do I measure if my ad is working?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Three ways: (1) <strong style="color:var(--cream);">QR code</strong> — we set up a unique trackable QR code for your ad. Every scan is logged. (2) <strong style="color:var(--cream);">Promo code</strong> — include a unique code (e.g. "WRAP10") in your offer. Every redemption is attributable to your campaign. (3) <strong style="color:var(--cream);">Ask new customers</strong> — "How'd you hear about us?" is still one of the most reliable tracking methods. Many clients keep a simple tally. We recommend using at least two of these methods from day one.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">Do you guarantee a certain number of impressions?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">We don't guarantee a specific daily impression count because traffic conditions vary — weather, events, construction can affect route density on any given day. What we do commit to: driving your zone's designated routes every active day, providing GPS-verified route logs in your weekly report, and prorating any days where driving didn't occur due to vehicle maintenance or illness. The 50,000+ monthly impression estimate is based on industry averages for high-traffic Utah County routes — actual results may be higher or lower depending on your zone.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">How long before I see results?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Honest answer: brand awareness takes 4–8 weeks to build meaningfully. Most people need to see a brand 3–7 times before it registers. In the first 2–4 weeks you're in the "building" phase — impressions are accumulating even if you don't see direct responses yet. If you're using a QR code or promo code, you may see scans in week 1. If you're building general awareness, expect to see inquiries increase between weeks 4–8. Setting a realistic baseline before you start (how many new leads per month do you get now?) helps you compare accurately.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">What if I'm not seeing results after 30 days?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Call or text Danyon. We'll look at your creative, your offer, your QR code data, and your zone traffic together. If something isn't connecting — the message, the zone, the call to action — we'll adjust. We don't have a magic wand, but we do care whether your campaign is working and will work with you to improve it. The goal is for you to renew because it's paying off, not because you forgot to cancel.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CREATIVE & LOGISTICS -->
+      <div class="faq-category reveal" id="creative-logistics">
+        <div class="faq-category-title"><span class="faq-category-icon">🎨</span> Creative &amp; Logistics</div>
+        <div class="faq-list">
+          <div class="faq-item">
+            <button class="faq-question">What format does my ad creative need to be in?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">For car wrap ads: a high-resolution image file (PNG, PDF, or AI) with your logo, message, and any design elements. We'll tell you the exact dimensions needed for the panel placement you've chosen. For electric billboard: an image (PNG/JPG) or short video loop (MP4) sized to the display specs — we'll send those to you when you sign up. If your file isn't quite right, we'll tell you what needs to change before it goes up.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">I don't have a designer. Can you help with creative?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">We don't offer in-house design, but we'll point you to affordable options. For a basic wrap panel, a freelancer on Fiverr or a local designer can typically produce what you need for $50–$200. We can also share templates and give feedback on your design before it goes on the vehicle. The most important thing your ad needs isn't fancy design — it's a clear logo, readable font, and a simple call to action (phone number, QR code, or website).</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">Can I change my creative after my campaign starts?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">For digital elements (QR codes, landing pages, promo codes): update anytime at no charge. For physical wrap changes: minor updates (swapping a promo, changing a phone number) can sometimes be done inexpensively — contact Danyon. Major redesigns involve reprinting costs that depend on the panel size and material. 6-month plan clients get one creative refresh at the 3-month mark included in their plan.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">What if the vehicle breaks down or isn't driving on a day?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">We'll notify you immediately if the vehicle is out of service. Any days where your zone isn't driven due to vehicle issues or illness on our side will be prorated from your next billing cycle. This is documented in the weekly report so there's never any ambiguity. We take the obligation to drive your routes seriously — it's not something we quietly skip and hope you don't notice.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VS ALTERNATIVES -->
+      <div class="faq-category reveal" id="vs-alternatives">
+        <div class="faq-category-title"><span class="faq-category-icon">⚖️</span> vs. Other Advertising</div>
+        <div class="faq-list">
+          <div class="faq-item">
+            <button class="faq-question">How is this different from Google or Facebook ads?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Google and Facebook reach people when they're staring at a screen. Drivertise reaches people when they're out in the real world — driving, shopping, running errands. These are different audience states. Digital ads require people to be "in market" and actively searching or scrolling. Vehicle advertising builds brand familiarity passively over time so that when someone does need what you offer, your name comes to mind first. Most businesses get the most value from a mix of both, not choosing one over the other.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">How does this compare to a traditional billboard?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Traditional billboards are fixed in one location. A wrapped vehicle moves through multiple neighborhoods, grocery stores, school zones, and commute routes every day — reaching people in contexts they actually live in, not just on one highway they may or may not drive. Additionally: a billboard in Utah County from a major provider (Lamar, Clear Channel) starts at $800–$3,000/month and requires a long-term commitment. Our car wrap zones start at $300/month with no required long-term lock-in.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">Is mobile advertising proven to work for small businesses?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Yes, with realistic expectations. Vehicle wrap advertising has a 97% consumer recall rate — higher than any digital format. 66% of people report taking some action after seeing a vehicle wrap. The key is pairing your wrap with a trackable offer (QR code, promo code) so you can measure what's converting, and giving it 4–8 weeks to build recognition before evaluating ROI. It's not a "fire and forget" channel — like any advertising, the creative, the offer, and the follow-through matter.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">Why should I advertise with you instead of a bigger company?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Three reasons: (1) Transparent pricing — Wrapify, Carvertise, Lamar, and Clear Channel all hide pricing behind "call for a quote." We post ours publicly. (2) You deal directly with the founder — not an account rep who has 80 other clients. (3) We're local, which means our routes are specifically built around Utah County neighborhoods and traffic patterns — not a generic national platform's algorithm deciding where a random driver ends up. The downside: we're newer, with fewer case studies than the big players. That's the honest trade-off.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUPPORT -->
+      <div class="faq-category reveal" id="support">
+        <div class="faq-category-title"><span class="faq-category-icon">📞</span> Support &amp; Changes</div>
+        <div class="faq-list">
+          <div class="faq-item">
+            <button class="faq-question">Who do I contact if I have a question or issue?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Danyon directly. Call or text <a href="tel:+13852046561" style="color:var(--yellow);">(385) 204-6561</a> or email <a href="mailto:hello@drivertiseusa.com" style="color:var(--yellow);">hello@drivertiseusa.com</a>. There are no support tickets, no call centers, no hand-offs. Same-day response is guaranteed for anything time-sensitive, and 24 hours for everything else.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">Can I pause my campaign temporarily?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">For month-to-month clients: yes, with notice. If you need to pause (slow season, business changes), contact Danyon at least 2 weeks before your next billing date and we'll work something out. For 6-month upfront clients: pausing isn't available since the full amount was paid at the start, but we can discuss adjustments on a case-by-case basis.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">Can I change zones after I start?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Yes, subject to availability. If a different zone better fits your needs as your business evolves, contact Danyon. We'll check availability in the requested zone and, if it's open, coordinate a transition. Month-to-month clients can request a zone change at any renewal period. 6-month clients would need to wait until their current term ends, or discuss options directly.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">What happens when my zone expires or I cancel?<span class="faq-icon">+</span></button>
+            <div class="faq-answer"><div class="faq-answer-inner">Your creative is removed from the vehicle, your QR code and tracking links are deactivated, and your zone is released back to the available pool. Your category exclusivity ends — a competitor in your category could then claim that zone. There's no data retention issue (we don't hold your customer data), and no obligation on either side after the campaign ends.</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- CTA BAND -->
+<section class="cta-band" style="margin-top: var(--section-pad);">
+  <div class="container">
+    <span class="eyebrow reveal">Still have questions?</span>
+    <h2 class="reveal">Ask Danyon directly.<br><em class="display-italic">Same-day response.</em></h2>
+    <p class="reveal reveal-delay-1">No form letters, no hand-offs. Call, text, or email — and get a real answer from the person running the business.</p>
+    <div class="cta-buttons reveal reveal-delay-2">
+      <a href="contact.html" class="btn btn-primary btn-lg">Get in Touch <span class="btn-arrow">→</span></a>
+      <a href="pricing.html" class="btn btn-secondary btn-lg">View Pricing</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <a href="index.html" class="nav-logo" style="margin-bottom:16px; display:inline-block;">DRIVERTISE<span class="text-yellow">.</span></a>
+      <p>Mobile advertising for Utah County businesses. We put your brand everywhere your customers already go.</p>
+      <div class="footer-contact" style="margin-top:20px;">
+        <a href="tel:+13852046561">(385) 204-6561</a>
+        <a href="mailto:hello@drivertiseusa.com">hello@drivertiseusa.com</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <span class="footer-col-title">Services</span>
+      <a href="services.html#car-wrap">Car Wrap Ads</a>
+      <a href="services.html#billboard">Electric Billboard</a>
+      <a href="services.html#direct-mail">Direct Mail Co-op</a>
+      <a href="pricing.html">View Pricing</a>
+    </div>
+    <div class="footer-col">
+      <span class="footer-col-title">Company</span>
+      <a href="about.html">About Drivertise</a>
+      <a href="zones.html">Available Zones</a>
+      <a href="faq.html">FAQ</a>
+      <a href="contact.html">Contact / Demo</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container footer-bottom-inner">
+      <p>© 2026 Drivertise USA. All rights reserved. Serving Utah County, Utah.</p>
+      <div class="footer-legal">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

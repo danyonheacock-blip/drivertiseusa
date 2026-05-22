@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="View all 12 available ad zones across 6 Utah County cities. Claim your zone — each category is exclusive within a zone. Drivertise USA mobile advertising.">
+  <title>Available Zones — Drivertise USA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    /* Urgency bar */
+    .urgency-bar {
+      background: var(--yellow);
+      color: #0A0D12;
+      text-align: center;
+      padding: 10px 24px;
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    /* Zone grid by city */
+    .city-block {
+      margin-bottom: 64px;
+    }
+    .city-block:last-child { margin-bottom: 0; }
+
+    .city-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .city-name {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: var(--cream);
+    }
+    .city-meta {
+      font-size: 13px;
+      color: var(--w55);
+      margin-top: 4px;
+    }
+    .city-avail-badge {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 20px;
+    }
+    .city-avail-badge.all-open {
+      background: var(--green-dim);
+      color: var(--green);
+      border: 1px solid rgba(77,232,160,0.25);
+    }
+    .city-avail-badge.partial {
+      background: rgba(230,223,26,0.12);
+      color: var(--yellow);
+      border: 1px solid rgba(230,223,26,0.25);
+    }
+
+    .zones-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .zone-detail-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      transition: border-color 0.25s, box-shadow 0.25s;
+      position: relative;
+    }
+    .zone-detail-card.available {
+      border-color: rgba(77,232,160,0.20);
+    }
+    .zone-detail-card.available:hover {
+      border-color: rgba(77,232,160,0.45);
+      box-shadow: 0 8px 32px rgba(77,232,160,0.08);
+    }
+    .zone-detail-card.taken {
+      opacity: 0.55;
+    }
+
+    .zone-detail-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .zone-letter {
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--w38);
+      letter-spacing: 1px;
+    }
+
+    .zone-highlights {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 16px 0 20px;
+    }
+    .zone-highlight {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--w70);
+    }
+    .zone-highlight-icon { font-size: 14px; flex-shrink: 0; }
+
+    .zone-impressions {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .zone-imp-box {
+      flex: 1;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px;
+      text-align: center;
+    }
+    .zone-imp-num {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--yellow);
+      letter-spacing: -0.02em;
+      display: block;
+    }
+    .zone-imp-lbl { font-size: 10px; color: var(--w38); }
+
+    /* Exclusivity note */
+    .exclusivity-note {
+      background: var(--yellow-dim);
+      border: 1px solid rgba(230,223,26,0.15);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-top: 40px;
+    }
+    .exclusivity-note p {
+      font-size: 13px;
+      color: var(--w70);
+      line-height: 1.6;
+    }
+    .exclusivity-note strong { color: var(--yellow); }
+
+    /* Legend */
+    .zone-legend {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--w55);
+    }
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .legend-dot.available { background: var(--green); }
+    .legend-dot.taken     { background: rgba(255,255,255,0.20); }
+
+    @media (max-width: 700px) {
+      .zones-pair { grid-template-columns: 1fr; }
+      .city-name  { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo">DRIVERTISE<span class="text-yellow">.</span></a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="services.html">Services</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="zones.html">Zones</a>
+      <a href="faq.html">FAQ</a>
+      <a href="about.html">About</a>
+    </nav>
+    <a href="contact.html" class="btn btn-primary nav-cta">Get a Demo</a>
+    <button class="nav-toggle" aria-label="Open navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<nav class="nav-mobile" id="nav-mobile" aria-label="Mobile navigation">
+  <a href="services.html">Services</a>
+  <a href="pricing.html">Pricing</a>
+  <a href="zones.html">Zones</a>
+  <a href="faq.html">FAQ</a>
+  <a href="about.html">About</a>
+  <a href="contact.html" class="btn btn-primary btn-lg">Get a Demo</a>
+</nav>
+
+<!-- Urgency bar -->
+<div class="urgency-bar" style="margin-top: var(--nav-h);">
+  🟢 All 12 zones currently available — category exclusivity is first-come, first-served
+</div>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="container">
+    <span class="eyebrow">Available Zones</span>
+    <h1>12 zones.<br><em class="display-italic">6 cities. All open.</em></h1>
+    <p style="margin-top:20px; max-width:580px;">Each zone covers a city's highest-traffic routes. Once a category is claimed in a zone, no direct competitor can advertise there. First to claim wins exclusivity.</p>
+  </div>
+</section>
+
+<!-- ZONES -->
+<section class="section-pad">
+  <div class="container">
+
+    <!-- Legend + Exclusivity note -->
+    <div class="zone-legend reveal">
+      <div class="legend-item"><span class="legend-dot available"></span> Available — open to claim</div>
+      <div class="legend-item"><span class="legend-dot taken"></span> Taken — category slots sold</div>
+    </div>
+
+    <!-- ── LEHI ── -->
+    <div class="city-block reveal">
+      <div class="city-header">
+        <div>
+          <div class="city-name">Lehi</div>
+          <div class="city-meta">Utah County's fastest-growing city · High retail density · 69,000+ residents</div>
+        </div>
+        <span class="city-avail-badge all-open">2 of 2 Open</span>
+      </div>
+      <div class="zones-pair">
+        <div class="zone-detail-card available">
+          <div class="zone-detail-header">
+            <span class="zone-letter">ZONE A</span>
+            <span class="zone-badge available">Available</span>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:12px;">Lehi North — Costco &amp; Retail Corridor</h3>
+          <div class="zone-highlights">
+            <div class="zone-highlight"><span class="zone-highlight-icon">📍</span> Costco, Walmart, major box stores on Lehi Main</div>
+            <div class="zone-highlight"><span class="zone-highlight-icon">🚗</span> Morning and evening commute routes on SR-73</div>
+            <div class="zone-highlight"><span class="zone-highlight-icon">🏘️</span> Dense residential neighborhoods nearby</div>
+          </div>
+          <div class="zone-impressions">
+            <div class="zone-imp-box">
+              <span class="zone-imp-num">50K+</span>
+              <span class="zone-imp-lbl">Monthly impressions</span>
+            </div>
+            <div class="zone-imp-box">
+              <span class="zone-imp-num">$300</span>
+              <span class="zone-imp-lbl">Starting / month</span>
+            </div>
+          </div>
+          <button class="btn btn-primary" style="width:100%; justify-content:center;" data-zone-cta="Lehi Zone A">Claim Lehi Zone A <span class="btn-arrow">→</span></button>
+        </div>
+        <div class="zone-detail-card available">
+          <div class="zone-detail-header">
+            <span class="zone-letter">ZONE B</span>
+            <span class="zone-badge available">Available</span>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:12px;">Lehi South — Silicon Slopes &amp; Tech Corridor</h3>
+          <div class="zone-highlights">
+            <div class="zone-highlight"><span class="zone-highlight-icon">📍</span> Silicon Slopes tech campus, I-15 access routes</div>
+            <div class="zone-highlight"><span class="zone-highlight-icon">🚗</span> High weekday traffic from tech workers &amp; commuters</div>
+            <div class="zone-highlight"><span class="zone-highlight-icon">🏘️</span> Growing residential development south of downtown</div>
+          </div>
+          <div class="zone-impressions">
+            <div class="zone-imp-box">
+              <span class="zone-imp-num">50K+</span>
+              <span class="zone-imp-lbl">Monthly impressions</span>
+            </div>
+            <div class="zone-imp-box">
+              <span class="zone-imp-num">$300</span>
+              <span class="zone-imp-lbl">Starting / month</span>
+            </div>
+          </div>
+          <button class="btn btn-primary" style="width:100%; justify-content:center;" data-zone-cta="Lehi Zone B">Claim Lehi Zone B <span class="btn-arrow">→</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── AMERICAN FORK ── -->
+    <div class="city-block reveal">
+      <div class="city-header">
+        <div>
+          <div class="city-name">American Fork</div>
+          <div class="city-meta">Main Street corridor · Strong local business culture · 35,000+ residents</div>
+        </div>
+        <span class="city-avail-badge all-open">2 of 2 Open</span>
+      </div>
+      <div class="zones-pair">
+        <div class="zone-detail-card available">
+          <div class="zone-detail-header">
+            <span class="zone-letter">ZONE A</span>
+            <span class="zone-badge available">Available</span>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:12px;">American Fork Main — Central District</h3>
+          <div class="zone-highlights">
+            <div class="zone-highlight"><span class="zone-highlight-icon">📍</span> Main Street businesses, Smith's, local shopping</div>
+            <div class="zone-highlight"><span class="zone-highlight-icon">🚗</span> High-traffic intersections at 900 E and Main</div>
+            <div class="zone-highlight"><span class="zone-highlight-icon">🏘️</span> Family neighborhoods with strong local loyalty</div>
+          </div>
+          <div class="zone-impressions">
+            <div class="zone-imp-box"><span class="zone-imp-num">50K+</span><span class="zone-imp-lbl">Monthly impressions</span></div>
+            <div class="zone-imp-box"><span class="zone-imp-num">$300</span><span class="zone-imp-lbl">Starting / month</span></div>
+          </div>
+          <button class="btn btn-primary" style="width:100%; justify-content:center;" data-zone-cta="American Fork Zone A">Claim AF Zone A <span class="btn-arrow">→</span></button>
+        </div>
+        <div class="zone-detail-card available">
+          <div class="zone-detail-header">
+            <span class="zone-letter">ZONE B</span>
+            <span class="zone-badge available">Available</span>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:12px;">American Fork East — Residential &amp; Schools</h3>
+          <div class="zone-highlights">
+            <div class="zone-highlight"><span class="zone-highlight-icon">📍</span> School drop-off zones, parks, rec centers</div>
+            <div class="zone-highlight"><span class="zone-highlight-icon">🚗</span> Afternoon family traffic, school pickup routes</div>
+            <div class="zone-highlight"><span class="zone-highlight-icon">🏘️</span> Dense residential with high homeownership rate</div>
+          </div>
+          <div class="zone-impressions">
+            <div class="zone-imp-box"><span class="zone-imp-num">50K+</span><span class="zone-imp-lbl">Monthly impressions</span></div>
+            <div class="zone-imp-box"><span class="zone-imp-num">$300</span><span class="zone-imp-lbl">Starting / month</span></div>
+          </div>
+          <button class="btn btn-primary" style="width:100%; justify-content:center;" data-zone-cta="American Fork Zone B">Claim AF Zone B <span class="btn-arrow">→</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SARATOGA SPRINGS ── -->
+    <div class="city-block reveal">
+      <div class="city-header">
+        <div>
+          <div class="city-name">Saratoga Springs</div>
+          <div class="city-meta">One of Utah's fastest-growing zip codes · New construction · High discretionary income</div>
+        </div>
+        <span class="city-avail-badge all-open">2 of 2 Open</span>
+      </div>
+      <div class="zones-pair">
+        <div class="zone-detail-card available">
+          <div class="zone-detail-header"><span class="zone-letter">ZONE A</span><span class="zone-badge available">Available</span></div>
+          <h3 style="font-size:18px; margin-bottom:12px;">Saratoga Springs West — Lake Mountain District</h3>
+          <div class="zone-highlights">
+            <div class="zone-highlight"><span class="zone-highlight-icon">📍</span> Grocery, pharmacy, and daily errand corridors</div>
+            <div class="zone-highlight"><span class="zone-highlight-icon">🚗</span> New neighborhoods, high homeowner-to-renter ratio</div>
+            <div class="zone-highlight"><span class="zone-highlight-icon">🏘️</span> Families moving in from Provo and SLC areas</div>
+          </div>
+          <div class="zone-impressions">
+            <div class="zone-imp-box"><span class="zone-imp-num">50K+</span><span class="zone-imp-lbl">Monthly impressions</span></div>
+            <div class="zone-imp-box"><span class="zone-imp-num">$300</span><span class="zone-imp-lbl">Starting / month</span></div>
+          </div>
+          <button class="btn btn-primary" style="width:100%; justify-content:center;" data-zone-cta="Saratoga Springs Zone A">Claim SS Zone A <span class="btn-arrow">→</span></button>
+        </div>
+        <div class="zone-detail-card available">
+          <div class="zone-detail-header"><span class="zone-letter">ZONE B</span><span class="zone-badge available">Available</span></div>
+          <h3 style="font-size:18px; margin-bottom:12px;">Saratoga Springs East — Commerce &amp; Crossroads</h3>
+          <div class="zone-highlights">
+            <div class="zone-highlight"><span class="zone-highlight-icon">📍</span> Crossroads retail, fast-growing commercial strip</div>
+            <div class="zone-highlight"><span class="zone-highlight-icon">🚗</span> Heavy commuter traffic toward Lehi/Draper I-15</div>
+            <div class="zone-highlight"><span class="zone-highlight-icon">🏘️</span> Newly established neighborhood businesses</div>
+          </div>
+          <div class="zone-impressions">
+            <div class="zone-imp-box"><span class="zone-imp-num">50K+</span><span class="zone-imp-lbl">Monthly impressions</span></div>
+            <div class="zone-imp-box"><span class="zone-imp-num">$300</span><span class="zone-imp-lbl">Starting / month</span></div>
+          </div>
+          <button class="btn btn-primary" style="width:100%; justify-content:center;" data-zone-cta="Saratoga Springs Zone B">Claim SS Zone B <span class="btn-arrow">→</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── HIGHLAND ── -->
+    <div class="city-block reveal">
+      <div class="city-header">
+        <div>
+          <div class="city-name">Highland</div>
+          <div class="city-meta">Established community · High household income · Strong local brand loyalty</div>
+        </div>
+        <span class="city-avail-badge all-open">2 of 2 Open</span>
+      </div>
+      <div class="zones-pair">
+        <div class="zone-detail-card available">
+          <div class="zone-detail-header"><span class="zone-letter">ZONE A</span><span class="zone-badge available">Available</span></div>
+          <h3 style="font-size:18px; margin-bottom:12px;">Highland Central — Main Residential Corridor</h3>
+          <div class="zone-highlights">
+            <div class="zone-highlight"><span class="zone-highlight-icon">📍</span> Pioneer Crossing, Highland Drive, daily errand routes</div>
+            <div class="zone-highlight"><span class="zone-highlight-icon">🚗</span> Family-heavy traffic throughout the day</div>
+            <div class="zone-highlight"><span class="zone-highlight-icon">🏘️</span> High-income homeowners who value local providers</div>
+          </div>
+          <div class="zone-impressions">
+            <div class="zone-imp-box"><span class="zone-imp-num">50K+</span><span class="zone-imp-lbl">Monthly impressions</span></div>
+            <div class="zone-imp-box"><span class="zone-imp-num">$300</span><span class="zone-imp-lbl">Starting / month</span></div>
+          </div>
+          <button class="btn btn-primary" style="width:100%; justify-content:center;" data-zone-cta="Highland Zone A">Claim Highland Zone A <span class="btn-arrow">→</span></button>
+        </div>
+        <div class="zone-detail-card available">
+          <div class="zone-detail-header"><span class="zone-letter">ZONE B</span><span class="zone-badge available">Available</span></div>
+          <h3 style="font-size:18px; margin-bottom:12px;">Highland North — Border with Cedar Hills</h3>
+          <div class="zone-highlights">
+            <div class="zone-highlight"><span class="zone-highlight-icon">📍</span> North Highland, Cedar Hills boundary retail areas</div>
+            <div class="zone-highlight"><span class="zone-highlight-icon">🚗</span> Cross-city commuters, school run traffic</div>
+            <div class="zone-highlight"><span class="zone-highlight-icon">🏘️</span> Long-established residential, low advertiser saturation</div>
+          </div>
+          <div class="zone-impressions">
+            <div class="zone-imp-box"><span class="zone-imp-num">50K+</span><span class="zone-imp-lbl">Monthly impressions</span></div>
+            <div class="zone-imp-box"><span class="zone-imp-num">$300</span><span class="zone-imp-lbl">Starting / month</span></div>
+          </div>
+          <button class="btn btn-primary" style="width:100%; justify-content:center;" data-zone-cta="Highland Zone B">Claim Highland Zone B <span class="btn-arrow">→</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── EAGLE MOUNTAIN ── -->
+    <div class="city-block reveal">
+      <div class="city-header">
+        <div>
+          <div class="city-name">Eagle Mountain</div>
+          <div class="city-meta">Fastest-growing city in Utah · Low advertiser saturation · Families &amp; new homeowners</div>
+        </div>
+        <span class="city-avail-badge all-open">2 of 2 Open</span>
+      </div>
+      <div class="zones-pair">
+        <div class="zone-detail-card available">
+          <div class="zone-detail-header"><span class="zone-letter">ZONE A</span><span class="zone-badge available">Available</span></div>
+          <h3 style="font-size:18px; margin-bottom:12px;">Eagle Mountain South — Civic &amp; Commercial Hub</h3>
+          <div class="zone-highlights">
+            <div class="zone-highlight"><span class="zone-highlight-icon">📍</span> Eagle Mountain City Hall, Harmons, shopping centers</div>
+            <div class="zone-highlight"><span class="zone-highlight-icon">🚗</span> Primary commercial streets with new development</div>
+            <div class="zone-highlight"><span class="zone-highlight-icon">🏘️</span> Young families, new construction, service-hungry market</div>
+          </div>
+          <div class="zone-impressions">
+            <div class="zone-imp-box"><span class="zone-imp-num">50K+</span><span class="zone-imp-lbl">Monthly impressions</span></div>
+            <div class="zone-imp-box"><span class="zone-imp-num">$300</span><span class="zone-imp-lbl">Starting / month</span></div>
+          </div>
+          <button class="btn btn-primary" style="width:100%; justify-content:center;" data-zone-cta="Eagle Mountain Zone A">Claim EM Zone A <span class="btn-arrow">→</span></button>
+        </div>
+        <div class="zone-detail-card available">
+          <div class="zone-detail-header"><span class="zone-letter">ZONE B</span><span class="zone-badge available">Available</span></div>
+          <h3 style="font-size:18px; margin-bottom:12px;">Eagle Mountain North — Residential Expansion</h3>
+          <div class="zone-highlights">
+            <div class="zone-highlight"><span class="zone-highlight-icon">📍</span> New neighborhoods, schools, daily errand routes</div>
+            <div class="zone-highlight"><span class="zone-highlight-icon">🚗</span> Commuter routes to Saratoga Springs and Lehi</div>
+            <div class="zone-highlight"><span class="zone-highlight-icon">🏘️</span> Virtually zero competing local advertisers in this area</div>
+          </div>
+          <div class="zone-impressions">
+            <div class="zone-imp-box"><span class="zone-imp-num">50K+</span><span class="zone-imp-lbl">Monthly impressions</span></div>
+            <div class="zone-imp-box"><span class="zone-imp-num">$300</span><span class="zone-imp-lbl">Starting / month</span></div>
+          </div>
+          <button class="btn btn-primary" style="width:100%; justify-content:center;" data-zone-cta="Eagle Mountain Zone B">Claim EM Zone B <span class="btn-arrow">→</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PLEASANT GROVE ── -->
+    <div class="city-block reveal">
+      <div class="city-header">
+        <div>
+          <div class="city-name">Pleasant Grove</div>
+          <div class="city-meta">Strong community ties · Active local economy · Gateway city between Utah Valley cities</div>
+        </div>
+        <span class="city-avail-badge all-open">2 of 2 Open</span>
+      </div>
+      <div class="zones-pair">
+        <div class="zone-detail-card available">
+          <div class="zone-detail-header"><span class="zone-letter">ZONE A</span><span class="zone-badge available">Available</span></div>
+          <h3 style="font-size:18px; margin-bottom:12px;">Pleasant Grove Central — State Street &amp; Main</h3>
+          <div class="zone-highlights">
+            <div class="zone-highlight"><span class="zone-highlight-icon">📍</span> State Street retail, Smith's, Macey's, daily traffic</div>
+            <div class="zone-highlight"><span class="zone-highlight-icon">🚗</span> Main commuter corridor between PG and Lindon</div>
+            <div class="zone-highlight"><span class="zone-highlight-icon">🏘️</span> Established community with consistent daily patterns</div>
+          </div>
+          <div class="zone-impressions">
+            <div class="zone-imp-box"><span class="zone-imp-num">50K+</span><span class="zone-imp-lbl">Monthly impressions</span></div>
+            <div class="zone-imp-box"><span class="zone-imp-num">$300</span><span class="zone-imp-lbl">Starting / month</span></div>
+          </div>
+          <button class="btn btn-primary" style="width:100%; justify-content:center;" data-zone-cta="Pleasant Grove Zone A">Claim PG Zone A <span class="btn-arrow">→</span></button>
+        </div>
+        <div class="zone-detail-card available">
+          <div class="zone-detail-header"><span class="zone-letter">ZONE B</span><span class="zone-badge available">Available</span></div>
+          <h3 style="font-size:18px; margin-bottom:12px;">Pleasant Grove East — Foothill &amp; Residential</h3>
+          <div class="zone-highlights">
+            <div class="zone-highlight"><span class="zone-highlight-icon">📍</span> East-side neighborhoods, cul-de-sac communities</div>
+            <div class="zone-highlight"><span class="zone-highlight-icon">🚗</span> School and family traffic, errands to AF/Orem</div>
+            <div class="zone-highlight"><span class="zone-highlight-icon">🏘️</span> Loyal to local businesses they discover organically</div>
+          </div>
+          <div class="zone-impressions">
+            <div class="zone-imp-box"><span class="zone-imp-num">50K+</span><span class="zone-imp-lbl">Monthly impressions</span></div>
+            <div class="zone-imp-box"><span class="zone-imp-num">$300</span><span class="zone-imp-lbl">Starting / month</span></div>
+          </div>
+          <button class="btn btn-primary" style="width:100%; justify-content:center;" data-zone-cta="Pleasant Grove Zone B">Claim PG Zone B <span class="btn-arrow">→</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exclusivity note -->
+    <div class="exclusivity-note reveal">
+      <p><strong>How category exclusivity works:</strong> When you claim a zone, you tell us your business category (HVAC, dental, restaurant, etc.). No other business in that same category can advertise in your zone for the duration of your plan. You're protected from direct competitors — they can't share the same ad vehicle or mailer zone. If you cancel, your exclusivity expires and the category reopens.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section class="cta-band">
+  <div class="container">
+    <span class="eyebrow reveal">Don't wait on this one</span>
+    <h2 class="reveal">Every zone is open right now.<br><em class="display-italic">That won't last long.</em></h2>
+    <p class="reveal reveal-delay-1">Once a competitor in your category claims your zone, you're locked out until they cancel. Book a free 15-minute demo and we'll help you pick the right zone before it's gone.</p>
+    <div class="cta-buttons reveal reveal-delay-2">
+      <a href="contact.html" class="btn btn-primary btn-lg">Claim My Zone <span class="btn-arrow">→</span></a>
+      <a href="pricing.html" class="btn btn-secondary btn-lg">See Pricing</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <a href="index.html" class="nav-logo" style="margin-bottom:16px; display:inline-block;">DRIVERTISE<span class="text-yellow">.</span></a>
+      <p>Mobile advertising for Utah County businesses. We put your brand everywhere your customers already go.</p>
+      <div class="footer-contact" style="margin-top:20px;">
+        <a href="tel:+13852046561">(385) 204-6561</a>
+        <a href="mailto:hello@drivertiseusa.com">hello@drivertiseusa.com</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <span class="footer-col-title">Services</span>
+      <a href="services.html#car-wrap">Car Wrap Ads</a>
+      <a href="services.html#billboard">Electric Billboard</a>
+      <a href="services.html#direct-mail">Direct Mail Co-op</a>
+      <a href="pricing.html">View Pricing</a>
+    </div>
+    <div class="footer-col">
+      <span class="footer-col-title">Company</span>
+      <a href="about.html">About Drivertise</a>
+      <a href="zones.html">Available Zones</a>
+      <a href="faq.html">FAQ</a>
+      <a href="contact.html">Contact / Demo</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container footer-bottom-inner">
+      <p>© 2026 Drivertise USA. All rights reserved. Serving Utah County, Utah.</p>
+      <div class="footer-legal">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

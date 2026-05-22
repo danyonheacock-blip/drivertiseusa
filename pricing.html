@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Transparent pricing for mobile advertising in Utah County. Car wrap zones from $300/month, electric billboard add-on, direct mail co-op from $1,200. No hidden fees, no long-term contracts required.">
+  <title>Pricing — Drivertise USA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .price-hero-note {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(77,232,160,0.10);
+      border: 1px solid rgba(77,232,160,0.20);
+      border-radius: 24px;
+      padding: 6px 16px;
+      font-size: 13px;
+      color: var(--green);
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+    .price-hero-note span { font-size: 16px; }
+
+    /* Pricing cards layout */
+    .pricing-wrap {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 56px;
+    }
+
+    /* Savings badge */
+    .savings-badge {
+      display: inline-block;
+      background: var(--yellow-dim);
+      border: 1px solid rgba(230,223,26,0.25);
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--yellow);
+      letter-spacing: 1px;
+      padding: 3px 8px;
+      text-transform: uppercase;
+      margin-left: 8px;
+    }
+
+    /* Included section */
+    .included-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 48px;
+    }
+    .included-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 20px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .included-icon {
+      font-size: 22px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .included-item h5 {
+      font-size: 14px;
+      color: var(--cream);
+      margin-bottom: 4px;
+    }
+    .included-item p {
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    /* Compare table wrapper */
+    .compare-wrap {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-top: 48px;
+    }
+    .compare-wrap .compare-table th:first-child,
+    .compare-wrap .compare-table td:first-child {
+      width: 260px;
+    }
+
+    /* FAQ strip */
+    .pricing-faq {
+      max-width: 740px;
+      margin: 0 auto;
+    }
+
+    /* Comparison note */
+    .compare-note {
+      font-size: 12px;
+      color: var(--w38);
+      margin-top: 16px;
+      font-style: italic;
+    }
+
+    @media (max-width: 900px) {
+      .pricing-wrap { grid-template-columns: 1fr; max-width: 480px; margin-left: auto; margin-right: auto; }
+      .included-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .compare-wrap { overflow-x: auto; }
+      .compare-table { min-width: 560px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo">DRIVERTISE<span class="text-yellow">.</span></a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="services.html">Services</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="zones.html">Zones</a>
+      <a href="faq.html">FAQ</a>
+      <a href="about.html">About</a>
+    </nav>
+    <a href="contact.html" class="btn btn-primary nav-cta">Get a Demo</a>
+    <button class="nav-toggle" aria-label="Open navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<nav class="nav-mobile" id="nav-mobile" aria-label="Mobile navigation">
+  <a href="services.html">Services</a>
+  <a href="pricing.html">Pricing</a>
+  <a href="zones.html">Zones</a>
+  <a href="faq.html">FAQ</a>
+  <a href="about.html">About</a>
+  <a href="contact.html" class="btn btn-primary btn-lg">Get a Demo</a>
+</nav>
+
+<!-- PAGE HERO -->
+<div style="margin-top: var(--nav-h);"></div>
+<section class="page-hero section-pad">
+  <div class="container">
+    <div class="price-hero-note"><span>✓</span> No hidden fees. No surprises. Everything listed right here.</div>
+    <span class="eyebrow">Pricing</span>
+    <h1>Straight talk.<br><em class="display-italic">Straight prices.</em></h1>
+    <p style="margin-top:20px; max-width:560px;">Every competitor makes you call for a quote. We don't. Here's exactly what every service costs, what's included, and how it compares to your other options.</p>
+  </div>
+</section>
+
+<!-- PRICING CARDS -->
+<section class="section-pad">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">Zone Pricing</span>
+      <h2>Car Wrap Ad Zones</h2>
+      <p>Pick the commitment level that works for you. Every plan includes the same high-traffic routes, weekly reports, and direct access to Danyon.</p>
+    </div>
+
+    <div class="pricing-wrap">
+
+      <!-- Month-to-Month -->
+      <div class="pricing-card reveal">
+        <div class="pricing-name">Month-to-Month</div>
+        <div class="pricing-price"><sup>$</sup>300</div>
+        <div class="pricing-period">per zone, per month · cancel anytime</div>
+        <div class="pricing-divider"></div>
+        <div class="pricing-features">
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span> 1 dedicated ad zone</div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span> 50,000+ monthly impressions</div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span> Weekly impression report</div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span> QR code tracking (optional)</div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span> Direct account access (Danyon)</div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span> Cancel with 30 days notice</div>
+        </div>
+        <a href="contact.html" class="btn btn-secondary" style="width:100%; justify-content:center;">Get Started</a>
+      </div>
+
+      <!-- 6-Month — Most Popular -->
+      <div class="pricing-card featured reveal reveal-delay-2">
+        <div class="pricing-name">6-Month Commitment <span class="savings-badge">Save $300</span></div>
+        <div class="pricing-price"><sup>$</sup>250</div>
+        <div class="pricing-period">per zone, per month · billed as $1,500 upfront</div>
+        <div class="pricing-divider"></div>
+        <div class="pricing-features">
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span> 1 dedicated ad zone</div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span> 50,000+ monthly impressions</div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span> Weekly impression report</div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span> QR code + promo code tracking</div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span> Priority zone hold — first pick</div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span> One creative refresh at month 3</div>
+        </div>
+        <a href="contact.html" class="btn btn-primary" style="width:100%; justify-content:center;">Claim This Zone <span class="btn-arrow">→</span></a>
+      </div>
+
+      <!-- Multi-Zone -->
+      <div class="pricing-card reveal reveal-delay-3">
+        <div class="pricing-name">Multi-Zone Bundle</div>
+        <div class="pricing-price" style="font-size:38px;">Custom</div>
+        <div class="pricing-period">2+ zones · 15% off per additional zone</div>
+        <div class="pricing-divider"></div>
+        <div class="pricing-features">
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span> 2–12 dedicated zones</div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span> Up to 600K+ monthly impressions</div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span> Full weekly reporting by zone</div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span> QR code + promo code per zone</div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span> Dedicated campaign planning call</div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span> Combined territory exclusivity</div>
+        </div>
+        <a href="contact.html" class="btn btn-secondary" style="width:100%; justify-content:center;">Talk to Danyon</a>
+      </div>
+
+    </div>
+
+    <!-- Add-ons -->
+    <div style="margin-top:48px;" class="reveal">
+      <h3 style="margin-bottom:24px; font-size:22px;">Add-Ons</h3>
+      <div style="display:grid; grid-template-columns: repeat(2,1fr); gap:16px;">
+        <div style="background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius); padding:24px; display:flex; gap:20px; align-items:flex-start;">
+          <span style="font-size:28px; flex-shrink:0;">⚡</span>
+          <div>
+            <h5 style="font-size:15px; margin-bottom:6px;">Electric Roof Billboard</h5>
+            <p style="font-size:14px;">Dynamic LED display mounted on the vehicle roof. Update creative anytime — video, animation, or static. Pricing on request depending on zone and duration.</p>
+            <a href="contact.html" style="font-size:13px; color:var(--yellow); font-weight:700; margin-top:12px; display:inline-block;">Ask about pricing →</a>
+          </div>
+        </div>
+        <div style="background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius); padding:24px; display:flex; gap:20px; align-items:flex-start;">
+          <span style="font-size:28px; flex-shrink:0;">📬</span>
+          <div>
+            <h5 style="font-size:15px; margin-bottom:6px;">Direct Mail Co-op Drop</h5>
+            <p style="font-size:14px;">Your ad in a targeted mailer delivered to 10,000 homes in your zone's geographic area. One drop every 2 months. Exclusive category — no direct competitors in the same mailer.</p>
+            <div style="font-family:var(--font-display); font-size:22px; font-weight:800; color:var(--yellow); margin-top:12px; letter-spacing:-0.02em;">$1,200 <span style="font-size:13px; color:var(--w38); font-weight:400;">per drop / 10K homes</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT'S INCLUDED -->
+<section class="section-pad section-light">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">What's Always Included</span>
+      <h2>No hidden fees. No surprise charges.</h2>
+      <p>Every zone plan includes these by default — no upcharges, no optional extras that should've been standard.</p>
+    </div>
+    <div class="included-grid reveal">
+      <div class="included-item">
+        <span class="included-icon">📊</span>
+        <div>
+          <h5>Weekly Impression Reports</h5>
+          <p>A simple weekly summary of estimated impressions from your zone's routes. Clear and plain — not a wall of numbers.</p>
+        </div>
+      </div>
+      <div class="included-item">
+        <span class="included-icon">📍</span>
+        <div>
+          <h5>GPS Route Verification</h5>
+          <p>Google Timeline tracking confirms the vehicle drove your zone's routes. You can verify the car was where it was supposed to be.</p>
+        </div>
+      </div>
+      <div class="included-item">
+        <span class="included-icon">📞</span>
+        <div>
+          <h5>Direct Founder Access</h5>
+          <p>You get Danyon's number and email. Same-day response guaranteed. No support tickets, no call centers.</p>
+        </div>
+      </div>
+      <div class="included-item">
+        <span class="included-icon">🔗</span>
+        <div>
+          <h5>QR Code Tracking Setup</h5>
+          <p>We'll set up a unique QR code and/or promo code for your ad so you can directly attribute responses to your campaign.</p>
+        </div>
+      </div>
+      <div class="included-item">
+        <span class="included-icon">🚫</span>
+        <div>
+          <h5>Category Exclusivity Per Zone</h5>
+          <p>Once you claim a zone, no direct competitor in your category can advertise in that same zone. Your space is protected.</p>
+        </div>
+      </div>
+      <div class="included-item">
+        <span class="included-icon">🔓</span>
+        <div>
+          <h5>Flexible Exit Policy</h5>
+          <p>Month-to-month plans cancel with 30 days notice. No penalty fees, no collections, no drama if you decide it's not the right fit.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROI CALCULATOR -->
+<section class="section-pad" id="calculator">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">ROI Calculator</span>
+      <h2>See what your zone could return</h2>
+      <p>Estimates based on industry averages. Your actual results depend on your creative, offer, and how well your business converts new leads.</p>
+    </div>
+    <div class="calculator reveal">
+      <div class="calculator-header">
+        <h3>Estimate Your Returns</h3>
+        <p>Select your business type and number of zones to see projected impressions, leads, and ROI.</p>
+      </div>
+      <div class="calculator-body">
+        <div class="calc-inputs">
+          <div class="form-group">
+            <label class="form-label" for="calc-biz">Business Type</label>
+            <select class="form-select" id="calc-biz">
+              <option value="hvac">HVAC / Plumbing</option>
+              <option value="dental">Dental / Medical</option>
+              <option value="restaurant">Restaurant / Food</option>
+              <option value="realestate">Real Estate</option>
+              <option value="retail">Retail / Shop</option>
+              <option value="beauty">Beauty / Salon</option>
+              <option value="auto">Auto Services</option>
+              <option value="fitness">Fitness / Wellness</option>
+              <option value="other">Other Business</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="calc-zones">Number of Zones</label>
+            <select class="form-select" id="calc-zones">
+              <option value="1">1 Zone — $300/mo</option>
+              <option value="2">2 Zones — $510/mo (15% off)</option>
+              <option value="3">3 Zones — $765/mo (15% off each)</option>
+            </select>
+          </div>
+          <div style="padding:20px; background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius);">
+            <p style="font-size:13px; color:var(--w38); margin-bottom:0; line-height:1.55;">Estimates use industry-average conversion rates for each business type. Your results may be higher or lower depending on creative quality, offer strength, and local market conditions.</p>
+          </div>
+          <p id="calc-roi-note" style="font-size:13px; color:var(--w38);"></p>
+        </div>
+        <div class="calc-result-panel">
+          <div class="calc-result-label">Estimated New Leads / Month</div>
+          <div class="calc-result-value" id="calc-main-value">—</div>
+          <div class="calc-results-grid">
+            <div class="calc-result-row">
+              <span>Weekly impressions</span>
+              <span id="calc-impressions">—</span>
+            </div>
+            <div class="calc-result-row">
+              <span>Monthly impressions</span>
+              <span id="calc-monthly-imp">—</span>
+            </div>
+            <div class="calc-result-row">
+              <span>Est. leads / month</span>
+              <span id="calc-leads">—</span>
+            </div>
+            <div class="calc-result-row">
+              <span>Your monthly spend</span>
+              <span id="calc-spend">—</span>
+            </div>
+            <div class="calc-result-row">
+              <span>Est. cost per lead</span>
+              <span id="calc-cpl">—</span>
+            </div>
+            <div class="calc-result-row">
+              <span>Google Ads avg. CPL</span>
+              <span id="calc-google-cpl">—</span>
+            </div>
+            <div class="calc-result-row">
+              <span>Est. monthly revenue</span>
+              <span id="calc-revenue">—</span>
+            </div>
+            <div class="calc-result-row">
+              <span>Est. ROI on ad spend</span>
+              <span id="calc-roi">—</span>
+            </div>
+            <div class="calc-result-row">
+              <span>vs. Google Ads</span>
+              <span id="calc-savings">—</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON TABLE -->
+<section class="section-pad section-light">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">How We Compare</span>
+      <h2>Drivertise vs. other advertising options</h2>
+      <p>An honest side-by-side. We're not right for every business — but for local Utah County businesses who want real-world presence, this is hard to beat.</p>
+    </div>
+    <div class="compare-wrap reveal">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th class="col-us" style="color:var(--yellow);">Drivertise</th>
+            <th>Google Ads</th>
+            <th>Facebook Ads</th>
+            <th>Static Billboard</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Transparent pricing</td>
+            <td class="col-us"><span class="compare-check">✓</span></td>
+            <td><span class="compare-check">✓</span></td>
+            <td><span class="compare-check">✓</span></td>
+            <td><span class="compare-x">✗</span></td>
+          </tr>
+          <tr>
+            <td>Reaches people offline</td>
+            <td class="col-us"><span class="compare-check">✓</span></td>
+            <td><span class="compare-x">✗</span></td>
+            <td><span class="compare-x">✗</span></td>
+            <td><span class="compare-check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Geographic targeting</td>
+            <td class="col-us"><span class="compare-check">✓</span></td>
+            <td><span class="compare-check">✓</span></td>
+            <td><span class="compare-check">✓</span></td>
+            <td><span class="compare-partial">~</span></td>
+          </tr>
+          <tr>
+            <td>No algorithm dependency</td>
+            <td class="col-us"><span class="compare-check">✓</span></td>
+            <td><span class="compare-x">✗</span></td>
+            <td><span class="compare-x">✗</span></td>
+            <td><span class="compare-check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Results tracking included</td>
+            <td class="col-us"><span class="compare-check">✓</span></td>
+            <td><span class="compare-check">✓</span></td>
+            <td><span class="compare-check">✓</span></td>
+            <td><span class="compare-x">✗</span></td>
+          </tr>
+          <tr>
+            <td>Month-to-month option</td>
+            <td class="col-us"><span class="compare-check">✓</span></td>
+            <td><span class="compare-check">✓</span></td>
+            <td><span class="compare-check">✓</span></td>
+            <td><span class="compare-x">✗</span></td>
+          </tr>
+          <tr>
+            <td>Starting cost / month</td>
+            <td class="col-us" style="color:var(--green); font-weight:700;">$300</td>
+            <td>$300–$1,500+</td>
+            <td>$200–$800+</td>
+            <td>$800–$3,000+</td>
+          </tr>
+          <tr>
+            <td>Reaches people NOT online</td>
+            <td class="col-us"><span class="compare-check">✓</span></td>
+            <td><span class="compare-x">✗</span></td>
+            <td><span class="compare-x">✗</span></td>
+            <td><span class="compare-check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Direct founder access</td>
+            <td class="col-us"><span class="compare-check">✓</span></td>
+            <td><span class="compare-x">✗</span></td>
+            <td><span class="compare-x">✗</span></td>
+            <td><span class="compare-x">✗</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="compare-note">Comparison is informational, not a legal claim. Costs and features of competitors may vary.</p>
+  </div>
+</section>
+
+<!-- PRICING FAQ -->
+<section class="section-pad">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">Pricing Questions</span>
+      <h2>Common questions before signing up</h2>
+    </div>
+    <div class="pricing-faq faq-list reveal">
+      <div class="faq-item">
+        <button class="faq-question">Is there a setup fee?<span class="faq-icon">+</span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">No. There is no setup fee, onboarding fee, or creative fee. You pay the zone price listed here and that's it. If you need help designing your ad creative, we can point you to affordable options, but we don't charge for that service ourselves.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">What does "cancel anytime" actually mean?<span class="faq-icon">+</span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">For month-to-month plans, you give 30 days written notice (text or email is fine) and your zone is released at the end of that billing period. No penalties, no collections, no awkward calls. For 6-month commitments, the full 6 months is billed upfront — that's how you get the discounted rate — but there are no auto-renewals that surprise you.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">What's included in the weekly report?<span class="faq-icon">+</span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">Each week you'll receive a simple summary covering: estimated impressions for the week based on routes driven, the locations hit (which grocery stores, streets, intersections), and any QR code scans or promo code uses if you opted into that. We use Google Timeline data to verify and log routes, and you can request access to verify it yourself.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Can I change my ad creative after I start?<span class="faq-icon">+</span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">Yes. For digital elements (QR codes, promo codes, landing pages), you can update your offer anytime with no charge. For physical vehicle wrap changes, we'll discuss options — minor updates can often be handled inexpensively, while full redesigns depend on the scope. 6-month plans include one creative refresh at month 3.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">How quickly can I get started after signing up?<span class="faq-icon">+</span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">Typically 5–10 business days from the time you submit your creative and make your first payment. This allows time to finalize the wrap materials (if needed), set up your QR code and tracking links, and confirm your zone routes. If your creative is ready and it's a digital billboard or mailer, turnaround can be faster.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Do you guarantee a minimum number of impressions?<span class="faq-icon">+</span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">We don't guarantee a specific impression number, because impressions are affected by route traffic conditions that vary day-to-day. What we do commit to is driving your zone's designated routes every active day, providing transparent weekly reporting so you can see exactly what activity occurred, and prorating any days where driving didn't happen due to vehicle maintenance or illness.</div></div>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top:40px;">
+      <p style="margin-bottom:20px;">Still have questions?</p>
+      <a href="contact.html" class="btn btn-primary reveal">Talk to Danyon directly <span class="btn-arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section class="cta-band">
+  <div class="container">
+    <span class="eyebrow reveal">No commitment required to start</span>
+    <h2 class="reveal">See your zone before you pay<br><em class="display-italic">for a single dollar.</em></h2>
+    <p class="reveal reveal-delay-1">Book a free 15-minute demo. We'll walk you through exactly which zones fit your business, show you the routes, and answer every question — no pressure, no sales script.</p>
+    <div class="cta-buttons reveal reveal-delay-2">
+      <a href="contact.html" class="btn btn-primary btn-lg">Book a Free Demo <span class="btn-arrow">→</span></a>
+      <a href="zones.html" class="btn btn-secondary btn-lg">View Available Zones</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <a href="index.html" class="nav-logo" style="margin-bottom:16px; display:inline-block;">DRIVERTISE<span class="text-yellow">.</span></a>
+      <p>Mobile advertising for Utah County businesses. We put your brand everywhere your customers already go.</p>
+      <div class="footer-contact" style="margin-top:20px;">
+        <a href="tel:+13852046561">(385) 204-6561</a>
+        <a href="mailto:hello@drivertiseusa.com">hello@drivertiseusa.com</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <span class="footer-col-title">Services</span>
+      <a href="services.html#car-wrap">Car Wrap Ads</a>
+      <a href="services.html#billboard">Electric Billboard</a>
+      <a href="services.html#direct-mail">Direct Mail Co-op</a>
+      <a href="pricing.html">View Pricing</a>
+    </div>
+    <div class="footer-col">
+      <span class="footer-col-title">Company</span>
+      <a href="about.html">About Drivertise</a>
+      <a href="zones.html">Available Zones</a>
+      <a href="faq.html">FAQ</a>
+      <a href="contact.html">Contact / Demo</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container footer-bottom-inner">
+      <p>© 2026 Drivertise USA. All rights reserved. Serving Utah County, Utah.</p>
+      <div class="footer-legal">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/roi-calculator.js"></script>
+</body>
+</html>
