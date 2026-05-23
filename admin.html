@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drivertise — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--ink:#0A0D12;--ink2:#111820;--amber:#C8973A;--amber-lt:#E8B84B;--muted:rgba(255,255,255,0.38);--border:rgba(255,255,255,0.07);--card:rgba(255,255,255,0.04);--green:#1E8C5C;--red:#B83020;--text:rgba(255,255,255,0.88);}
+body{background:var(--ink);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.6;}
+.top-nav{background:rgba(10,13,18,0.97);border-bottom:1px solid rgba(200,151,58,0.15);padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.logo{font-family:'Syne',sans-serif;font-size:19px;font-weight:800;color:white;text-decoration:none;}
+.logo span{color:var(--amber);}
+.admin-badge{background:rgba(200,151,58,0.15);border:1px solid rgba(200,151,58,0.3);color:var(--amber);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:20px;}
+.logout-btn{padding:8px 18px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'Syne',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.logout-btn:hover{border-color:rgba(200,151,58,0.4);color:var(--amber);}
+.layout{display:grid;grid-template-columns:210px 1fr;min-height:calc(100vh - 64px);}
+.sidebar{background:var(--ink2);border-right:1px solid var(--border);padding:24px 0;position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto;}
+.sidebar-label{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.2);padding:0 20px;margin-bottom:6px;margin-top:16px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:11px 20px;cursor:pointer;font-family:'Syne',sans-serif;font-size:12px;font-weight:600;color:var(--muted);transition:all 0.15s;border-left:2px solid transparent;text-decoration:none;}
+.nav-item:hover{color:white;background:rgba(255,255,255,0.03);}
+.nav-item.active{color:var(--amber);border-left-color:var(--amber);background:rgba(200,151,58,0.06);}
+.nav-badge-count{margin-left:auto;background:var(--red);color:white;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;min-width:20px;text-align:center;}
+.main{padding:32px 36px;}
+.page{display:none;}
+.page.active{display:block;}
+.page-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:white;margin-bottom:4px;}
+.page-sub{font-size:13px;color:var(--muted);font-weight:300;margin-bottom:28px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:24px;margin-bottom:18px;}
+.card-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:white;margin-bottom:16px;letter-spacing:0.5px;display:flex;align-items:center;justify-content:space-between;}
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;}
+.stat-mini{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;}
+.stat-mini-num{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--amber);}
+.stat-mini-label{font-size:11px;color:var(--muted);margin-top:2px;}
+.data-table{width:100%;border-collapse:collapse;}
+.data-table th{text-align:left;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:8px 14px;border-bottom:1px solid var(--border);}
+.data-table td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,0.04);font-size:13px;vertical-align:middle;}
+.data-table tr:hover td{background:rgba(255,255,255,0.02);}
+.data-table tr:last-child td{border-bottom:none;}
+.action-pill{font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;white-space:nowrap;letter-spacing:0.5px;}
+.pill-urgent{background:rgba(184,48,32,0.25);color:#FF7B6B;border:1px solid rgba(255,123,107,0.3);}
+.pill-text-now{background:rgba(200,151,58,0.2);color:#E8B84B;border:1px solid rgba(232,184,75,0.3);}
+.pill-waiting{background:rgba(100,100,150,0.2);color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.1);}
+.pill-confirmed{background:rgba(30,140,92,0.2);color:#4DE8A0;border:1px solid rgba(78,232,160,0.2);}
+.pill-ok{background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);border:1px solid rgba(255,255,255,0.07);}
+.pill-expired{background:rgba(184,48,32,0.3);color:#FF7B6B;border:1px solid rgba(255,123,107,0.4);}
+.zone-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:24px;}
+.zone-tile{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 14px;text-align:center;cursor:pointer;transition:all 0.2s;}
+.zone-tile:hover{background:rgba(255,255,255,0.07);}
+.zone-tile.available{border-color:rgba(30,140,92,0.4);background:rgba(30,140,92,0.08);}
+.zone-tile.taken{border-color:rgba(184,48,32,0.4);background:rgba(184,48,32,0.08);}
+.zone-letter{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;margin-bottom:4px;}
+.zone-letter.available{color:#4DE8A0;}
+.zone-letter.taken{color:#FF7B6B;}
+.zone-name{font-size:11px;color:var(--muted);margin-bottom:8px;}
+.zone-status{font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:0.5px;}
+.zone-price{font-family:'Syne',sans-serif;font-size:13px;color:var(--amber);margin-top:6px;}
+form .form-group{margin-bottom:14px;}
+label{display:block;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:7px;}
+input,select,textarea{width:100%;padding:11px 14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:white;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color 0.2s;}
+select option{background:#1B2B3A;}
+input::placeholder{color:rgba(255,255,255,0.2);}
+input:focus,select:focus{border-color:rgba(200,151,58,0.4);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.btn{padding:11px 22px;border-radius:11px;border:none;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.2s;}
+.btn-amber{background:var(--amber);color:var(--ink);}
+.btn-amber:hover{background:var(--amber-lt);}
+.btn-amber:disabled{opacity:0.5;cursor:not-allowed;}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border);}
+.btn-ghost:hover{border-color:rgba(200,151,58,0.3);color:var(--amber);}
+.btn-green{background:rgba(30,140,92,0.2);color:#4DE8A0;border:1px solid rgba(78,232,160,0.2);}
+.btn-green:hover{background:rgba(30,140,92,0.3);}
+.btn-red{background:rgba(184,48,32,0.2);color:#FF7B6B;border:1px solid rgba(255,123,107,0.2);}
+.btn-red:hover{background:rgba(184,48,32,0.3);}
+.msg{padding:11px 14px;border-radius:9px;font-size:13px;margin-bottom:14px;font-weight:500;display:none;}
+.msg.s{background:rgba(30,140,92,0.15);border:1px solid rgba(30,140,92,0.3);color:#4DE8A0;display:block;}
+.msg.e{background:rgba(184,48,32,0.15);border:1px solid rgba(184,48,32,0.3);color:#FF7B6B;display:block;}
+.loading{text-align:center;padding:32px;color:var(--muted);}
+@keyframes spin{to{transform:rotate(360deg);}}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(17,19,24,0.3);border-top-color:var(--ink);border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:6px;}
+.script-box{background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:14px 16px;font-family:'DM Mono',monospace;font-size:11px;color:rgba(200,151,58,0.8);line-height:1.8;white-space:pre-wrap;}
+
+/* LOCK */
+#lock{position:fixed;inset:0;background:var(--ink);z-index:999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;}
+#lock h2{font-family:'Syne',sans-serif;font-size:22px;color:white;font-weight:800;}
+#lock-pin{padding:14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;color:white;font-size:16px;text-align:center;width:200px;letter-spacing:4px;outline:none;}
+#lock-btn{padding:12px 28px;background:var(--amber);color:var(--ink);border:none;border-radius:12px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;}
+#lock-err{color:#FF7B6B;font-size:13px;display:none;margin-top:-8px;}
+</style>
+</head>
+<body>
+
+<div id="lock">
+  <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:white;">Driver<span style="color:#C8973A;">tise</span> Admin</div>
+  <p style="font-size:13px;color:rgba(255,255,255,0.3);">Enter your PIN</p>
+  <input type="password" id="lock-pin" placeholder="••••••" onkeydown="if(event.key==='Enter')checkPin()"/>
+  <button id="lock-btn" onclick="checkPin()">Unlock</button>
+  <div id="lock-err">Incorrect PIN.</div>
+</div>
+
+<div id="app" style="display:none;">
+<div class="top-nav">
+  <a href="index.html" class="logo">Driver<span>tise</span></a>
+  <div style="display:flex;align-items:center;gap:14px;">
+    <span class="admin-badge">Admin</span>
+    <button class="logout-btn" onclick="handleLogout()">Sign Out</button>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-label">Overview</div>
+    <div class="nav-item active" onclick="showPage('dashboard')">📊 Dashboard</div>
+    <div class="sidebar-label">Renewals</div>
+    <div class="nav-item" onclick="showPage('renewals')">🔔 Renewal Queue <span class="nav-badge-count" id="renewal-count">—</span></div>
+    <div class="sidebar-label">Zones</div>
+    <div class="nav-item" onclick="showPage('zones')">🚗 Zone Manager</div>
+    <div class="nav-item" onclick="showPage('waitlist')">⏳ Waitlist</div>
+    <div class="sidebar-label">Clients</div>
+    <div class="nav-item" onclick="showPage('clients')">👥 All Clients</div>
+    <div class="nav-item" onclick="showPage('add-sub')">➕ New Subscription</div>
+    <div class="nav-item" onclick="showPage('add-client')">👤 Add/Edit Client</div>
+    <a class="nav-item" onclick="showPage('leads')" id="nav-leads">
+      <span>📥</span> Leads
+      <span class="nav-badge-count" id="leads-badge" style="display:none;">0</span>
+    </a>
+    <div class="sidebar-label">Data</div>
+    <div class="nav-item" onclick="showPage('upload-route')">🗺️ Route Log</div>
+    <div class="nav-item" onclick="showPage('upload-photo')">📷 Proof Photos</div>
+    <div class="nav-item" onclick="showPage('upload-invoice')">📄 Invoice</div>
+    <a class="nav-item" onclick="showPage('route-maps')" id="nav-route-maps">
+      <span>🗺️</span> Route Maps
+    </a>
+    <div class="sidebar-label">Communications</div>
+    <div class="nav-item" onclick="showPage('email')">✉️ Client Email <span id="email-badge" class="nav-badge-count" style="display:none"></span></div>
+    <div class="nav-item" onclick="showPage('calendar')">📅 Calendar</div>
+  </div>
+
+  <div class="main">
+
+    <!-- DASHBOARD -->
+    <div id="page-dashboard" class="page active">
+      <div class="page-title">Dashboard</div>
+      <div class="page-sub">Good morning. Here's your business at a glance.</div>
+      <div class="stat-row" id="dash-stats">
+        <div class="stat-mini"><div class="stat-mini-num" id="ds-clients">—</div><div class="stat-mini-label">Active Clients</div></div>
+        <div class="stat-mini"><div class="stat-mini-num" id="ds-zones">—</div><div class="stat-mini-label">Zones Taken</div></div>
+        <div class="stat-mini"><div class="stat-mini-num" id="ds-mrr">—</div><div class="stat-mini-label">Monthly Revenue</div></div>
+        <div class="stat-mini"><div class="stat-mini-num" id="ds-renewals">—</div><div class="stat-mini-label">Renewals Due (10 days)</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Quick Actions</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <button class="btn btn-amber" onclick="showPage('renewals')">View Renewal Queue</button>
+          <button class="btn btn-ghost" onclick="releaseExpired()">Release Expired Zones</button>
+          <button class="btn btn-ghost" onclick="showPage('add-sub')">Add New Subscription</button>
+        </div>
+        <div id="release-msg" style="margin-top:12px;font-size:13px;color:#4DE8A0;display:none;"></div>
+      </div>
+    </div>
+
+    <!-- RENEWALS -->
+    <div id="page-renewals" class="page">
+      <div class="page-title">Renewal Queue</div>
+      <div class="page-sub">Your daily to-do list. Text clients manually using Google Voice for the ones flagged below.</div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-title">Text Templates</div>
+        <div style="margin-bottom:10px;">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:6px;letter-spacing:1px;text-transform:uppercase;">Day 20 — Renewal Reminder</div>
+          <div class="script-box">Hey [Name]! This is [Your Name] from Drivertise. Your Zone [X] ad renews in 10 days on [date]. Want to continue for another month? Just reply YES and I'll send the invoice. No reply = zone releases on day 30.</div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:6px;letter-spacing:1px;text-transform:uppercase;">When they say YES</div>
+          <div class="script-box">Perfect! Sending your invoice now. Thanks for sticking with Drivertise — your monthly report goes out by the 5th.</div>
+        </div>
+      </div>
+      <div id="renewals-table"><div class="loading">Loading renewal queue...</div></div>
+    </div>
+
+    <!-- ZONES -->
+    <div id="page-zones" class="page">
+      <div class="page-title">Zone Manager</div>
+      <div class="page-sub">Click any zone to toggle its status. Changes update the website instantly.</div>
+      <div id="zone-grid-wrap"><div class="loading">Loading zones...</div></div>
+      <div id="zone-msg" class="msg"></div>
+    </div>
+
+    <!-- WAITLIST -->
+    <div id="page-waitlist" class="page">
+      <div class="page-title">Waitlist</div>
+      <div class="page-sub">People waiting for taken zones. When a zone flips to available, text everyone in the queue.</div>
+      <div id="waitlist-table"><div class="loading">Loading waitlist...</div></div>
+    </div>
+
+    <!-- CLIENTS -->
+    <div id="page-clients" class="page">
+      <div class="page-title">All Clients</div>
+      <div class="page-sub">Active and pending advertisers with their subscription status.</div>
+      <div id="clients-table"><div class="loading">Loading...</div></div>
+    </div>
+
+    <!-- NEW SUBSCRIPTION -->
+    <div id="page-add-sub" class="page">
+      <div class="page-title">New Subscription</div>
+      <div class="page-sub">When a client signs and pays — create their subscription here to start the 30-day clock.</div>
+      <div class="msg" id="sub-msg"></div>
+      <div class="card">
+        <div class="form-row">
+          <div class="form-group"><label>Client</label><select id="sub-client"><option>Loading...</option></select></div>
+          <div class="form-group"><label>Zone</label><select id="sub-zone"><option>Loading...</option></select></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Package</label>
+            <select id="sub-pkg">
+              <option>Package 01 — Starter ($149)</option>
+              <option>Package 01 — Popular ($249)</option>
+              <option>Package 01 — Pro ($349)</option>
+              <option>Package 02 — 1 Zone ($260)</option>
+              <option>Package 02 — 2 Zones ($410)</option>
+              <option>Package 02 — Full Vehicle ($760)</option>
+              <option>Package 03 — Exclusive LED ($400)</option>
+              <option>Package 03 — Shared LED ($250)</option>
+              <option>Package 03 — Rotation ($175)</option>
+              <option>Package 04 — Standard Mailer ($500)</option>
+              <option>Package 04 — Premium Mailer ($700)</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Duration</label>
+            <select id="sub-dur">
+              <option value="monthly">Monthly (30 days)</option>
+              <option value="weekly">Weekly Trial (7 days)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Amount ($)</label><input type="number" id="sub-amount" placeholder="260"/></div>
+          <div class="form-group"><label>Start Date</label><input type="date" id="sub-start"/></div>
+        </div>
+        <div class="form-group"><label>Notes</label><input type="text" id="sub-notes" placeholder="e.g. Paid via Zelle, magnet installed"/></div>
+        <button class="btn btn-amber" id="sub-btn" onclick="createSubscription()">Create Subscription & Mark Zone Taken</button>
+      </div>
+    </div>
+
+    <!-- ADD CLIENT -->
+    <div id="page-add-client" class="page">
+      <div class="page-title">Add / Update Client Profile</div>
+      <div class="page-sub">Paste the client's Supabase UUID from Auth → Users after they sign up at login.html</div>
+      <div class="msg" id="client-msg"></div>
+      <div class="card">
+        <div class="form-row">
+          <div class="form-group"><label>Client UUID (from Supabase Auth)</label><input type="text" id="c-id" placeholder="paste uuid here"/></div>
+          <div class="form-group"><label>Business Name</label><input type="text" id="c-biz" placeholder="Acme HVAC"/></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Contact Name</label><input type="text" id="c-name"/></div>
+          <div class="form-group"><label>Email</label><input type="email" id="c-email"/></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Phone</label><input type="tel" id="c-phone" placeholder="(210) 000-0000"/></div>
+          <div class="form-group"><label>Status</label>
+            <select id="c-status"><option value="active">Active</option><option value="pending">Pending</option><option value="paused">Paused</option></select>
+          </div>
+        </div>
+        <button class="btn btn-amber" id="client-btn" onclick="upsertClient()">Save Client</button>
+      </div>
+    </div>
+
+    <!-- LEADS -->
+    <div class="page" id="page-leads">
+      <div class="page-title">Leads</div>
+      <div class="page-sub">Contact form submissions from the website</div>
+
+      <div class="stat-row" style="grid-template-columns:repeat(4,1fr);">
+        <div class="stat-mini">
+          <div class="stat-mini-num" id="leads-count-new">—</div>
+          <div class="stat-mini-label">New Leads</div>
+        </div>
+        <div class="stat-mini">
+          <div class="stat-mini-num" id="leads-count-contacted">—</div>
+          <div class="stat-mini-label">Contacted</div>
+        </div>
+        <div class="stat-mini">
+          <div class="stat-mini-num" id="leads-count-qualified">—</div>
+          <div class="stat-mini-label">Qualified</div>
+        </div>
+        <div class="stat-mini">
+          <div class="stat-mini-num" id="leads-count-closed">—</div>
+          <div class="stat-mini-label">Closed</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">All Leads</div>
+        <div id="leads-table-wrap">
+          <p style="color:var(--muted);">Loading leads...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROUTE LOG -->
+    <div id="page-upload-route" class="page">
+      <div class="page-title">Upload Route Log</div>
+      <div class="page-sub">Add monthly GPS coverage data for a client</div>
+      <div class="msg" id="route-msg"></div>
+      <div class="card">
+        <div class="form-row">
+          <div class="form-group"><label>Client</label><select id="route-client"></select></div>
+          <div class="form-group"><label>Month</label>
+            <select id="route-month">
+              <option value="1">January</option><option value="2">February</option><option value="3">March</option><option value="4">April</option><option value="5">May</option><option value="6">June</option><option value="7">July</option><option value="8">August</option><option value="9">September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Year</label><input type="number" id="route-year" value="2025"/></div>
+          <div class="form-group"><label>Homes Reached</label><input type="number" id="route-homes" placeholder="1320"/></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Zones Covered</label><input type="text" id="route-zones" placeholder="A, B, C"/></div>
+          <div class="form-group"><label>Miles Driven</label><input type="number" id="route-miles" placeholder="148"/></div>
+        </div>
+        <div class="form-group"><label>Neighborhoods</label><input type="text" id="route-hoods" placeholder="Alamo Ranch · Helotes · Leon Springs"/></div>
+        <div class="form-group"><label>Notes</label><textarea id="route-notes" rows="2"></textarea></div>
+        <button class="btn btn-amber" id="route-btn" onclick="uploadRoute()">Save Route Log</button>
+      </div>
+    </div>
+
+    <!-- PHOTOS -->
+    <div id="page-upload-photo" class="page">
+      <div class="page-title">Upload Proof Photos</div>
+      <div class="page-sub">Add a photo URL — upload to Google Drive or Imgur first, set to public, paste link here</div>
+      <div class="msg" id="photo-msg"></div>
+      <div class="card">
+        <div class="form-row">
+          <div class="form-group"><label>Client</label><select id="photo-client"></select></div>
+          <div class="form-group"><label>Zone</label><input type="text" id="photo-zone" placeholder="A"/></div>
+        </div>
+        <div class="form-group"><label>Photo URL</label><input type="url" id="photo-url" placeholder="https://..."/></div>
+        <div class="form-group"><label>Caption</label><input type="text" id="photo-caption" placeholder="Zone A · Alamo Ranch Pkwy · Tuesday delivery"/></div>
+        <div class="form-row">
+          <div class="form-group"><label>Month</label><select id="photo-month"><option value="1">January</option><option value="2">February</option><option value="3">March</option><option value="4">April</option><option value="5">May</option><option value="6">June</option><option value="7">July</option><option value="8">August</option><option value="9">September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option></select></div>
+          <div class="form-group"><label>Year</label><input type="number" id="photo-year" value="2025"/></div>
+        </div>
+        <button class="btn btn-amber" id="photo-btn" onclick="uploadPhoto()">Add Photo</button>
+      </div>
+    </div>
+
+    <!-- INVOICE -->
+    <div id="page-upload-invoice" class="page">
+      <div class="page-title">Create Invoice</div>
+      <div class="msg" id="inv-msg"></div>
+      <div class="card">
+        <div class="form-row">
+          <div class="form-group"><label>Client</label><select id="inv-client"></select></div>
+          <div class="form-group"><label>Amount ($)</label><input type="number" id="inv-amount" placeholder="249"/></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Period</label><input type="text" id="inv-period" placeholder="June 2025"/></div>
+          <div class="form-group"><label>Due Date</label><input type="date" id="inv-due"/></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Status</label><select id="inv-status"><option value="pending">Pending</option><option value="paid">Paid</option><option value="overdue">Overdue</option></select></div>
+          <div class="form-group"><label>Notes</label><input type="text" id="inv-notes" placeholder="Package 01 Popular"/></div>
+        </div>
+        <button class="btn btn-amber" id="inv-btn" onclick="uploadInvoice()">Create Invoice</button>
+      </div>
+    </div>
+
+    <!-- ROUTE MAPS -->
+    <div class="page" id="page-route-maps">
+      <div class="page-title">Route Maps</div>
+      <div class="page-sub">Upload daily Google Timeline screenshots for each client</div>
+
+      <div class="card">
+        <div class="card-title">Upload Route Screenshot</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+          <div class="form-group">
+            <label style="display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Client</label>
+            <select id="rm-client-select" onchange="loadClientRoutes()" style="width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-size:13px;">
+              <option value="">— Select Client —</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label style="display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Route Date</label>
+            <input type="date" id="rm-date" style="width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-size:13px;" />
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:16px;">
+          <label style="display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Screenshot</label>
+          <input type="file" id="rm-file" accept="image/*" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-size:13px;width:100%;cursor:pointer;" />
+        </div>
+        <div class="form-group" style="margin-bottom:20px;">
+          <label style="display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Notes (optional)</label>
+          <textarea id="rm-notes" rows="2" placeholder="Optional notes about this route..." style="width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-size:13px;resize:vertical;font-family:'DM Sans',sans-serif;"></textarea>
+        </div>
+        <button onclick="uploadRouteMap()" style="background:var(--amber);color:#0A0D12;border:none;padding:12px 28px;border-radius:8px;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+          Upload Route Map
+        </button>
+        <span id="rm-upload-msg" style="margin-left:16px;font-size:13px;color:var(--muted);"></span>
+      </div>
+
+      <div class="card" id="rm-preview-card" style="display:none;">
+        <div class="card-title">Recent Uploads — <span id="rm-preview-client-name">Client</span></div>
+        <div id="rm-preview-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;"></div>
+      </div>
+    </div>
+
+    <!-- EMAIL -->
+    <div id="page-email" class="page">
+      <div class="page-title">Client Email</div>
+      <div class="page-sub">Inbox snapshot from drivertiseusa@gmail.com — ask Claude to refresh anytime.</div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <div style="font-size:11px;color:var(--muted);letter-spacing:1px;">
+          LAST SYNCED &nbsp;·&nbsp; <span style="color:var(--amber);" id="email-sync-time">—</span>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <select id="email-filter" onchange="renderEmail()" style="width:auto;padding:7px 12px;font-size:12px;border-radius:8px;">
+            <option value="all">All Emails</option>
+            <option value="unread">Unread Only</option>
+            <option value="client">Client Only</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div id="email-list"></div>
+      </div>
+    </div>
+
+    <!-- CALENDAR -->
+    <div id="page-calendar" class="page">
+      <div class="page-title">Calendar</div>
+      <div class="page-sub">Upcoming meetings and events from drivertiseusa@gmail.com — ask Claude to refresh anytime.</div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <div style="font-size:11px;color:var(--muted);letter-spacing:1px;">
+          LAST SYNCED &nbsp;·&nbsp; <span style="color:var(--amber);" id="cal-sync-time">—</span>
+        </div>
+      </div>
+
+      <div id="cal-list"></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://dwwgavyzgogmhjaerevg.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3d2dhdnl6Z29nbWhqYWVyZXZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MDgwNjAsImV4cCI6MjA5MDk4NDA2MH0.4ulbzEw-AM2bIBXDyIgBMuIEjQDTOxGaHfaquG2sTaY';
+const ADMIN_PIN = '1234'; // CHANGE THIS
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// PIN
+function checkPin() {
+  if (document.getElementById('lock-pin').value === ADMIN_PIN) {
+    document.getElementById('lock').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    loadAll();
+  } else {
+    document.getElementById('lock-err').style.display = 'block';
+    document.getElementById('lock-pin').value = '';
+  }
+}
+document.getElementById('lock-pin').addEventListener('keydown', e => { if(e.key==='Enter') checkPin(); });
+
+let clients = [], zones = [];
+
+async function loadAll() {
+  await Promise.all([loadClients(), loadZones()]);
+  loadDashboardStats();
+  setDefaults();
+  loadLeads();
+  loadRouteMapClients();
+  renderEmail();
+  renderCalendar();
+}
+
+// ── LOAD DATA ──────────────────────────────
+async function loadClients() {
+  const { data } = await sb.from('profiles').select('*').order('created_at', { ascending: false });
+  clients = data || [];
+  populateClientDropdowns();
+}
+
+async function loadZones() {
+  const { data } = await sb.from('zones').select('*').order('id');
+  zones = data || [];
+}
+
+async function loadDashboardStats() {
+  const active = clients.filter(c => c.status === 'active');
+  const takenZones = zones.filter(z => z.status === 'taken');
+  const mrr = active.reduce((s, c) => s + (c.monthly_rate || 0), 0);
+
+  const { data: renewals } = await sb.from('renewal_dashboard').select('*')
+    .or('action_needed.eq.TEXT NOW — day 20 reminder,action_needed.eq.URGENT — expires soon');
+
+  document.getElementById('ds-clients').textContent = active.length;
+  document.getElementById('ds-zones').textContent = takenZones.length;
+  document.getElementById('ds-mrr').textContent = '$' + mrr.toLocaleString();
+  document.getElementById('ds-renewals').textContent = (renewals || []).length;
+  document.getElementById('renewal-count').textContent = (renewals || []).length || '';
+  if (!(renewals || []).length) document.getElementById('renewal-count').style.display = 'none';
+}
+
+function populateClientDropdowns() {
+  const opts = clients.map(c => `<option value="${c.id}">${c.business_name}</option>`).join('');
+  ['route-client','photo-client','inv-client','sub-client'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = opts || '<option>No clients yet</option>';
+  });
+}
+
+function setDefaults() {
+  const today = new Date().toISOString().split('T')[0];
+  const el = document.getElementById('sub-start');
+  if (el) el.value = today;
+  const due = document.getElementById('inv-due');
+  if (due) due.value = today;
+  const rmDate = document.getElementById('rm-date');
+  if (rmDate) rmDate.valueAsDate = new Date();
+}
+
+// ── PAGE NAV ────────────────────────────────
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  if (event && event.currentTarget) event.currentTarget.classList.add('active');
+
+  if (name === 'renewals') loadRenewals();
+  if (name === 'zones') renderZoneGrid();
+  if (name === 'waitlist') loadWaitlist();
+  if (name === 'clients') renderClientsTable();
+  if (name === 'add-sub') populateZoneDropdown();
+  if (name === 'leads') loadLeads();
+  if (name === 'route-maps') loadRouteMapClients();
+}
+
+// ── RENEWALS ───────────────────────────────
+async function loadRenewals() {
+  const el = document.getElementById('renewals-table');
+  const { data } = await sb.from('renewal_dashboard').select('*');
+  if (!data || !data.length) {
+    el.innerHTML = '<div class="card" style="text-align:center;padding:40px;color:var(--muted);">No active subscriptions yet. Create one using New Subscription.</div>';
+    return;
+  }
+
+  const pillClass = a => {
+    if (a.includes('EXPIRED')) return 'pill-expired';
+    if (a.includes('URGENT')) return 'pill-urgent';
+    if (a.includes('TEXT NOW')) return 'pill-text-now';
+    if (a.includes('WAITING')) return 'pill-waiting';
+    if (a.includes('CONFIRMED')) return 'pill-confirmed';
+    return 'pill-ok';
+  };
+
+  el.innerHTML = `<table class="data-table"><thead><tr>
+    <th>Business</th><th>Zone</th><th>Days Left</th><th>Phone</th><th>Action</th><th>Mark</th>
+  </tr></thead><tbody>` +
+  data.map(r => `<tr>
+    <td><strong>${r.business_name}</strong><br><span style="font-size:11px;color:var(--muted)">${r.package}</span></td>
+    <td>Zone ${r.zone_id} — ${r.zone_name}</td>
+    <td style="font-family:'Syne',sans-serif;font-size:18px;color:${r.days_remaining <= 3 ? '#FF7B6B' : r.days_remaining <= 10 ? '#E8B84B' : 'white'}">${r.days_remaining}d</td>
+    <td><a href="sms:${r.phone}" style="color:var(--amber);text-decoration:none;font-weight:600;">${r.phone || '—'}</a></td>
+    <td><span class="action-pill ${pillClass(r.action_needed)}">${r.action_needed}</span></td>
+    <td style="display:flex;gap:6px;flex-wrap:wrap;">
+      ${r.action_needed.includes('TEXT NOW') ? `<button class="btn btn-ghost" style="font-size:11px;padding:5px 10px;" onclick="markTextSent('${r.subscription_id}')">✓ Texted</button>` : ''}
+      ${r.action_needed.includes('CONFIRMED') || r.renewal_confirmed ? `<button class="btn btn-green" style="font-size:11px;padding:5px 10px;" onclick="renewSub('${r.subscription_id}')">Renew</button>` : ''}
+      ${r.action_needed.includes('WAITING') ? `<button class="btn btn-ghost" style="font-size:11px;padding:5px 10px;" onclick="markConfirmed('${r.subscription_id}')">Confirmed</button>` : ''}
+      ${r.action_needed.includes('EXPIRED') ? `<button class="btn btn-red" style="font-size:11px;padding:5px 10px;" onclick="expireSub('${r.subscription_id}','${r.zone_id}')">Release</button>` : ''}
+    </td>
+  </tr>`).join('') + '</tbody></table>';
+}
+
+async function markTextSent(id) {
+  await sb.from('subscriptions').update({ renewal_text_sent: true }).eq('id', id);
+  loadRenewals();
+}
+async function markConfirmed(id) {
+  await sb.from('subscriptions').update({ renewal_confirmed: true }).eq('id', id);
+  loadRenewals();
+}
+async function renewSub(id) {
+  await sb.rpc('renew_subscription', { sub_id: id });
+  showMsg('', '✓ Renewed for 30 days! Send the invoice now.', 's');
+  loadRenewals();
+  loadDashboardStats();
+}
+async function expireSub(id, zoneId) {
+  await sb.from('subscriptions').update({ status: 'expired' }).eq('id', id);
+  await sb.from('zones').update({ status: 'available', client_id: null }).eq('id', zoneId);
+  showMsg('', '✓ Zone ' + zoneId + ' released and marked available.', 's');
+  loadRenewals();
+  loadZones().then(renderZoneGrid);
+}
+async function releaseExpired() {
+  const { data } = await sb.rpc('release_expired_zones');
+  const el = document.getElementById('release-msg');
+  el.textContent = data || 'Done.';
+  el.style.display = 'block';
+  await loadZones();
+  loadDashboardStats();
+  setTimeout(() => el.style.display = 'none', 4000);
+}
+
+// ── ZONES ──────────────────────────────────
+function renderZoneGrid() {
+  const el = document.getElementById('zone-grid-wrap');
+  if (!zones.length) { el.innerHTML = '<div class="loading">Loading zones...</div>'; loadZones().then(renderZoneGrid); return; }
+  el.innerHTML = `<div class="zone-grid">` +
+  zones.map(z => `
+    <div class="zone-tile ${z.status}" onclick="toggleZone('${z.id}','${z.status}')">
+      <div class="zone-letter ${z.status}">${z.id}</div>
+      <div class="zone-name">${z.name}</div>
+      <div class="zone-status ${z.status === 'available' ? 'status-available' : 'status-taken'}" style="background:${z.status==='available'?'rgba(30,140,92,0.18)':'rgba(184,48,32,0.18)'};color:${z.status==='available'?'#4DE8A0':'#FF7B6B'};padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;">${z.status === 'available' ? 'Available' : 'Taken'}</div>
+      <div class="zone-price">$${z.price_monthly}/mo</div>
+    </div>`).join('') + `</div>
+  <p style="font-size:12px;color:var(--muted);">Click a zone to toggle its status. This updates the live website instantly.</p>`;
+}
+
+async function toggleZone(id, currentStatus) {
+  const newStatus = currentStatus === 'available' ? 'taken' : 'available';
+  const { error } = await sb.from('zones').update({ status: newStatus, updated_at: new Date().toISOString() }).eq('id', id);
+  if (!error) {
+    await loadZones();
+    renderZoneGrid();
+    document.getElementById('zone-msg').textContent = `✓ Zone ${id} is now ${newStatus}.`;
+    document.getElementById('zone-msg').className = 'msg s';
+    setTimeout(() => document.getElementById('zone-msg').className = 'msg', 3000);
+  }
+}
+
+function populateZoneDropdown() {
+  const el = document.getElementById('sub-zone');
+  if (!el) return;
+  el.innerHTML = zones.map(z => `<option value="${z.id}">Zone ${z.id} — ${z.name} ($${z.price_monthly}/mo)</option>`).join('');
+}
+
+// ── WAITLIST ───────────────────────────────
+async function loadWaitlist() {
+  const el = document.getElementById('waitlist-table');
+  const { data } = await sb.from('waitlist_dashboard').select('*');
+  if (!data || !data.length) {
+    el.innerHTML = '<div class="card" style="text-align:center;padding:40px;color:var(--muted);">No waitlist entries yet.</div>';
+    return;
+  }
+  el.innerHTML = `<table class="data-table"><thead><tr>
+    <th>Zone</th><th>Business</th><th>Phone</th><th>Email</th><th>Queue</th><th>Zone Status</th><th>Actions</th>
+  </tr></thead><tbody>` +
+  data.map(w => `<tr>
+    <td><strong>Zone ${w.zone_id}</strong><br><span style="font-size:11px;color:var(--muted)">${w.zone_name}</span></td>
+    <td>${w.business_name || '—'}</td>
+    <td><a href="sms:${w.phone}" style="color:var(--amber);text-decoration:none;">${w.phone || '—'}</a></td>
+    <td style="font-size:12px;color:var(--muted)">${w.email}</td>
+    <td style="font-family:'Syne',sans-serif;font-weight:700;color:var(--amber);">#${w.queue_position}</td>
+    <td><span style="font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:${w.zone_status==='available'?'rgba(30,140,92,0.18)':'rgba(184,48,32,0.18)'};color:${w.zone_status==='available'?'#4DE8A0':'#FF7B6B'}">${w.zone_status}</span></td>
+    <td style="display:flex;gap:6px;">
+      <button class="btn btn-ghost" style="font-size:11px;padding:5px 10px;" onclick="markNotified('${w.id}')">✓ Texted</button>
+      <button class="btn btn-ghost" style="font-size:11px;padding:5px 10px;" onclick="markConverted('${w.id}')">Signed Up</button>
+    </td>
+  </tr>`).join('') + '</tbody></table>';
+}
+
+async function markNotified(id) {
+  await sb.from('waitlist').update({ notified: true, notified_at: new Date().toISOString() }).eq('id', id);
+  loadWaitlist();
+}
+async function markConverted(id) {
+  await sb.from('waitlist').update({ converted: true }).eq('id', id);
+  loadWaitlist();
+}
+
+// ── CLIENTS TABLE ──────────────────────────
+function renderClientsTable() {
+  const el = document.getElementById('clients-table');
+  if (!clients.length) { el.innerHTML = '<div class="loading">No clients yet.</div>'; return; }
+  el.innerHTML = `<table class="data-table"><thead><tr>
+    <th>Business</th><th>Contact</th><th>Package</th><th>Zone</th><th>Rate</th><th>Status</th>
+  </tr></thead><tbody>` +
+  clients.map(c => `<tr>
+    <td><strong>${c.business_name}</strong></td>
+    <td style="font-size:12px;color:var(--muted)">${c.contact_name || '—'}<br>${c.phone || ''}</td>
+    <td style="font-size:12px">${c.package || '—'}</td>
+    <td style="font-family:'Syne',sans-serif;font-weight:700;color:var(--amber)">${c.zone || '—'}</td>
+    <td style="font-family:'Syne',sans-serif;font-size:16px">${c.monthly_rate ? '$' + c.monthly_rate : '—'}</td>
+    <td><span style="font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;background:${c.status==='active'?'rgba(30,140,92,0.18)':'rgba(200,151,58,0.15)'};color:${c.status==='active'?'#4DE8A0':'#E8B84B'}">${c.status || 'pending'}</span></td>
+  </tr>`).join('') + '</tbody></table>';
+}
+
+// ── CREATE SUBSCRIPTION ────────────────────
+async function createSubscription() {
+  const btn = document.getElementById('sub-btn');
+  const clientId = document.getElementById('sub-client').value;
+  const zoneId = document.getElementById('sub-zone').value;
+  const pkg = document.getElementById('sub-pkg').value;
+  const dur = document.getElementById('sub-dur').value;
+  const amount = parseFloat(document.getElementById('sub-amount').value);
+  const startDate = document.getElementById('sub-start').value;
+  const notes = document.getElementById('sub-notes').value;
+
+  if (!clientId || !startDate || !amount) {
+    showMsg('sub-msg', 'Please fill in client, amount, and start date.', 'e'); return;
+  }
+
+  const days = dur === 'weekly' ? 7 : 30;
+  const endDate = new Date(new Date(startDate).getTime() + days * 86400000).toISOString().split('T')[0];
+
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>Creating...';
+
+  const { error: subErr } = await sb.from('subscriptions').insert({
+    client_id: clientId, zone_id: zoneId, package: pkg,
+    duration: dur, amount, start_date: startDate, end_date: endDate,
+    status: 'active', notes
+  });
+
+  if (!subErr && zoneId) {
+    await sb.from('zones').update({ status: 'taken', client_id: clientId }).eq('id', zoneId);
+    await sb.from('profiles').update({ zone: 'Zone ' + zoneId, package: pkg, monthly_rate: amount }).eq('id', clientId);
+  }
+
+  btn.disabled = false; btn.innerHTML = 'Create Subscription & Mark Zone Taken';
+
+  if (subErr) { showMsg('sub-msg', subErr.message, 'e'); }
+  else {
+    showMsg('sub-msg', `✓ Subscription created! Zone ${zoneId} is now marked taken. End date: ${endDate}.`, 's');
+    await loadZones();
+    await loadClients();
+    loadDashboardStats();
+  }
+}
+
+// ── UPSERT CLIENT ──────────────────────────
+async function upsertClient() {
+  const btn = document.getElementById('client-btn');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>Saving...';
+  const { error } = await sb.from('profiles').upsert({
+    id: document.getElementById('c-id').value,
+    business_name: document.getElementById('c-biz').value,
+    contact_name: document.getElementById('c-name').value,
+    email: document.getElementById('c-email').value,
+    phone: document.getElementById('c-phone').value,
+    status: document.getElementById('c-status').value,
+  });
+  btn.disabled = false; btn.innerHTML = 'Save Client';
+  if (error) showMsg('client-msg', error.message, 'e');
+  else { showMsg('client-msg', '✓ Client saved!', 's'); await loadClients(); }
+}
+
+// ── UPLOAD ROUTE ───────────────────────────
+async function uploadRoute() {
+  const btn = document.getElementById('route-btn');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>Saving...';
+  const { error } = await sb.from('routes').insert({
+    client_id: document.getElementById('route-client').value,
+    month: parseInt(document.getElementById('route-month').value),
+    year: parseInt(document.getElementById('route-year').value),
+    homes_reached: parseInt(document.getElementById('route-homes').value) || 0,
+    zones_covered: document.getElementById('route-zones').value,
+    miles_driven: parseFloat(document.getElementById('route-miles').value) || null,
+    neighborhoods: document.getElementById('route-hoods').value,
+    notes: document.getElementById('route-notes').value,
+  });
+  btn.disabled = false; btn.innerHTML = 'Save Route Log';
+  showMsg('route-msg', error ? error.message : '✓ Route saved!', error ? 'e' : 's');
+}
+
+// ── UPLOAD PHOTO ───────────────────────────
+async function uploadPhoto() {
+  const btn = document.getElementById('photo-btn');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>Saving...';
+  const { error } = await sb.from('proof_photos').insert({
+    client_id: document.getElementById('photo-client').value,
+    photo_url: document.getElementById('photo-url').value,
+    caption: document.getElementById('photo-caption').value,
+    zone: document.getElementById('photo-zone').value,
+    month: parseInt(document.getElementById('photo-month').value),
+    year: parseInt(document.getElementById('photo-year').value),
+    taken_at: new Date().toISOString(),
+  });
+  btn.disabled = false; btn.innerHTML = 'Add Photo';
+  showMsg('photo-msg', error ? error.message : '✓ Photo added!', error ? 'e' : 's');
+}
+
+// ── UPLOAD INVOICE ─────────────────────────
+async function uploadInvoice() {
+  const btn = document.getElementById('inv-btn');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>Saving...';
+  const { error } = await sb.from('invoices').insert({
+    client_id: document.getElementById('inv-client').value,
+    amount: parseFloat(document.getElementById('inv-amount').value),
+    period: document.getElementById('inv-period').value,
+    status: document.getElementById('inv-status').value,
+    due_date: document.getElementById('inv-due').value || null,
+    notes: document.getElementById('inv-notes').value,
+  });
+  btn.disabled = false; btn.innerHTML = 'Create Invoice';
+  showMsg('inv-msg', error ? error.message : '✓ Invoice created!', error ? 'e' : 's');
+}
+
+function showMsg(id, text, type) {
+  let el = id ? document.getElementById(id) : null;
+  if (!el) return;
+  el.textContent = text; el.className = 'msg ' + type;
+  setTimeout(() => el.className = 'msg', 4000);
+}
+
+async function handleLogout() { await sb.auth.signOut(); window.location.href = 'login.html'; }
+
+// ── LEADS ──────────────────────────────────
+async function loadLeads() {
+  const wrap = document.getElementById('leads-table-wrap');
+  if (!wrap) return;
+
+  const { data, error } = await sb.from('leads')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error || !data) {
+    wrap.innerHTML = '<p style="color:var(--muted);">Error loading leads.</p>';
+    return;
+  }
+
+  // Update stat counts
+  const counts = { new: 0, contacted: 0, qualified: 0, closed: 0 };
+  data.forEach(l => { if (counts[l.status] !== undefined) counts[l.status]++; });
+  document.getElementById('leads-count-new').textContent = counts.new;
+  document.getElementById('leads-count-contacted').textContent = counts.contacted;
+  document.getElementById('leads-count-qualified').textContent = counts.qualified;
+  document.getElementById('leads-count-closed').textContent = counts.closed;
+
+  // Update badge
+  const badge = document.getElementById('leads-badge');
+  if (badge) {
+    badge.textContent = counts.new;
+    badge.style.display = counts.new > 0 ? 'inline-block' : 'none';
+  }
+
+  if (!data.length) {
+    wrap.innerHTML = '<p style="color:var(--muted);padding:24px 0;">No leads yet. When visitors submit the contact form, they\'ll appear here.</p>';
+    return;
+  }
+
+  wrap.innerHTML = `
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Name</th>
+          <th>Business</th>
+          <th>City</th>
+          <th>Phone</th>
+          <th>Email</th>
+          <th>Zone Interest</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${data.map(lead => `
+          <tr>
+            <td style="white-space:nowrap;">${new Date(lead.created_at).toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'})}</td>
+            <td>${lead.name || '—'}</td>
+            <td>${lead.business_name || '—'}</td>
+            <td>${lead.city || '—'}</td>
+            <td>${lead.phone ? `<a href="tel:${lead.phone}" style="color:var(--amber);">${lead.phone}</a>` : '—'}</td>
+            <td>${lead.email ? `<a href="mailto:${lead.email}" style="color:var(--amber);">${lead.email}</a>` : '—'}</td>
+            <td>${lead.zone_interest || '—'}</td>
+            <td>
+              <select onchange="updateLeadStatus('${lead.id}', this.value)" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:4px 8px;border-radius:6px;font-size:12px;cursor:pointer;">
+                <option value="new" ${lead.status === 'new' ? 'selected' : ''}>New</option>
+                <option value="contacted" ${lead.status === 'contacted' ? 'selected' : ''}>Contacted</option>
+                <option value="qualified" ${lead.status === 'qualified' ? 'selected' : ''}>Qualified</option>
+                <option value="closed" ${lead.status === 'closed' ? 'selected' : ''}>Closed</option>
+              </select>
+            </td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+async function updateLeadStatus(id, status) {
+  const { error } = await sb.from('leads').update({ status }).eq('id', id);
+  if (error) alert('Failed to update status: ' + error.message);
+}
+
+// ── ROUTE MAPS ─────────────────────────────
+// Alias for spec compatibility
+async function loadClientDropdown() { return loadRouteMapClients(); }
+
+async function loadRouteMapClients() {
+  const { data } = await sb.from('profiles').select('id, business_name, name').order('business_name');
+  const sel = document.getElementById('rm-client-select');
+  if (!sel || !data) return;
+  // Clear existing options (except the placeholder)
+  while (sel.options.length > 1) sel.remove(1);
+  data.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c.id;
+    opt.textContent = c.business_name || c.name || c.id;
+    sel.appendChild(opt);
+  });
+}
+
+async function loadClientRoutes() {
+  const clientId = document.getElementById('rm-client-select').value;
+  if (!clientId) return;
+  const previewCard = document.getElementById('rm-preview-card');
+  const grid = document.getElementById('rm-preview-grid');
+  if (!previewCard || !grid) return;
+
+  const { data } = await sb.from('route_maps')
+    .select('*')
+    .eq('client_id', clientId)
+    .order('route_date', { ascending: false })
+    .limit(8);
+
+  const clientName = document.getElementById('rm-client-select').selectedOptions[0]?.text || '';
+  document.getElementById('rm-preview-client-name').textContent = clientName;
+
+  if (!data || !data.length) {
+    previewCard.style.display = 'none';
+    return;
+  }
+
+  previewCard.style.display = 'block';
+  grid.innerHTML = data.map(r => `
+    <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--card);">
+      <a href="${r.image_url}" target="_blank">
+        <img src="${r.image_url}" alt="Route ${r.route_date}" style="width:100%;height:140px;object-fit:cover;display:block;" />
+      </a>
+      <div style="padding:8px 10px;">
+        <div style="font-size:11px;font-weight:700;color:var(--amber);">${r.route_date}</div>
+        ${r.notes ? `<div style="font-size:11px;color:var(--muted);margin-top:2px;">${r.notes}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+async function uploadRouteMap() {
+  const clientId = document.getElementById('rm-client-select').value;
+  const routeDate = document.getElementById('rm-date').value;
+  const fileInput = document.getElementById('rm-file');
+  const notes = document.getElementById('rm-notes').value;
+  const msg = document.getElementById('rm-upload-msg');
+
+  if (!clientId || !routeDate || !fileInput.files[0]) {
+    alert('Please select a client, date, and screenshot file.');
+    return;
+  }
+
+  const file = fileInput.files[0];
+  const ext = file.name.split('.').pop();
+  const path = `${clientId}/${routeDate}-${Date.now()}.${ext}`;
+
+  msg.textContent = 'Uploading...';
+
+  const { error: uploadErr } = await sb.storage.from('route-maps').upload(path, file, { upsert: false });
+  if (uploadErr) {
+    msg.textContent = 'Upload failed: ' + uploadErr.message;
+    return;
+  }
+
+  const { data: urlData } = sb.storage.from('route-maps').getPublicUrl(path);
+  const imageUrl = urlData.publicUrl;
+
+  const { error: insertErr } = await sb.from('route_maps').insert({
+    client_id: clientId,
+    route_date: routeDate,
+    image_url: imageUrl,
+    notes: notes || null
+  });
+
+  if (insertErr) {
+    msg.textContent = 'DB insert failed: ' + insertErr.message;
+    return;
+  }
+
+  msg.textContent = '✓ Uploaded successfully!';
+  fileInput.value = '';
+  document.getElementById('rm-notes').value = '';
+  setTimeout(() => { msg.textContent = ''; }, 3000);
+  loadClientRoutes();
+}
+
+// ── GMAIL & CALENDAR SNAPSHOT ───────────────
+// Data fetched by Claude via MCP. Ask Claude to refresh any time.
+
+const emailSnapshot = {
+  refreshed: "May 22, 2026 · 11:40 AM",
+  threads: [
+    {
+      id: "19e5050c86bcfd27",
+      subject: "Security alert — New sign-in on Windows",
+      sender: "Google",
+      senderEmail: "no-reply@accounts.google.com",
+      date: "May 22 · 11:32 AM",
+      snippet: "A new sign-in to your Google Account on a Windows device was detected.",
+      unread: true,
+      tag: "system"
+    },
+    {
+      id: "19e5050e78f8be3e",
+      subject: "Security alert — Claude for Gmail access granted",
+      sender: "Google",
+      senderEmail: "no-reply@accounts.google.com",
+      date: "May 22 · 11:32 AM",
+      snippet: "You allowed Claude for Gmail access to some of your Google Account data.",
+      unread: true,
+      tag: "system"
+    },
+    {
+      id: "19e50583a923efa9",
+      subject: "Security alert — Claude for Google Calendar access granted",
+      sender: "Google",
+      senderEmail: "no-reply@accounts.google.com",
+      date: "May 22 · 11:40 AM",
+      snippet: "You allowed Claude for Google Calendar access to some of your Google Account data.",
+      unread: true,
+      tag: "system"
+    }
+    // Instagram notification emails omitted (social/noise)
+    // Client emails will appear here as they come in
+  ]
+};
+
+const calendarSnapshot = {
+  refreshed: "May 22, 2026 · 11:40 AM",
+  events: []
+  // No events yet — add client meetings in Google Calendar and ask Claude to refresh
+};
+
+function renderEmail() {
+  const filter = document.getElementById('email-filter').value;
+  const el = document.getElementById('email-list');
+  document.getElementById('email-sync-time').textContent = emailSnapshot.refreshed;
+
+  let threads = emailSnapshot.threads;
+  if (filter === 'unread') threads = threads.filter(t => t.unread);
+  if (filter === 'client') threads = threads.filter(t => t.tag === 'client');
+
+  const unreadCount = emailSnapshot.threads.filter(t => t.unread && t.tag === 'client').length;
+  const badge = document.getElementById('email-badge');
+  if (unreadCount > 0) { badge.textContent = unreadCount; badge.style.display = 'inline-block'; }
+  else { badge.style.display = 'none'; }
+
+  if (!threads.length) {
+    el.innerHTML = `<div style="text-align:center;padding:48px;color:var(--muted);">
+      <div style="font-size:28px;margin-bottom:12px;">✉️</div>
+      <div style="font-family:'Syne',sans-serif;font-size:14px;color:white;margin-bottom:6px;">No client emails yet</div>
+      <div style="font-size:12px;">Client messages will appear here as they come in.<br>Ask Claude to refresh this tab at any time.</div>
+    </div>`;
+    return;
+  }
+
+  const tagStyle = tag => {
+    if (tag === 'client')  return 'background:rgba(200,151,58,0.15);color:#E8B84B;border:1px solid rgba(232,184,75,0.3);';
+    if (tag === 'system')  return 'background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);border:1px solid rgba(255,255,255,0.08);';
+    if (tag === 'inquiry') return 'background:rgba(30,140,92,0.15);color:#4DE8A0;border:1px solid rgba(78,232,160,0.2);';
+    return '';
+  };
+
+  el.innerHTML = threads.map((t, i) => `
+    <div style="display:grid;grid-template-columns:auto 1fr auto;align-items:start;gap:14px;padding:14px 20px;border-bottom:${i < threads.length-1 ? '1px solid rgba(255,255,255,0.04)' : 'none'};${t.unread ? '' : 'opacity:0.65;'}">
+      <div style="width:7px;height:7px;border-radius:50%;background:${t.unread ? '#E8B84B' : 'transparent'};border:1px solid ${t.unread ? '#E8B84B' : 'rgba(255,255,255,0.15)'};margin-top:5px;flex-shrink:0;"></div>
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;">
+          <span style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:white;">${t.sender}</span>
+          <span style="font-size:9px;font-weight:700;letter-spacing:1px;padding:2px 7px;border-radius:10px;${tagStyle(t.tag)}">${t.tag.toUpperCase()}</span>
+        </div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.75);margin-bottom:3px;">${t.subject}</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.4;">${t.snippet}</div>
+      </div>
+      <div style="font-size:11px;color:var(--muted);white-space:nowrap;padding-top:2px;">${t.date}</div>
+    </div>
+  `).join('');
+}
+
+function renderCalendar() {
+  const el = document.getElementById('cal-list');
+  document.getElementById('cal-sync-time').textContent = calendarSnapshot.refreshed;
+
+  if (!calendarSnapshot.events.length) {
+    el.innerHTML = `<div class="card" style="text-align:center;padding:48px;">
+      <div style="font-size:28px;margin-bottom:12px;">📅</div>
+      <div style="font-family:'Syne',sans-serif;font-size:14px;color:white;margin-bottom:6px;">No upcoming events</div>
+      <div style="font-size:12px;color:var(--muted);">Add client meetings in Google Calendar and ask Claude to refresh.<br>Client calls, site visits, and follow-ups will appear here.</div>
+    </div>`;
+    return;
+  }
+
+  // Group events by date
+  const byDate = {};
+  calendarSnapshot.events.forEach(e => {
+    if (!byDate[e.dateLabel]) byDate[e.dateLabel] = [];
+    byDate[e.dateLabel].push(e);
+  });
+
+  el.innerHTML = Object.entries(byDate).map(([date, events]) => `
+    <div style="margin-bottom:18px;">
+      <div style="font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">${date}</div>
+      ${events.map(e => `
+        <div class="card" style="margin-bottom:10px;padding:16px 20px;display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;">
+          <div style="text-align:center;background:rgba(200,151,58,0.12);border:1px solid rgba(200,151,58,0.2);border-radius:10px;padding:8px 12px;min-width:52px;">
+            <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--amber);line-height:1;">${e.timeStart}</div>
+            <div style="font-size:9px;color:var(--muted);margin-top:2px;">${e.timeEnd}</div>
+          </div>
+          <div>
+            <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:white;margin-bottom:3px;">${e.title}</div>
+            ${e.description ? `<div style="font-size:12px;color:var(--muted);">${e.description}</div>` : ''}
+            ${e.attendees ? `<div style="font-size:11px;color:var(--amber);margin-top:4px;">👥 ${e.attendees}</div>` : ''}
+          </div>
+          <span style="font-size:10px;font-weight:700;letter-spacing:1px;padding:4px 10px;border-radius:20px;background:rgba(30,140,92,0.15);color:#4DE8A0;border:1px solid rgba(78,232,160,0.2);">${e.type || 'MEETING'}</span>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Client Portal — Drivertise</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: #0A0D12;
+      color: #F7F5F1;
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    .portal-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10,13,18,0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 0 32px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 20px;
+      color: #F7F5F1;
+      letter-spacing: -0.3px;
+      flex-shrink: 0;
+    }
+    .nav-logo span { color: #C8973A; }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    #nav-user {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      font-family: 'DM Sans', sans-serif;
+      max-width: 220px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .btn-signout {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.6);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 7px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      flex-shrink: 0;
+    }
+    .btn-signout:hover {
+      background: rgba(255,255,255,0.1);
+      color: #F7F5F1;
+    }
+
+    /* ── LOADING ── */
+    #loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 64px);
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid rgba(200,151,58,0.15);
+      border-top-color: #C8973A;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── MAIN CONTENT ── */
+    #portal-content {
+      display: none;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 48px 32px 80px;
+    }
+
+    /* ── WELCOME ── */
+    .welcome-block {
+      margin-bottom: 40px;
+    }
+
+    .welcome-block h1 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 34px;
+      letter-spacing: -0.5px;
+      color: #F7F5F1;
+      line-height: 1.15;
+    }
+
+    .welcome-block h1 span {
+      color: #C8973A;
+    }
+
+    .welcome-block p {
+      color: rgba(255,255,255,0.45);
+      font-size: 14px;
+      margin-top: 8px;
+    }
+
+    /* ── SECTION LABELS ── */
+    .section-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #C8973A;
+      margin-bottom: 16px;
+    }
+
+    /* ── ZONE CARD ── */
+    .zone-card {
+      background: rgba(200,151,58,0.05);
+      border: 1px solid rgba(200,151,58,0.25);
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 48px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .zone-card::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(200,151,58,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .zone-field label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .zone-field .zone-value {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 17px;
+      color: #F7F5F1;
+    }
+
+    .zone-badge {
+      display: inline-block;
+      background: rgba(77,232,160,0.12);
+      color: #4DE8A0;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+
+    /* ── SECTION WRAPPER ── */
+    .section {
+      margin-bottom: 56px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      color: #F7F5F1;
+    }
+
+    .section-sub {
+      color: rgba(255,255,255,0.4);
+      font-size: 13px;
+      margin-bottom: 24px;
+    }
+
+    /* ── ROUTE GRID ── */
+    .routes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .routes-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .routes-grid { grid-template-columns: 1fr; }
+    }
+
+    .route-card {
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.04);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .route-card:hover {
+      border-color: rgba(200,151,58,0.4);
+      transform: translateY(-2px);
+    }
+    .route-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      display: block;
+    }
+    .route-card-date {
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #C8973A;
+      font-family: 'Syne', sans-serif;
+    }
+    .route-card-notes {
+      padding: 0 12px 8px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.45);
+    }
+
+    /* ── INVOICE TABLE ── */
+    .invoice-table-wrap {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead tr {
+      background: rgba(255,255,255,0.03);
+    }
+
+    th {
+      padding: 13px 16px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 14px 16px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.75);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    tbody tr:last-child td { border-bottom: none; }
+
+    tbody tr:hover td {
+      background: rgba(255,255,255,0.02);
+    }
+
+    .invoice-status {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .invoice-status.paid {
+      background: rgba(77,232,160,0.15);
+      color: #4DE8A0;
+    }
+    .invoice-status.unpaid {
+      background: rgba(200,151,58,0.15);
+      color: #C8973A;
+    }
+
+    /* ── QUICK LINKS ── */
+    .quick-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .quick-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 10px;
+      padding: 13px 20px;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: border-color 0.2s, background 0.2s, color 0.2s;
+    }
+    .quick-link:hover {
+      border-color: rgba(200,151,58,0.35);
+      background: rgba(200,151,58,0.06);
+      color: #F7F5F1;
+    }
+    .quick-link-icon {
+      font-size: 16px;
+      opacity: 0.7;
+    }
+
+    /* ── LIGHTBOX ── */
+    #lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 24px;
+    }
+    #lightbox img {
+      max-width: 90vw;
+      max-height: 80vh;
+      border-radius: 12px;
+      object-fit: contain;
+    }
+    #lightbox-caption {
+      color: rgba(255,255,255,0.65);
+      margin-top: 16px;
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+    }
+    .lightbox-close {
+      position: fixed;
+      top: 24px;
+      right: 32px;
+      font-size: 32px;
+      color: rgba(255,255,255,0.6);
+      cursor: pointer;
+      line-height: 1;
+      background: none;
+      border: none;
+      font-family: sans-serif;
+    }
+    .lightbox-close:hover { color: white; }
+    .lightbox-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .portal-nav { padding: 0 20px; }
+      #portal-content { padding: 32px 20px 60px; }
+      .welcome-block h1 { font-size: 26px; }
+      .zone-card { padding: 22px 20px; }
+      #nav-user { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOADING STATE -->
+  <div id="loading">
+    <div class="spinner"></div>
+    <p style="color:rgba(255,255,255,0.45);font-family:'DM Sans',sans-serif;font-size:14px;">Loading your portal...</p>
+  </div>
+
+  <!-- PORTAL CONTENT -->
+  <div id="portal-content">
+
+    <!-- NAV -->
+    <nav class="portal-nav">
+      <div class="nav-logo">DRIVERTISE<span>.</span></div>
+      <div class="nav-right">
+        <span id="nav-user"></span>
+        <button class="btn-signout" onclick="signOut()">Sign Out</button>
+      </div>
+    </nav>
+
+    <!-- MAIN -->
+    <main id="portal-main" style="max-width:1100px;margin:0 auto;padding:48px 32px 80px;">
+
+      <!-- WELCOME -->
+      <div class="welcome-block">
+        <h1>Welcome back, <span id="client-name">—</span></h1>
+        <p>Here's a live look at your Drivertise campaign.</p>
+      </div>
+
+      <!-- ACTIVE ZONE CARD -->
+      <div class="section-label">Active Campaign</div>
+      <div class="zone-card">
+        <div class="zone-field">
+          <label>Zone</label>
+          <div class="zone-value"><span id="zone-name">—</span> <span class="zone-badge">Active</span></div>
+        </div>
+        <div class="zone-field">
+          <label>Plan</label>
+          <div class="zone-value"><span id="zone-plan">—</span></div>
+        </div>
+        <div class="zone-field">
+          <label>Next Renewal</label>
+          <div class="zone-value"><span id="zone-renewal">—</span></div>
+        </div>
+      </div>
+
+      <!-- ROUTE MAPS -->
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">Route Reports</h2>
+          <span style="color:rgba(255,255,255,0.35);font-size:14px;">(<span id="routes-count">0</span> total)</span>
+        </div>
+        <p class="section-sub">Click any screenshot to view full size.</p>
+        <div class="routes-grid" id="routes-grid">
+          <!-- populated by JS -->
+        </div>
+      </div>
+
+      <!-- INVOICES -->
+      <div class="section">
+        <h2 class="section-title" style="margin-bottom:6px;">Invoices</h2>
+        <p class="section-sub">Your billing history.</p>
+        <div class="invoice-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="invoices-tbody">
+              <!-- populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- QUICK LINKS -->
+      <div class="section">
+        <h2 class="section-title" style="margin-bottom:20px;">Quick Links</h2>
+        <div class="quick-links">
+          <a href="zones.html" class="quick-link">
+            <span class="quick-link-icon">🗺</span> View Mailer Zones
+          </a>
+          <a href="https://calendly.com/drivertiseusa" target="_blank" rel="noopener" class="quick-link">
+            <span class="quick-link-icon">📅</span> Book a Call with Danyon
+          </a>
+          <a href="contact.html" class="quick-link">
+            <span class="quick-link-icon">✉</span> Contact Support
+          </a>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div id="lightbox" role="dialog" aria-modal="true">
+    <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close">&times;</button>
+    <div class="lightbox-overlay" onclick="closeLightbox()"></div>
+    <img id="lightbox-img" src="" alt="Route map full size" />
+    <p id="lightbox-caption"></p>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://dwwgavyzgogmhjaerevg.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3d2dhdnl6Z29nbWhqYWVyZXZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MDgwNjAsImV4cCI6MjA5MDk4NDA2MH0.4ulbzEw-AM2bIBXDyIgBMuIEjQDTOxGaHfaquG2sTaY';
+    const { createClient } = supabase;
+    const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const { data: { session } } = await sb.auth.getSession();
+      if (!session) {
+        window.location.href = 'client-login.html';
+        return;
+      }
+      loadPortal(session.user);
+    });
+
+    async function loadPortal(user) {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('portal-content').style.display = 'block';
+
+      // Get profile
+      const { data: profile } = await sb
+        .from('profiles')
+        .select('*, subscriptions(*)')
+        .eq('user_id', user.id)
+        .single();
+
+      if (profile) {
+        document.getElementById('client-name').textContent = profile.business_name || profile.name || user.email;
+        document.getElementById('nav-user').textContent = profile.business_name || user.email;
+
+        // Active zone card
+        if (profile.subscriptions && profile.subscriptions.length) {
+          const sub = profile.subscriptions[0];
+          document.getElementById('zone-name').textContent = sub.zone_name || 'Active Zone';
+          document.getElementById('zone-plan').textContent = sub.plan_tier || 'Standard';
+          document.getElementById('zone-renewal').textContent = sub.next_renewal ?
+            new Date(sub.next_renewal).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '—';
+        }
+      }
+
+      // Load route maps (show all, newest first)
+      const { data: routes } = await sb
+        .from('route_maps')
+        .select('*')
+        .eq('client_id', profile?.id)
+        .order('route_date', { ascending: false });
+
+      renderRoutes(routes || []);
+
+      // Load invoices
+      const { data: invoices } = await sb
+        .from('invoices')
+        .select('*')
+        .eq('client_id', profile?.id)
+        .order('created_at', { ascending: false })
+        .limit(12);
+
+      renderInvoices(invoices || []);
+    }
+
+    function renderRoutes(routes) {
+      const grid = document.getElementById('routes-grid');
+      const count = document.getElementById('routes-count');
+      if (count) count.textContent = routes.length;
+
+      if (!routes.length) {
+        grid.innerHTML = '<p style="color:rgba(255,255,255,0.45);padding:24px 0;">No route maps uploaded yet. Check back after your first week!</p>';
+        return;
+      }
+
+      grid.innerHTML = routes.map((r) => `
+        <div class="route-card" onclick="openLightbox('${r.image_url}', '${r.route_date}')">
+          <img src="${r.image_url}" alt="Route ${r.route_date}" loading="lazy" />
+          <div class="route-card-date">${new Date(r.route_date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
+          ${r.notes ? `<div class="route-card-notes">${r.notes}</div>` : ''}
+        </div>
+      `).join('');
+    }
+
+    function renderInvoices(invoices) {
+      const tbody = document.getElementById('invoices-tbody');
+      if (!invoices.length) {
+        tbody.innerHTML = '<tr><td colspan="4" style="color:rgba(255,255,255,0.45);padding:24px 16px;">No invoices yet.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = invoices.map(inv => `
+        <tr>
+          <td>${inv.created_at ? new Date(inv.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'}</td>
+          <td>${inv.description || 'Monthly Service'}</td>
+          <td>$${(inv.amount || 0).toFixed(2)}</td>
+          <td><span class="invoice-status ${inv.paid ? 'paid' : 'unpaid'}">${inv.paid ? 'Paid' : 'Due'}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    function openLightbox(url, date) {
+      const lb = document.getElementById('lightbox');
+      const img = document.getElementById('lightbox-img');
+      const caption = document.getElementById('lightbox-caption');
+      img.src = url;
+      caption.textContent = new Date(date + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+      lb.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').style.display = 'none';
+      document.body.style.overflow = '';
+    }
+
+    async function signOut() {
+      await sb.auth.signOut();
+      window.location.href = 'client-login.html';
+    }
+
+    // Close lightbox with Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+  </script>
+</body>
+</html>

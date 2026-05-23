@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/components.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <style>
 
     /* ════════════════════════════════
@@ -52,8 +53,8 @@
 
     .hero-inner {
       display: grid;
-      grid-template-columns: 1fr 420px;
-      gap: 80px;
+      grid-template-columns: 1fr min(420px, 38vw);
+      gap: 56px;
       align-items: center;
       width: 100%;
       position: relative;
@@ -513,13 +514,13 @@
        RESPONSIVE
     ════════════════════════════════ */
     @media (max-width: 1024px) {
-      .hero-inner { grid-template-columns: 1fr 380px; }
+      .hero-inner { grid-template-columns: 1fr min(380px, 38vw); }
       .hero-card-wrap { max-width: 520px; }
       .stats-strip-yellow { grid-template-columns: repeat(3, 1fr); }
       .why-section .diff-wrap { grid-template-columns: 1fr; gap: 48px; }
       .diff-grid { grid-template-columns: 1fr; }
     }
-    @media (max-width: 900px) {
+    @media (max-width: 1060px) {
       .hero-inner { grid-template-columns: 1fr; }
       .hero-card-wrap { max-width: 520px; }
     }
@@ -776,7 +777,7 @@
       </div>
     </div>
     <div style="text-align:center; margin-top:48px;">
-      <a href="contact.html" class="btn btn-primary reveal">Schedule a Free Demo <span class="btn-arrow">→</span></a>
+      <a href="https://calendly.com/drivertiseusa" class="btn btn-primary reveal" target="_blank">Book a 15-Min Call <span class="btn-arrow">→</span></a>
     </div>
   </div>
 </section>
@@ -820,9 +821,9 @@
           <li><span>✓</span> Static or animated creative</li>
           <li><span>✓</span> Pair with car wrap for full impact</li>
         </ul>
-        <div class="service-price" style="font-size:clamp(28px,3vw,38px); color:var(--gold);">Add-on</div>
-        <div class="service-price-period">to any wrap package · ask for pricing</div>
-        <a href="contact.html" class="card-link">Ask about pricing <span class="btn-arrow">→</span></a>
+        <div class="service-price" style="font-size:clamp(28px,3vw,38px); color:var(--gold);">from $179<span style="font-size:18px; font-weight:500; color:rgba(10,13,18,0.45);">/mo</span></div>
+        <div class="service-price-period">shared waitlist · or solo from $449/mo</div>
+        <a href="services.html#billboard-pricing" class="card-link">See Billboard Options <span class="btn-arrow">→</span></a>
       </div>
 
       <!-- Service 3: Direct Mail -->
@@ -937,7 +938,7 @@
         <div style="font-size:48px; margin-bottom:20px; line-height:1;">🚀</div>
         <h4 style="color:var(--yellow); margin-bottom:12px; font-size:18px;">Pilot Spots Open</h4>
         <p style="font-size:14px; margin-bottom:28px; max-width:240px;">Be one of the first businesses in your city. Lock in your zone at launch pricing before it fills.</p>
-        <a href="contact.html" class="btn btn-primary">Get a Pilot Spot</a>
+        <a href="https://calendly.com/drivertiseusa" class="btn btn-primary" target="_blank">Book a 15-Min Call</a>
       </div>
     </div>
   </div>
@@ -950,7 +951,7 @@
     <h2 class="cta-headline-huge reveal">Your neighbors are<br>already looking.<br><em class="display-italic">Are they seeing you?</em></h2>
     <p class="reveal reveal-delay-1">Schedule a free 15-minute demo. We'll show you which zones fit your business, estimated impressions, and what your ad looks like on the vehicle — no commitment required.</p>
     <div class="cta-buttons reveal reveal-delay-2">
-      <a href="contact.html" class="btn btn-primary btn-lg">Schedule a Free Demo <span class="btn-arrow">→</span></a>
+      <a href="https://calendly.com/drivertiseusa" class="btn btn-primary btn-lg" target="_blank">Book a 15-Min Call <span class="btn-arrow">→</span></a>
       <a href="pricing.html" class="btn btn-secondary btn-lg">View Pricing</a>
     </div>
     <p style="margin-top:20px; font-size:13px; color:var(--w38); margin-bottom:0;" class="reveal reveal-delay-3">No contracts required to start. Cancel anytime with 30 days notice.</p>
@@ -995,5 +996,30 @@
 </footer>
 
 <script src="js/main.js"></script>
+<script>
+// Live zone availability from Supabase
+(async function() {
+  try {
+    const SUPABASE_URL = 'https://dwwgavyzgogmhjaerevg.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3d2dhdnl6Z29nbWhqYWVyZXZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MDgwNjAsImV4cCI6MjA5MDk4NDA2MH0.4ulbzEw-AM2bIBXDyIgBMuIEjQDTOxGaHfaquG2sTaY';
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/zones?status=eq.available&select=id`, {
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`
+      }
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.length > 0) {
+        const zoneEl = document.querySelector('[data-target="6"]');
+        if (zoneEl) {
+          zoneEl.setAttribute('data-target', data.length);
+          zoneEl.textContent = data.length;
+        }
+      }
+    }
+  } catch(e) { /* fallback to static 6 */ }
+})();
+</script>
 </body>
 </html>

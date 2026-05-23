@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/components.css">
   <style>
@@ -258,11 +259,15 @@
         <p>15 minutes. No commitment. Just clarity.</p>
       </div>
       <div class="contact-form-body" id="contact-form-body">
+        <div class="calendly-cta" style="background:rgba(200,151,58,0.08);border:1px solid rgba(200,151,58,0.25);border-radius:16px;padding:32px 36px;margin-bottom:40px;text-align:center;">
+  <h3 style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:var(--cream);margin-bottom:8px;">Prefer to talk now?</h3>
+  <p style="color:var(--w70);margin-bottom:24px;">Pick a time that works for you — 15 minutes, no prep needed.</p>
+  <a href="https://calendly.com/drivertiseusa" class="btn btn-primary" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:14px 32px;background:var(--gold);color:#0A0D12;font-family:'Syne',sans-serif;font-weight:700;font-size:15px;border-radius:8px;text-decoration:none;">
+    Pick a Time on My Calendar <span>→</span>
+  </a>
+</div>
         <form
           id="contact-form"
-          action="mailto:hello@drivertiseusa.com"
-          method="POST"
-          enctype="text/plain"
           onsubmit="handleSubmit(event)"
           novalidate
         >
@@ -292,10 +297,15 @@
               <option value="" disabled selected>Select a city</option>
               <option value="Lehi">Lehi</option>
               <option value="American Fork">American Fork</option>
-              <option value="Saratoga Springs">Saratoga Springs</option>
-              <option value="Highland">Highland</option>
-              <option value="Eagle Mountain">Eagle Mountain</option>
               <option value="Pleasant Grove">Pleasant Grove</option>
+              <option value="Highland">Highland</option>
+              <option value="Alpine">Alpine</option>
+              <option value="Saratoga Springs">Saratoga Springs</option>
+              <option value="Eagle Mountain">Eagle Mountain</option>
+              <option value="Sandy">Sandy</option>
+              <option value="Draper">Draper</option>
+              <option value="Bluffdale">Bluffdale</option>
+              <option value="Riverton">Riverton</option>
               <option value="Multiple cities">Multiple cities</option>
               <option value="Not sure">Not sure yet</option>
             </select>
@@ -310,15 +320,15 @@
             <textarea class="form-textarea" id="message" name="message" placeholder="Tell us about your business, your goals, or any questions you have..." style="min-height:100px;"></textarea>
           </div>
           <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; font-size:15px; padding:16px;">
-            Request My Free Demo <span class="btn-arrow">→</span>
+            Send My Info <span class="btn-arrow">→</span>
           </button>
           <p style="font-size:12px; color:var(--w38); text-align:center; margin-top:14px;">We'll never share your info. No spam, ever.</p>
         </form>
-        <div class="form-success" id="form-success">
-          <div class="form-success-icon">🎉</div>
-          <h3>Request received!</h3>
-          <p>Danyon will reach out within 24 hours — usually the same day. Check your phone and email. Looking forward to connecting.</p>
-          <a href="index.html" class="btn btn-secondary" style="margin-top:24px;">Back to home</a>
+        <div class="form-success" id="form-success" style="display:none;text-align:center;padding:48px 32px;">
+          <div style="font-size:48px;margin-bottom:16px;">✓</div>
+          <h3 style="font-family:'Syne',sans-serif;font-size:24px;color:var(--cream);margin-bottom:12px;">We got your message!</h3>
+          <p style="color:var(--w70);margin-bottom:24px;">Danyon will be in touch within 24 hours. In the meantime, feel free to book a time directly on his calendar.</p>
+          <a href="https://calendly.com/drivertiseusa" class="btn btn-primary" target="_blank" style="display:inline-block;padding:14px 32px;background:var(--gold);color:#0A0D12;font-family:'Syne',sans-serif;font-weight:700;border-radius:8px;text-decoration:none;">Book a 15-Min Call →</a>
         </div>
       </div>
     </div>
@@ -387,6 +397,7 @@
       <a href="zones.html">Available Zones</a>
       <a href="faq.html">FAQ</a>
       <a href="contact.html">Contact / Demo</a>
+      <a href="client-login.html">Client Login</a>
     </div>
   </div>
   <div class="footer-bottom">
@@ -402,25 +413,53 @@
 
 <script src="js/main.js"></script>
 <script>
-  function handleSubmit(e) {
+  const SUPABASE_URL = 'https://dwwgavyzgogmhjaerevg.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3d2dhdnl6Z29nbWhqYWVyZXZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MDgwNjAsImV4cCI6MjA5MDk4NDA2MH0.4ulbzEw-AM2bIBXDyIgBMuIEjQDTOxGaHfaquG2sTaY';
+  const { createClient } = supabase;
+  const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  async function handleSubmit(e) {
     e.preventDefault();
+    const btn = e.target.querySelector('button[type="submit"]');
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+
+    const payload = {
+      name:          document.getElementById('name')?.value || '',
+      business_name: document.getElementById('business')?.value || null,
+      phone:         document.getElementById('phone')?.value || null,
+      email:         document.getElementById('email')?.value || null,
+      city:          document.getElementById('city')?.value || null,
+      zone_interest: document.getElementById('zone-field')?.value || null,
+      message:       document.getElementById('message')?.value || null,
+      status:        'new'
+    };
+
+    const { error } = await sb.from('leads').insert(payload);
+
+    if (error) {
+      console.error('Supabase error:', error);
+      btn.disabled = false;
+      btn.textContent = originalText;
+      alert('Something went wrong. Please call or text Danyon directly at (385) 204-6561.');
+      return;
+    }
+
+    // Success: hide form, show success message
     const form = document.getElementById('contact-form');
-    const success = document.getElementById('form-success');
-    // Build the mailto link with form data
-    const name     = document.getElementById('name').value;
-    const business = document.getElementById('business').value;
-    const phone    = document.getElementById('phone').value;
-    const email    = document.getElementById('email').value;
-    const city     = document.getElementById('city').value;
-    const zone     = document.getElementById('zone-field').value;
-    const message  = document.getElementById('message').value;
-    const body = `Name: ${name}\nBusiness: ${business}\nPhone: ${phone}\nEmail: ${email}\nCity: ${city}\nZone Interest: ${zone || 'Not specified'}\n\nMessage:\n${message}`;
-    const subject  = encodeURIComponent(`Demo Request from ${name} — ${business}`);
-    const bodyEnc  = encodeURIComponent(body);
-    window.location.href = `mailto:hello@drivertiseusa.com?subject=${subject}&body=${bodyEnc}`;
-    // Show success state
-    form.style.display = 'none';
-    success.classList.add('show');
+    const successEl = document.getElementById('form-success');
+    if (form) form.style.display = 'none';
+    if (successEl) {
+      successEl.style.display = 'block';
+      successEl.classList.add('show');
+    } else {
+      // Fallback if no success element exists
+      btn.textContent = '✓ Message Sent!';
+      btn.style.background = 'rgba(77,232,160,0.2)';
+      btn.style.color = '#4DE8A0';
+      btn.style.borderColor = 'rgba(77,232,160,0.4)';
+    }
   }
 </script>
 </body>

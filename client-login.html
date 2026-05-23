@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Client Login — Drivertise</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: #0A0D12;
+      color: #F7F5F1;
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle background glow */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(200,151,58,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .back-link {
+      position: fixed;
+      top: 28px;
+      left: 32px;
+      color: rgba(255,255,255,0.45);
+      text-decoration: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+      z-index: 10;
+    }
+    .back-link:hover { color: rgba(255,255,255,0.8); }
+    .back-link::before { content: '←'; font-size: 15px; }
+
+    .login-card {
+      width: 100%;
+      max-width: 440px;
+      background: #0E1219;
+      border: 1px solid rgba(200,151,58,0.2);
+      border-radius: 20px;
+      padding: 48px 44px 44px;
+      position: relative;
+      box-shadow:
+        0 0 0 1px rgba(200,151,58,0.08),
+        0 24px 80px rgba(0,0,0,0.5),
+        0 0 60px rgba(200,151,58,0.06);
+    }
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 28px;
+      letter-spacing: -0.5px;
+      color: #F7F5F1;
+      margin-bottom: 4px;
+    }
+    .logo span { color: #C8973A; }
+
+    .portal-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #C8973A;
+      margin-bottom: 36px;
+    }
+
+    .divider {
+      width: 40px;
+      height: 2px;
+      background: linear-gradient(90deg, #C8973A, transparent);
+      margin: 20px 0 32px;
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 28px;
+      color: #F7F5F1;
+      margin-bottom: 10px;
+      letter-spacing: -0.3px;
+    }
+
+    .subtext {
+      color: rgba(255,255,255,0.5);
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    .input-wrapper {
+      margin-bottom: 12px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 8px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    input[type="email"] {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 14px 16px;
+      color: #F7F5F1;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input[type="email"]::placeholder { color: rgba(255,255,255,0.3); }
+    input[type="email"]:focus {
+      border-color: #C8973A;
+      box-shadow: 0 0 0 3px rgba(200,151,58,0.12);
+    }
+
+    .error-msg {
+      font-size: 12px;
+      color: #ff6b6b;
+      min-height: 18px;
+      margin-bottom: 4px;
+    }
+
+    .btn-primary {
+      width: 100%;
+      background: #C8973A;
+      color: #0A0D12;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      border: none;
+      border-radius: 10px;
+      padding: 15px 24px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      letter-spacing: 0.01em;
+      margin-top: 8px;
+    }
+    .btn-primary:hover:not(:disabled) {
+      background: #d9a849;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(200,151,58,0.3);
+    }
+    .btn-primary:active:not(:disabled) { transform: translateY(0); }
+    .btn-primary:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    .success-msg {
+      display: none;
+      background: rgba(77,232,160,0.1);
+      border: 1px solid rgba(77,232,160,0.25);
+      border-radius: 10px;
+      padding: 16px 18px;
+      color: #4DE8A0;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.5;
+      margin-top: 8px;
+    }
+    .success-msg .check {
+      font-size: 18px;
+      margin-right: 4px;
+    }
+
+    .card-footer {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      text-align: center;
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+    }
+    .card-footer a {
+      color: #C8973A;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .card-footer a:hover { color: #d9a849; }
+  </style>
+</head>
+<body>
+
+  <a href="index.html" class="back-link">Back to website</a>
+
+  <div class="login-card">
+    <div class="logo">DRIVERTISE<span>.</span></div>
+    <div class="portal-label">Client Portal</div>
+
+    <div class="divider"></div>
+
+    <h1>Sign In</h1>
+    <p class="subtext">Enter your email to receive a secure one-time login link.</p>
+
+    <div class="input-wrapper">
+      <label for="login-email">Email Address</label>
+      <input type="email" id="login-email" placeholder="you@yourbusiness.com" autocomplete="email" />
+    </div>
+
+    <div class="error-msg" id="login-err"></div>
+
+    <button class="btn-primary" id="login-btn" onclick="sendMagicLink()">Send Login Link →</button>
+
+    <div class="success-msg" id="login-msg">
+      <span class="check">✓</span> Check your inbox — login link sent!
+    </div>
+
+    <div class="card-footer">
+      Not a client yet? <a href="contact.html">Get in touch</a>
+    </div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://dwwgavyzgogmhjaerevg.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3d2dhdnl6Z29nbWhqYWVyZXZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MDgwNjAsImV4cCI6MjA5MDk4NDA2MH0.4ulbzEw-AM2bIBXDyIgBMuIEjQDTOxGaHfaquG2sTaY';
+    const { createClient } = supabase;
+    const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function sendMagicLink() {
+      const emailInput = document.getElementById('login-email');
+      const btn = document.getElementById('login-btn');
+      const msg = document.getElementById('login-msg');
+      const errMsg = document.getElementById('login-err');
+
+      const email = emailInput.value.trim();
+      if (!email || !email.includes('@')) {
+        if (errMsg) errMsg.textContent = 'Please enter a valid email address.';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+      if (errMsg) errMsg.textContent = '';
+
+      const { error } = await sb.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: window.location.origin + '/client-portal.html'
+        }
+      });
+
+      if (error) {
+        btn.disabled = false;
+        btn.textContent = 'Send Login Link →';
+        if (errMsg) errMsg.textContent = 'Something went wrong. Please try again or contact Danyon directly.';
+        return;
+      }
+
+      // Success state
+      emailInput.style.display = 'none';
+      btn.style.display = 'none';
+      if (msg) msg.style.display = 'block';
+    }
+
+    // Allow Enter key to submit
+    document.addEventListener('DOMContentLoaded', () => {
+      const emailInput = document.getElementById('login-email');
+      if (emailInput) {
+        emailInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') sendMagicLink();
+        });
+      }
+    });
+  </script>
+</body>
+</html>
