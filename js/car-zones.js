@@ -37,7 +37,7 @@ const ZONES = {
     desc: 'The curb-side panel — pedestrians, riders, and parking lot foot traffic get a close-up, personal view of your brand every time.',
     dims: 'Approx. 36" × 22"',
     visibility: 'Pedestrians, curb-side, parking areas',
-    editorImg: 'assets/zone-front-door-close.png',
+    editorImg: 'assets/zone-passenger-door-close.png',
     contactParam: 'Passenger Door',
   },
   'rear-passenger-door': {
@@ -47,7 +47,7 @@ const ZONES = {
     desc: 'Completes full four-door coverage on the passenger side. The full side package is the highest-impression option on the vehicle.',
     dims: 'Approx. 36" × 22"',
     visibility: 'Trailing traffic, parking areas, curb-side',
-    editorImg: 'assets/zone-rear-door-close.png',
+    editorImg: 'assets/zone-rear-passenger-door-close.png',
     contactParam: 'Rear Passenger Door',
   },
   'hood': {
