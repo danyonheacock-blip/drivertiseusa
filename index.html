@@ -11,7 +11,10 @@
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/components.css">
   <style>
-    /* ── Hero ── */
+
+    /* ════════════════════════════════
+       HERO
+    ════════════════════════════════ */
     .hero {
       min-height: calc(100vh - var(--nav-h) - 41px);
       display: flex;
@@ -20,30 +23,92 @@
       position: relative;
       overflow: hidden;
     }
-    .hero::before {
-      content: '';
+
+    /* Background effects */
+    .hero-bg-glow {
       position: absolute;
-      top: -20%;
-      right: -5%;
-      width: 700px;
-      height: 700px;
-      background: radial-gradient(circle, rgba(200,151,58,0.07) 0%, transparent 65%);
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 110%, rgba(230,223,26,0.11) 0%, rgba(200,151,58,0.05) 45%, transparent 70%);
       pointer-events: none;
     }
+    .hero-bg-lines {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 60px,
+        rgba(255,255,255,0.008) 60px,
+        rgba(255,255,255,0.009) 61px
+      );
+      pointer-events: none;
+    }
+    .hero-bg-side {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 40% 60% at -10% 60%, rgba(200,151,58,0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
     .hero-inner {
       display: grid;
-      grid-template-columns: 1fr 460px;
-      gap: 64px;
+      grid-template-columns: 1fr 420px;
+      gap: 80px;
       align-items: center;
       width: 100%;
+      position: relative;
+      z-index: 1;
     }
+
+    /* Headline */
     .hero-headline {
-      font-size: clamp(52px, 7vw, 96px);
+      font-size: clamp(68px, 9.5vw, 128px);
       font-weight: 800;
-      line-height: 1.0;
-      letter-spacing: -0.04em;
-      margin-bottom: 28px;
+      line-height: 0.90;
+      letter-spacing: -0.05em;
+      margin-bottom: 32px;
     }
+    .hero-em {
+      font-style: italic;
+      color: var(--yellow);
+      position: relative;
+      display: inline-block;
+    }
+    .hero-em::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: var(--yellow);
+      opacity: 0.35;
+      border-radius: 3px;
+    }
+
+    /* Live bar */
+    .hero-live-bar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .hero-count {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 3.5vw, 40px);
+      font-weight: 800;
+      color: var(--yellow);
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+    .hero-count-label {
+      font-size: 13px;
+      color: var(--w38);
+      line-height: 1.3;
+    }
+
+    /* Sub + actions */
     .hero-sub {
       font-size: 18px;
       line-height: 1.75;
@@ -57,21 +122,33 @@
       flex-wrap: wrap;
       margin-bottom: 36px;
     }
-    .hero-content { animation: fadeUp 0.8s var(--ease) both; }
-    .hero-card    { animation: fadeUp 0.8s 0.25s var(--ease) both; }
+
+    /* Animations */
+    .hero-content {
+      animation: fadeUp 0.9s var(--ease) both;
+    }
+    .hero-card-wrap {
+      animation: heroFloat 7s 1.2s ease-in-out infinite, fadeUp 0.9s 0.3s var(--ease) both;
+      transform-origin: center center;
+    }
     @keyframes fadeUp {
-      from { opacity:0; transform:translateY(32px); }
-      to   { opacity:1; transform:none; }
+      from { opacity: 0; transform: translateY(36px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes heroFloat {
+      0%,  100% { transform: translateY(0px) rotate(-2deg); }
+      50%        { transform: translateY(-14px) rotate(-2deg); }
     }
 
-    /* ── Route Card ── */
+    /* Route card */
     .hero-card {
       background: var(--bg3);
       border: 1px solid var(--border-gold);
-      border-radius: 16px;
+      border-radius: 20px;
       padding: 28px;
       position: relative;
       overflow: hidden;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(200,151,58,0.15), inset 0 1px 0 rgba(200,151,58,0.12);
     }
     .hero-card::before {
       content: '';
@@ -149,52 +226,227 @@
       color: var(--green);
     }
 
-    /* ── How It Works (light) ── */
-    .how-step {
-      padding: 40px 32px;
-      border: 1px solid rgba(10,13,18,0.10);
-      border-radius: 14px;
+    /* ════════════════════════════════
+       STATS STRIP — YELLOW INVERSION
+    ════════════════════════════════ */
+    .stats-strip-yellow {
+      background: var(--yellow);
       position: relative;
-      background: #fff;
+      z-index: 1;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0;
+      border-top: none;
     }
-    .how-step-num {
+    .stats-strip-yellow::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: repeating-linear-gradient(
+        -45deg, transparent, transparent 48px,
+        rgba(10,13,18,0.04) 48px, rgba(10,13,18,0.04) 49px
+      );
+      pointer-events: none;
+    }
+    .stat-item-y {
+      padding: 52px 28px;
+      text-align: center;
+      border-right: 1px solid rgba(10,13,18,0.12);
+      position: relative;
+      z-index: 1;
+    }
+    .stat-item-y:last-child { border-right: none; }
+    .stat-num-y {
       font-family: var(--font-display);
-      font-size: 72px;
+      font-size: clamp(36px, 5vw, 68px);
       font-weight: 800;
-      color: rgba(10,13,18,0.05);
+      color: #0A0D12;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      display: block;
+      margin-bottom: 10px;
+    }
+    .stat-label-y {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: rgba(10,13,18,0.55);
+      line-height: 1.5;
+      text-transform: uppercase;
+    }
+
+    /* ════════════════════════════════
+       HOW IT WORKS — DARK THEME
+    ════════════════════════════════ */
+    .how-step-dark {
+      padding: 40px 32px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+    .how-step-dark:hover {
+      border-color: var(--border-gold);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+    }
+    .how-step-ghost {
+      font-family: var(--font-display);
+      font-size: 96px;
+      font-weight: 800;
+      color: rgba(230,223,26,0.05);
       line-height: 1;
       position: absolute;
-      top: 20px;
-      right: 20px;
+      top: 8px;
+      right: 12px;
       letter-spacing: -0.05em;
       pointer-events: none;
     }
-    .how-step-icon {
+    .how-step-circle {
       width: 56px;
       height: 56px;
-      background: rgba(200,151,58,0.12);
-      border: 1px solid rgba(200,151,58,0.25);
+      border-radius: 50%;
+      background: var(--yellow-dim);
+      border: 2px solid rgba(230,223,26,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 20px;
+      color: var(--yellow);
+      margin-bottom: 24px;
+      flex-shrink: 0;
+    }
+
+    /* ════════════════════════════════
+       SERVICES — BOLD NUMBERED CARDS
+    ════════════════════════════════ */
+    .service-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 44px 40px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease), transform 0.3s var(--ease);
+    }
+    .service-card:hover {
+      border-color: var(--border-gold);
+      box-shadow: 0 20px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(200,151,58,0.15), inset 0 1px 0 rgba(200,151,58,0.08);
+      transform: translateY(-8px);
+    }
+    .service-card-featured {
+      border-color: var(--border-gold);
+    }
+    .service-num {
+      font-family: var(--font-display);
+      font-size: 130px;
+      font-weight: 800;
+      color: rgba(255,255,255,0.022);
+      position: absolute;
+      top: -16px;
+      right: -8px;
+      line-height: 1;
+      letter-spacing: -0.06em;
+      pointer-events: none;
+      user-select: none;
+    }
+    .service-icon {
+      width: 56px;
+      height: 56px;
       border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 26px;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
     }
-    .how-step h3 { color: #0A0D12; margin-bottom: 10px; font-size: 20px; }
-    .how-step p  { color: rgba(10,13,18,0.65); font-size: 15px; }
+    .service-price {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 4vw, 48px);
+      font-weight: 800;
+      color: var(--yellow);
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin: 28px 0 4px;
+    }
+    .service-price-period {
+      font-size: 13px;
+      color: var(--w38);
+      margin-bottom: 28px;
+    }
+    .service-feature-list {
+      margin: 0 0 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .service-feature-list li {
+      font-size: 14px;
+      color: var(--w70);
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .service-feature-list li span {
+      color: var(--green);
+      flex-shrink: 0;
+    }
 
-    /* ── City zone teaser ── */
-    .city-zone-card {
-      background: #fff;
-      border: 1px solid rgba(10,13,18,0.10);
-      border-radius: 12px;
-      padding: 24px;
-      transition: box-shadow 0.25s, transform 0.25s;
+    /* ════════════════════════════════
+       WHY DRIVERTISE — ATMOSPHERIC
+    ════════════════════════════════ */
+    .why-section {
+      position: relative;
+      overflow: hidden;
+      padding: var(--section-pad) 0;
     }
-    .city-zone-card:hover {
-      box-shadow: 0 6px 24px rgba(10,13,18,0.12);
-      transform: translateY(-3px);
+    .why-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 0% 60%, rgba(200,151,58,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 70% at 100% 40%, rgba(230,223,26,0.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .why-section .diff-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    .diff-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+    }
+
+    /* ════════════════════════════════
+       ZONE MAP — ENHANCED CITY CARDS
+    ════════════════════════════════ */
+    .city-card {
+      background: #fff;
+      border: 1px solid rgba(10,13,18,0.08);
+      border-radius: var(--radius-lg);
+      padding: 24px 28px;
+      transition: box-shadow 0.25s, transform 0.25s, border-color 0.25s;
+      cursor: default;
+    }
+    .city-card:hover {
+      box-shadow: 0 8px 32px rgba(10,13,18,0.10);
+      transform: translateY(-4px);
+      border-color: rgba(77,232,160,0.40);
+    }
+    .city-card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
     }
     .city-zone-name {
       font-family: var(--font-display);
@@ -221,32 +473,66 @@
     }
     .zone-dot.taken { background: rgba(10,13,18,0.20); }
 
-    /* ── Differentiators ── */
-    .diff-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 28px;
+    /* ════════════════════════════════
+       CTA BAND V2
+    ════════════════════════════════ */
+    .cta-band-v2 {
+      padding: var(--section-pad) 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      background: var(--bg2);
     }
-    .diff-wrap {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
+    .cta-band-v2::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 100% at 50% 130%, rgba(230,223,26,0.15) 0%, rgba(200,151,58,0.06) 45%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-band-v2 .container {
+      position: relative;
+      z-index: 1;
+    }
+    .cta-headline-huge {
+      font-size: clamp(52px, 7.5vw, 108px);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 0.92;
+      margin: 0 auto 32px;
+      max-width: 900px;
+    }
+    .cta-band-v2 p {
+      max-width: 480px;
+      margin: 0 auto 44px;
+      font-size: 17px;
+      color: var(--w55);
     }
 
-    /* ── Responsive ── */
+    /* ════════════════════════════════
+       RESPONSIVE
+    ════════════════════════════════ */
     @media (max-width: 1024px) {
       .hero-inner { grid-template-columns: 1fr; }
-      .hero-card  { max-width: 520px; }
-      .diff-wrap  { grid-template-columns: 1fr; gap: 48px; }
-      .diff-grid  { grid-template-columns: 1fr; }
+      .hero-card-wrap { max-width: 520px; }
+      .stats-strip-yellow { grid-template-columns: repeat(3, 1fr); }
+      .why-section .diff-wrap { grid-template-columns: 1fr; gap: 48px; }
+      .diff-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 768px) {
-      .hero { padding: 56px 0 72px; min-height: auto; }
-      .hero-headline { font-size: clamp(42px, 12vw, 68px); }
-      .hero-sub { font-size: 16px; }
-      .hero-card { max-width: 100%; }
-      .hero-stat-big { font-size: 40px; }
+      .hero { padding: 52px 0 64px; min-height: auto; }
+      .hero-headline { font-size: clamp(52px, 13vw, 80px); }
+      .hero-live-bar { flex-wrap: wrap; }
+      .hero-card-wrap { max-width: 100%; animation: fadeUp 0.9s 0.3s var(--ease) both; }
+      .stats-strip-yellow { grid-template-columns: repeat(2, 1fr); }
+      .stat-item-y { padding: 36px 20px; }
+      .service-card { padding: 32px 28px; }
+      .cta-headline-huge { font-size: clamp(40px, 11vw, 64px); }
+      .city-card-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .stats-strip-yellow { grid-template-columns: 1fr 1fr; }
+      .city-card-grid { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
@@ -288,6 +574,9 @@
 
 <!-- ════ HERO ════ -->
 <section class="hero" id="home">
+  <div class="hero-bg-glow"></div>
+  <div class="hero-bg-lines"></div>
+  <div class="hero-bg-side"></div>
   <div class="container hero-inner">
 
     <!-- Left: content -->
@@ -295,10 +584,16 @@
       <span class="eyebrow">Mobile Advertising · Utah County</span>
       <h1 class="hero-headline">
         Your brand.<br>
-        <em class="display-italic">everywhere they go.</em>
+        <em class="hero-em">Everywhere</em><br>
+        they go.
       </h1>
+      <div class="hero-live-bar">
+        <span class="live-badge"><span class="live-dot"></span>Active Route</span>
+        <span class="hero-count" data-counter data-target="50247">50,247</span>
+        <span class="hero-count-label">impressions this week</span>
+      </div>
       <p class="hero-sub">
-        The most targeted mobile advertising in Utah County. 50,000+ daily impressions across Lehi, American Fork, Saratoga Springs, and beyond — no algorithms, no opt-ins, no guesswork.
+        The most targeted mobile advertising in Utah County. Real-world impressions across Lehi, American Fork, Saratoga Springs, and beyond — no algorithms, no opt-ins, no guesswork.
       </p>
       <div class="hero-actions">
         <a href="zones.html" class="btn btn-primary btn-lg">
@@ -327,29 +622,31 @@
     </div>
 
     <!-- Right: live route card -->
-    <div class="hero-card">
-      <div class="hero-card-header">
-        <span class="hero-card-title">Route Overview · Utah County</span>
-        <span class="live-badge"><span class="live-dot"></span>Active</span>
-      </div>
-      <div class="hero-stat-big">50,247</div>
-      <p class="hero-stat-label">estimated impressions this week</p>
-      <div>
-        <div class="hero-route-row">
-          <span class="hero-route-city">Lehi Crossroads</span>
-          <span class="hero-route-val">18,400</span>
+    <div class="hero-card-wrap">
+      <div class="hero-card">
+        <div class="hero-card-header">
+          <span class="hero-card-title">Route Overview · Utah County</span>
+          <span class="live-badge"><span class="live-dot"></span>Active</span>
         </div>
-        <div class="hero-route-row">
-          <span class="hero-route-city">American Fork Main St.</span>
-          <span class="hero-route-val">16,200</span>
-        </div>
-        <div class="hero-route-row">
-          <span class="hero-route-city">Saratoga Springs</span>
-          <span class="hero-route-val">15,647</span>
-        </div>
-        <div class="hero-route-row">
-          <span class="hero-route-city" style="font-weight:700; color:var(--cream);">Open Zones</span>
-          <span class="hero-route-status">12 available</span>
+        <div class="hero-stat-big">50,247</div>
+        <p class="hero-stat-label">estimated impressions this week</p>
+        <div>
+          <div class="hero-route-row">
+            <span class="hero-route-city">Lehi Crossroads</span>
+            <span class="hero-route-val">18,400</span>
+          </div>
+          <div class="hero-route-row">
+            <span class="hero-route-city">American Fork Main St.</span>
+            <span class="hero-route-val">16,200</span>
+          </div>
+          <div class="hero-route-row">
+            <span class="hero-route-city">Saratoga Springs</span>
+            <span class="hero-route-val">15,647</span>
+          </div>
+          <div class="hero-route-row">
+            <span class="hero-route-city" style="font-weight:700; color:var(--cream);">Open Zones</span>
+            <span class="hero-route-status">12 available</span>
+          </div>
         </div>
       </div>
     </div>
@@ -357,8 +654,33 @@
   </div>
 </section>
 
+<!-- ════ STATS STRIP — YELLOW ════ -->
+<div class="stats-strip-yellow reveal">
+  <div class="stat-item-y">
+    <span class="stat-num-y" data-counter data-target="70" data-suffix="K+">70K+</span>
+    <span class="stat-label-y">Daily impressions<br>per vehicle</span>
+  </div>
+  <div class="stat-item-y">
+    <span class="stat-num-y" data-counter data-target="97" data-suffix="%">97%</span>
+    <span class="stat-label-y">Recall rate for<br>vehicle wrap ads</span>
+  </div>
+  <div class="stat-item-y">
+    <span class="stat-num-y" data-counter data-prefix="$" data-target="0.77" data-decimals="2">$0.77</span>
+    <span class="stat-label-y">Cost per 1,000<br>impressions (CPM)</span>
+  </div>
+  <div class="stat-item-y">
+    <span class="stat-num-y" data-counter data-target="66" data-suffix="%">66%</span>
+    <span class="stat-label-y">Take action after<br>seeing a vehicle wrap</span>
+  </div>
+  <div class="stat-item-y">
+    <span class="stat-num-y" data-counter data-target="12">12</span>
+    <span class="stat-label-y">Zones across<br>6 Utah County cities</span>
+  </div>
+</div>
+<p style="text-align:center; font-size:11px; color:var(--w20); padding:12px 0 0; position:relative; z-index:1;">Stats sourced from OAAA, Nielsen, and industry research. Individual results vary.</p>
+
 <!-- ════ HOW IT WORKS ════ -->
-<section class="section-pad section-light" id="how">
+<section class="section-pad" id="how">
   <div class="container">
     <div class="section-header reveal">
       <span class="eyebrow">How It Works</span>
@@ -366,23 +688,23 @@
       <p>No complicated setup. No long contracts required to start. We handle the details so you can focus on running your business.</p>
     </div>
     <div class="grid-3">
-      <div class="how-step reveal">
-        <span class="how-step-num">01</span>
-        <div class="how-step-icon">📍</div>
-        <h3>Pick Your Zone</h3>
-        <p>Choose from 12 dedicated ad zones across 6 Utah County cities. Each zone covers high-traffic routes — grocery stores, shopping districts, commute corridors in your target area.</p>
+      <div class="how-step-dark reveal">
+        <span class="how-step-ghost">01</span>
+        <div class="how-step-circle">1</div>
+        <h3 style="color:var(--cream); margin-bottom:10px; font-size:20px;">Pick Your Zone</h3>
+        <p style="font-size:14px; color:var(--w55); line-height:1.75;">Choose from 12 dedicated ad zones across 6 Utah County cities. Each zone covers high-traffic routes — grocery stores, shopping districts, commute corridors in your target area.</p>
       </div>
-      <div class="how-step reveal reveal-delay-2">
-        <span class="how-step-num">02</span>
-        <div class="how-step-icon">🎨</div>
-        <h3>Submit Your Creative</h3>
-        <p>Send us your logo, message, and preferred design. Need help? We'll guide you. You review and approve everything before anything goes on the vehicle.</p>
+      <div class="how-step-dark reveal reveal-delay-2">
+        <span class="how-step-ghost">02</span>
+        <div class="how-step-circle">2</div>
+        <h3 style="color:var(--cream); margin-bottom:10px; font-size:20px;">Submit Your Creative</h3>
+        <p style="font-size:14px; color:var(--w55); line-height:1.75;">Send us your logo, message, and preferred design. Need help? We'll guide you. You review and approve everything before anything goes on the vehicle.</p>
       </div>
-      <div class="how-step reveal reveal-delay-3">
-        <span class="how-step-num">03</span>
-        <div class="how-step-icon">🚗</div>
-        <h3>We Drive Daily</h3>
-        <p>Your brand hits high-traffic areas every day. You receive weekly impression reports. Add a QR code or promo code to track direct response from the very first week.</p>
+      <div class="how-step-dark reveal reveal-delay-3">
+        <span class="how-step-ghost">03</span>
+        <div class="how-step-circle">3</div>
+        <h3 style="color:var(--cream); margin-bottom:10px; font-size:20px;">We Drive Daily</h3>
+        <p style="font-size:14px; color:var(--w55); line-height:1.75;">Your brand hits high-traffic areas every day. You receive weekly impression reports. Add a QR code or promo code to track direct response from the very first week.</p>
       </div>
     </div>
     <div style="text-align:center; margin-top:48px;">
@@ -401,45 +723,54 @@
     </div>
     <div class="grid-3">
 
-      <div class="card reveal">
-        <div class="card-icon">🚗</div>
-        <h3>Car Wrap Ads</h3>
-        <p>Your logo and creative on the vehicle exterior, driving through your zone's highest-traffic locations every day. Grocery stores, gas stations, commute routes — wherever locals spend their time.</p>
-        <ul style="margin:16px 0; display:flex; flex-direction:column; gap:10px;">
-          <li style="font-size:14px; color:var(--w70); display:flex; gap:10px;"><span style="color:var(--green); flex-shrink:0;">✓</span> 50,000+ monthly impressions per zone</li>
-          <li style="font-size:14px; color:var(--w70); display:flex; gap:10px;"><span style="color:var(--green); flex-shrink:0;">✓</span> Weekly impression report included</li>
-          <li style="font-size:14px; color:var(--w70); display:flex; gap:10px;"><span style="color:var(--green); flex-shrink:0;">✓</span> QR code tracking available</li>
-          <li style="font-size:14px; color:var(--w70); display:flex; gap:10px;"><span style="color:var(--green); flex-shrink:0;">✓</span> Month-to-month, cancel anytime</li>
+      <!-- Service 1: Car Wrap -->
+      <div class="service-card reveal">
+        <span class="service-num">01</span>
+        <div class="service-icon" style="background:rgba(200,151,58,0.12); border:1px solid rgba(200,151,58,0.25);">🚗</div>
+        <h3 style="color:var(--cream); margin-bottom:12px;">Car Wrap Ads</h3>
+        <p style="font-size:14px; color:var(--w55); line-height:1.75;">Your logo and creative on the vehicle exterior, driving through your zone's highest-traffic locations every day. Grocery stores, gas stations, commute routes — wherever locals spend their time.</p>
+        <ul class="service-feature-list">
+          <li><span>✓</span> 50,000+ monthly impressions per zone</li>
+          <li><span>✓</span> Weekly impression report included</li>
+          <li><span>✓</span> QR code tracking available</li>
+          <li><span>✓</span> Month-to-month, cancel anytime</li>
         </ul>
-        <div style="font-family:var(--font-display); font-size:32px; font-weight:800; color:var(--yellow); margin:20px 0 4px; letter-spacing:-0.03em;">$300<span style="font-size:16px; color:var(--w38); font-weight:500;">/mo per zone</span></div>
+        <div class="service-price">$300<span style="font-size:18px; font-weight:500; color:var(--w38);">/mo</span></div>
+        <div class="service-price-period">per zone · no long-term contract</div>
         <a href="services.html#car-wrap" class="card-link">Full details <span class="btn-arrow">→</span></a>
       </div>
 
-      <div class="card reveal reveal-delay-2" style="border-color: var(--border-gold);">
-        <div class="card-icon" style="background:rgba(200,151,58,0.12); border-color:rgba(200,151,58,0.25);">⚡</div>
-        <h3>Electric Billboard</h3>
-        <p>A roof-mounted LED display showing your rotating ad to everyone nearby. Update your creative anytime — promote a sale, an event, or a seasonal offer. Works day and night, in any weather.</p>
-        <ul style="margin:16px 0; display:flex; flex-direction:column; gap:10px;">
-          <li style="font-size:14px; color:var(--w70); display:flex; gap:10px;"><span style="color:var(--green); flex-shrink:0;">✓</span> High-visibility digital LED display</li>
-          <li style="font-size:14px; color:var(--w70); display:flex; gap:10px;"><span style="color:var(--green); flex-shrink:0;">✓</span> Update your message anytime</li>
-          <li style="font-size:14px; color:var(--w70); display:flex; gap:10px;"><span style="color:var(--green); flex-shrink:0;">✓</span> Static or animated creative</li>
-          <li style="font-size:14px; color:var(--w70); display:flex; gap:10px;"><span style="color:var(--green); flex-shrink:0;">✓</span> Pair with car wrap for full impact</li>
+      <!-- Service 2: Electric Billboard (Featured) -->
+      <div class="service-card service-card-featured reveal reveal-delay-2">
+        <span class="service-num">02</span>
+        <div class="service-icon" style="background:rgba(200,151,58,0.12); border:1px solid rgba(200,151,58,0.25);">⚡</div>
+        <h3 style="color:var(--cream); margin-bottom:12px;">Electric Billboard</h3>
+        <p style="font-size:14px; color:var(--w55); line-height:1.75;">A roof-mounted LED display showing your rotating ad to everyone nearby. Update your creative anytime — promote a sale, an event, or a seasonal offer. Works day and night, in any weather.</p>
+        <ul class="service-feature-list">
+          <li><span>✓</span> High-visibility digital LED display</li>
+          <li><span>✓</span> Update your message anytime</li>
+          <li><span>✓</span> Static or animated creative</li>
+          <li><span>✓</span> Pair with car wrap for full impact</li>
         </ul>
-        <div style="font-family:var(--font-display); font-size:32px; font-weight:800; color:var(--yellow); margin:20px 0 4px; letter-spacing:-0.03em;">Add-on <span style="font-size:16px; color:var(--w38); font-weight:500;">to any wrap package</span></div>
+        <div class="service-price" style="font-size:clamp(28px,3vw,38px);">Add-on</div>
+        <div class="service-price-period">to any wrap package · ask for pricing</div>
         <a href="contact.html" class="card-link">Ask about pricing <span class="btn-arrow">→</span></a>
       </div>
 
-      <div class="card reveal reveal-delay-3">
-        <div class="card-icon" style="background:rgba(77,232,160,0.10); border-color:rgba(77,232,160,0.20);">📬</div>
-        <h3>Direct Mail Co-op</h3>
-        <p>Co-op ad space in a targeted mailer delivered to 10,000 Utah County homes. Your offer alongside complementary local businesses — no competing ads in your category, trackable promo codes included.</p>
-        <ul style="margin:16px 0; display:flex; flex-direction:column; gap:10px;">
-          <li style="font-size:14px; color:var(--w70); display:flex; gap:10px;"><span style="color:var(--green); flex-shrink:0;">✓</span> 10,000 targeted homes per zone</li>
-          <li style="font-size:14px; color:var(--w70); display:flex; gap:10px;"><span style="color:var(--green); flex-shrink:0;">✓</span> One drop every 2 months</li>
-          <li style="font-size:14px; color:var(--w70); display:flex; gap:10px;"><span style="color:var(--green); flex-shrink:0;">✓</span> Exclusive category per zone</li>
-          <li style="font-size:14px; color:var(--w70); display:flex; gap:10px;"><span style="color:var(--green); flex-shrink:0;">✓</span> Promo code tracking included</li>
+      <!-- Service 3: Direct Mail -->
+      <div class="service-card reveal reveal-delay-3">
+        <span class="service-num">03</span>
+        <div class="service-icon" style="background:rgba(77,232,160,0.10); border:1px solid rgba(77,232,160,0.20);">📬</div>
+        <h3 style="color:var(--cream); margin-bottom:12px;">Direct Mail Co-op</h3>
+        <p style="font-size:14px; color:var(--w55); line-height:1.75;">Co-op ad space in a targeted mailer delivered to 10,000 Utah County homes. Your offer alongside complementary local businesses — no competing ads in your category, trackable promo codes included.</p>
+        <ul class="service-feature-list">
+          <li><span>✓</span> 10,000 targeted homes per zone</li>
+          <li><span>✓</span> One drop every 2 months</li>
+          <li><span>✓</span> Exclusive category per zone</li>
+          <li><span>✓</span> Promo code tracking included</li>
         </ul>
-        <div style="font-family:var(--font-display); font-size:32px; font-weight:800; color:var(--yellow); margin:20px 0 4px; letter-spacing:-0.03em;">$1,200<span style="font-size:16px; color:var(--w38); font-weight:500;">/drop per zone</span></div>
+        <div class="service-price">$1,200<span style="font-size:18px; font-weight:500; color:var(--w38);">/drop</span></div>
+        <div class="service-price-period">per zone · one mailing every 2 months</div>
         <a href="services.html#direct-mail" class="card-link">Full details <span class="btn-arrow">→</span></a>
       </div>
 
@@ -450,67 +781,44 @@
   </div>
 </section>
 
-<!-- ════ STATS STRIP ════ -->
-<div class="stats-strip reveal">
-  <div class="stat-item">
-    <span class="stat-num" data-counter data-target="70" data-suffix="K+">70K+</span>
-    <span class="stat-label">Daily impressions<br>per vehicle</span>
-  </div>
-  <div class="stat-item">
-    <span class="stat-num" data-counter data-target="97" data-suffix="%">97%</span>
-    <span class="stat-label">Recall rate for<br>vehicle wrap ads</span>
-  </div>
-  <div class="stat-item">
-    <span class="stat-num" data-counter data-prefix="$" data-target="0.77" data-decimals="2">$0.77</span>
-    <span class="stat-label">Cost per 1,000<br>impressions (CPM)</span>
-  </div>
-  <div class="stat-item">
-    <span class="stat-num" data-counter data-target="66" data-suffix="%">66%</span>
-    <span class="stat-label">Take action after<br>seeing a vehicle wrap</span>
-  </div>
-  <div class="stat-item">
-    <span class="stat-num" data-counter data-target="12" data-suffix="">12</span>
-    <span class="stat-label">Zones available across<br>6 Utah County cities</span>
-  </div>
-</div>
-<p style="text-align:center; font-size:11px; color:var(--w20); padding:12px 0; position:relative; z-index:1;">Stats sourced from OAAA, Nielsen, and industry research. Individual results vary.</p>
-
 <!-- ════ WHY DRIVERTISE ════ -->
-<section class="section-pad" id="why">
-  <div class="container diff-wrap">
-    <div class="reveal">
-      <span class="eyebrow">Why Drivertise</span>
-      <h2>Built different from every other option</h2>
-      <p style="margin-top:20px;">Most advertising companies hide pricing, slow-walk your calls, and lock you into 6-month contracts. Drivertise was built the opposite way — because we'd want that if we were the client.</p>
-      <a href="about.html" class="btn btn-secondary" style="margin-top:32px;">Our story <span class="btn-arrow">→</span></a>
-    </div>
-    <div class="diff-grid">
-      <div class="feature-card reveal reveal-delay-1">
-        <div class="feature-icon">💵</div>
-        <div class="feature-body">
-          <h4>Transparent Pricing</h4>
-          <p>Every price is on our website. No "call for a quote," no hidden fees, no surprises on your first invoice.</p>
-        </div>
+<section class="why-section" id="why">
+  <div class="container">
+    <div class="diff-wrap">
+      <div class="reveal">
+        <span class="eyebrow">Why Drivertise</span>
+        <h2>Built different from every other option</h2>
+        <p style="margin-top:20px; color:var(--w55);">Most advertising companies hide pricing, slow-walk your calls, and lock you into 6-month contracts. Drivertise was built the opposite way — because we'd want that if we were the client.</p>
+        <a href="about.html" class="btn btn-secondary" style="margin-top:32px;">Our story <span class="btn-arrow">→</span></a>
       </div>
-      <div class="feature-card reveal reveal-delay-2">
-        <div class="feature-icon">📊</div>
-        <div class="feature-body">
-          <h4>Results Tracking Built In</h4>
-          <p>Weekly impression reports included. Add a QR code or dedicated promo code to measure direct response from day one.</p>
+      <div class="diff-grid">
+        <div class="feature-card reveal reveal-delay-1">
+          <div class="feature-icon">💵</div>
+          <div class="feature-body">
+            <h4>Transparent Pricing</h4>
+            <p>Every price is on our website. No "call for a quote," no hidden fees, no surprises on your first invoice.</p>
+          </div>
         </div>
-      </div>
-      <div class="feature-card reveal reveal-delay-3">
-        <div class="feature-icon">📞</div>
-        <div class="feature-body">
-          <h4>Real Person, Same-Day Response</h4>
-          <p>You talk directly to Danyon — the founder. No support tickets, no call centers, no getting ghosted after you sign.</p>
+        <div class="feature-card reveal reveal-delay-2">
+          <div class="feature-icon">📊</div>
+          <div class="feature-body">
+            <h4>Results Tracking Built In</h4>
+            <p>Weekly impression reports included. Add a QR code or dedicated promo code to measure direct response from day one.</p>
+          </div>
         </div>
-      </div>
-      <div class="feature-card reveal reveal-delay-4">
-        <div class="feature-icon">🔓</div>
-        <div class="feature-body">
-          <h4>Month-to-Month Flexibility</h4>
-          <p>Start with one zone, one month. No long-term lock-in required. Pause or add zones whenever your needs change.</p>
+        <div class="feature-card reveal reveal-delay-3">
+          <div class="feature-icon">📞</div>
+          <div class="feature-body">
+            <h4>Real Person, Same-Day Response</h4>
+            <p>You talk directly to Danyon — the founder. No support tickets, no call centers, no getting ghosted after you sign.</p>
+          </div>
+        </div>
+        <div class="feature-card reveal reveal-delay-4">
+          <div class="feature-icon">🔓</div>
+          <div class="feature-body">
+            <h4>Month-to-Month Flexibility</h4>
+            <p>Start with one zone, one month. No long-term lock-in required. Pause or add zones whenever your needs change.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -525,8 +833,8 @@
       <h2>12 zones across Utah County — most still open</h2>
       <p>Each city has two dedicated ad zones. Once your category is claimed in a zone, no direct competitors can advertise there. First come, first served.</p>
     </div>
-    <div style="display:grid; grid-template-columns: repeat(3,1fr); gap:16px;" class="reveal">
-      <div class="city-zone-card">
+    <div class="city-card-grid reveal">
+      <div class="city-card">
         <div class="city-zone-name">Lehi</div>
         <div class="city-zone-status">2 zones · Both available</div>
         <div class="city-zone-dots">
@@ -534,7 +842,7 @@
           <div class="zone-dot open" title="Zone B — Available"></div>
         </div>
       </div>
-      <div class="city-zone-card">
+      <div class="city-card">
         <div class="city-zone-name">American Fork</div>
         <div class="city-zone-status">2 zones · Both available</div>
         <div class="city-zone-dots">
@@ -542,7 +850,7 @@
           <div class="zone-dot open"></div>
         </div>
       </div>
-      <div class="city-zone-card">
+      <div class="city-card">
         <div class="city-zone-name">Saratoga Springs</div>
         <div class="city-zone-status">2 zones · Both available</div>
         <div class="city-zone-dots">
@@ -550,7 +858,7 @@
           <div class="zone-dot open"></div>
         </div>
       </div>
-      <div class="city-zone-card">
+      <div class="city-card">
         <div class="city-zone-name">Highland</div>
         <div class="city-zone-status">2 zones · Both available</div>
         <div class="city-zone-dots">
@@ -558,7 +866,7 @@
           <div class="zone-dot open"></div>
         </div>
       </div>
-      <div class="city-zone-card">
+      <div class="city-card">
         <div class="city-zone-name">Eagle Mountain</div>
         <div class="city-zone-status">2 zones · Both available</div>
         <div class="city-zone-dots">
@@ -566,7 +874,7 @@
           <div class="zone-dot open"></div>
         </div>
       </div>
-      <div class="city-zone-card">
+      <div class="city-card">
         <div class="city-zone-name">Pleasant Grove</div>
         <div class="city-zone-status">2 zones · Both available</div>
         <div class="city-zone-dots">
@@ -626,7 +934,7 @@
           </div>
         </div>
       </div>
-      <div class="card reveal reveal-delay-3" style="background:var(--yellow-dim); border-color:rgba(230,223,26,0.25); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:40px 32px;">
+      <div class="card reveal reveal-delay-3" style="background:linear-gradient(135deg, rgba(230,223,26,0.12) 0%, rgba(200,151,58,0.08) 100%); border-color:var(--border-gold); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:40px 32px;">
         <div style="font-size:48px; margin-bottom:20px; line-height:1;">🚀</div>
         <h4 style="color:var(--yellow); margin-bottom:12px; font-size:18px;">Pilot Spots Open</h4>
         <p style="font-size:14px; margin-bottom:28px; max-width:240px;">Be one of the first businesses in your city. Lock in your zone at launch pricing before it fills.</p>
@@ -636,16 +944,17 @@
   </div>
 </section>
 
-<!-- ════ FINAL CTA ════ -->
-<section class="cta-band">
+<!-- ════ CTA BAND V2 ════ -->
+<section class="cta-band-v2">
   <div class="container">
     <span class="eyebrow reveal">Ready when you are</span>
-    <h2 class="reveal">Your neighbors are already looking.<br><em class="display-italic">Are they seeing your brand?</em></h2>
-    <p class="reveal reveal-delay-1">Schedule a free 15-minute demo. We'll show you exactly which zones fit your business, your estimated impressions, and what your ad could look like on the vehicle — no commitment required.</p>
+    <h2 class="cta-headline-huge reveal">Your neighbors are<br>already looking.<br><em class="display-italic">Are they seeing you?</em></h2>
+    <p class="reveal reveal-delay-1">Schedule a free 15-minute demo. We'll show you which zones fit your business, estimated impressions, and what your ad looks like on the vehicle — no commitment required.</p>
     <div class="cta-buttons reveal reveal-delay-2">
       <a href="contact.html" class="btn btn-primary btn-lg">Schedule a Free Demo <span class="btn-arrow">→</span></a>
       <a href="pricing.html" class="btn btn-secondary btn-lg">View Pricing</a>
     </div>
+    <p style="margin-top:20px; font-size:13px; color:var(--w38); margin-bottom:0;" class="reveal reveal-delay-3">No contracts required to start. Cancel anytime with 30 days notice.</p>
   </div>
 </section>
 
