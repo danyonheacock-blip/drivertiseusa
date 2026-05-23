@@ -37,7 +37,7 @@ const ZONES = {
     desc: 'The curb-side panel — pedestrians, riders, and parking lot foot traffic get a close-up, personal view of your brand every time.',
     dims: 'Approx. 36" × 22"',
     visibility: 'Pedestrians, curb-side, parking areas',
-    editorImg: 'assets/zone-door-panel.png',
+    editorImg: 'assets/zone-front-door-close.png',
     contactParam: 'Passenger Door',
   },
   'rear-passenger-door': {
@@ -67,7 +67,7 @@ const ZONES = {
     desc: 'Full-color perforated vinyl wrap — opaque from the outside, see-through from inside. Every car following us for any distance sees your brand.',
     dims: 'Approx. 48" × 20"',
     visibility: 'Trailing vehicles, highway, stop-and-go traffic',
-    editorImg: 'assets/zone-top-view.png',
+    editorImg: 'assets/zone-rear-window.png',
     contactParam: 'Rear Window',
   },
   'billboard': {
