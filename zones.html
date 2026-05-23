@@ -3,45 +3,196 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="View all 12 available ad zones across 6 Utah County cities. Claim your zone — each category is exclusive within a zone. Drivertise USA mobile advertising.">
-  <title>Available Zones — Drivertise USA</title>
+  <meta name="description" content="Drivertise USA direct mail co-op zones — 12 delivery areas across 6 Utah County cities. Choose your ad space tier and the zones you want to reach. Bi-monthly mailings to 10,000 homes per zone.">
+  <title>Mailer Delivery Zones — Drivertise USA</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/components.css">
   <style>
-    /* Urgency bar */
-    .urgency-bar {
-      background: var(--yellow);
-      color: #0A0D12;
-      text-align: center;
-      padding: 10px 24px;
-      font-family: var(--font-body);
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-    }
-
-    /* Zone grid by city */
-    .city-block {
+    /* ── Tier Pricing Cards ── */
+    .tier-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 48px;
       margin-bottom: 64px;
     }
-    .city-block:last-child { margin-bottom: 0; }
+    .tier-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .tier-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--border);
+    }
+    .tier-card.tier-featured {
+      border-color: var(--border-gold);
+    }
+    .tier-card.tier-featured::before {
+      background: linear-gradient(90deg, var(--gold), var(--yellow));
+    }
+    .tier-card:hover {
+      border-color: var(--border-gold);
+      box-shadow: 0 8px 32px rgba(230,223,26,0.10);
+    }
+    .tier-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+    .tier-badge.starter  { background: var(--bg2); color: var(--w38); border: 1px solid var(--border); }
+    .tier-badge.pro      { background: rgba(230,223,26,0.10); color: var(--yellow); border: 1px solid rgba(230,223,26,0.25); }
+    .tier-badge.featured { background: linear-gradient(90deg, rgba(230,181,26,0.20), rgba(230,223,26,0.20)); color: var(--yellow); border: 1px solid rgba(230,223,26,0.40); }
+    .tier-name {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--cream);
+      margin-bottom: 4px;
+    }
+    .tier-price {
+      font-family: var(--font-display);
+      font-size: 40px;
+      font-weight: 800;
+      color: var(--yellow);
+      letter-spacing: -0.03em;
+      margin: 12px 0 4px;
+    }
+    .tier-price span {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--w55);
+      letter-spacing: 0;
+    }
+    .tier-size-desc {
+      font-size: 13px;
+      color: var(--w55);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+    .tier-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 20px 0;
+    }
+    .tier-features {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .tier-feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--w70);
+      line-height: 1.5;
+    }
+    .tier-check {
+      color: var(--yellow);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .tier-slots {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .slot-dot {
+      width: 18px;
+      height: 10px;
+      border-radius: 3px;
+      background: var(--border);
+    }
+    .slot-dot.yours { background: var(--yellow); }
 
+    /* ── Bundle pricing strip ── */
+    .bundle-strip {
+      background: var(--bg3);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      margin: 48px 0 64px;
+      position: relative;
+      overflow: hidden;
+    }
+    .bundle-strip::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--yellow));
+    }
+    .bundle-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 28px;
+    }
+    .bundle-item {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      text-align: center;
+    }
+    .bundle-zones {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--cream);
+      margin-bottom: 4px;
+    }
+    .bundle-savings {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--yellow);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .bundle-desc {
+      font-size: 12px;
+      color: var(--w38);
+      line-height: 1.5;
+    }
+
+    /* ── City/Zone blocks ── */
+    .city-block {
+      margin-bottom: 56px;
+    }
+    .city-block:last-child { margin-bottom: 0; }
     .city-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 24px;
-      padding-bottom: 20px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
       border-bottom: 1px solid var(--border);
       flex-wrap: wrap;
       gap: 12px;
     }
     .city-name {
       font-family: var(--font-display);
-      font-size: 32px;
+      font-size: 28px;
       font-weight: 800;
       letter-spacing: -0.025em;
       color: var(--cream);
@@ -51,143 +202,138 @@
       color: var(--w55);
       margin-top: 4px;
     }
-    .city-avail-badge {
+    .city-badge {
       font-size: 11px;
       font-weight: 700;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       padding: 6px 14px;
       border-radius: 20px;
-    }
-    .city-avail-badge.all-open {
       background: var(--green-dim);
       color: var(--green);
       border: 1px solid rgba(77,232,160,0.25);
-    }
-    .city-avail-badge.partial {
-      background: rgba(230,223,26,0.12);
-      color: var(--yellow);
-      border: 1px solid rgba(230,223,26,0.25);
     }
 
     .zones-pair {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      gap: 16px;
     }
-
-    .zone-detail-card {
+    .zone-mail-card {
       background: var(--bg3);
       border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 28px;
-      transition: border-color 0.25s, box-shadow 0.25s;
-      position: relative;
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: border-color 0.2s;
     }
-    .zone-detail-card.available {
-      border-color: rgba(77,232,160,0.20);
+    .zone-mail-card:hover {
+      border-color: rgba(77,232,160,0.30);
     }
-    .zone-detail-card.available:hover {
-      border-color: rgba(77,232,160,0.45);
-      box-shadow: 0 8px 32px rgba(77,232,160,0.08);
-    }
-    .zone-detail-card.taken {
-      opacity: 0.55;
-    }
-
-    .zone-detail-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    }
-    .zone-letter {
-      font-family: var(--font-display);
-      font-size: 14px;
-      font-weight: 800;
+    .zone-letter-tag {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
       color: var(--w38);
-      letter-spacing: 1px;
+      margin-bottom: 8px;
     }
-
-    .zone-highlights {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin: 16px 0 20px;
+    .zone-mail-name {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--cream);
+      margin-bottom: 12px;
     }
-    .zone-highlight {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      font-size: 13px;
-      color: var(--w70);
-    }
-    .zone-highlight-icon { font-size: 14px; flex-shrink: 0; }
-
-    .zone-impressions {
+    .zone-mail-stats {
       display: flex;
       gap: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
-    .zone-imp-box {
+    .zone-stat {
       flex: 1;
       background: var(--bg2);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 12px;
+      border-radius: 8px;
+      padding: 10px;
       text-align: center;
     }
-    .zone-imp-num {
+    .zone-stat-num {
       font-family: var(--font-display);
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 800;
       color: var(--yellow);
-      letter-spacing: -0.02em;
       display: block;
     }
-    .zone-imp-lbl { font-size: 10px; color: var(--w38); }
-
-    /* Exclusivity note */
-    .exclusivity-note {
-      background: var(--yellow-dim);
-      border: 1px solid rgba(230,223,26,0.15);
-      border-radius: var(--radius);
-      padding: 16px;
-      margin-top: 40px;
+    .zone-stat-lbl {
+      font-size: 10px;
+      color: var(--w38);
+      letter-spacing: 0.5px;
     }
-    .exclusivity-note p {
-      font-size: 13px;
-      color: var(--w70);
-      line-height: 1.6;
-    }
-    .exclusivity-note strong { color: var(--yellow); }
-
-    /* Legend */
-    .zone-legend {
+    .zone-mail-highlights {
       display: flex;
-      gap: 24px;
-      margin-bottom: 48px;
-      flex-wrap: wrap;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 16px;
     }
-    .legend-item {
+    .zone-mail-hl {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 8px;
-      font-size: 13px;
+      font-size: 12px;
       color: var(--w55);
     }
-    .legend-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      flex-shrink: 0;
+    .zone-mail-hl-icon { flex-shrink: 0; font-size: 12px; }
+    .zone-mail-card .btn {
+      width: 100%;
+      justify-content: center;
+      font-size: 13px;
     }
-    .legend-dot.available { background: var(--green); }
-    .legend-dot.taken     { background: rgba(255,255,255,0.20); }
 
-    @media (max-width: 700px) {
+    /* ── How it works ── */
+    .how-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .how-step {
+      text-align: center;
+    }
+    .how-step-num {
+      width: 44px;
+      height: 44px;
+      background: var(--yellow-dim);
+      border: 1px solid rgba(230,223,26,0.20);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--yellow);
+      margin: 0 auto 16px;
+    }
+    .how-step h4 {
+      font-size: 15px;
+      margin-bottom: 8px;
+      color: var(--cream);
+    }
+    .how-step p {
+      font-size: 13px;
+      color: var(--w55);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 900px) {
+      .tier-grid { grid-template-columns: 1fr; }
+      .bundle-grid { grid-template-columns: 1fr; }
+      .how-steps { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
       .zones-pair { grid-template-columns: 1fr; }
-      .city-name  { font-size: 26px; }
+      .how-steps { grid-template-columns: 1fr; }
+      .bundle-strip { padding: 28px 20px; }
     }
   </style>
 </head>
@@ -200,7 +346,8 @@
     <nav class="nav-links" aria-label="Main navigation">
       <a href="services.html">Services</a>
       <a href="pricing.html">Pricing</a>
-      <a href="zones.html">Zones</a>
+      <a href="car-zones.html">Ad Builder</a>
+      <a href="zones.html">Mailer Zones</a>
       <a href="faq.html">FAQ</a>
       <a href="about.html">About</a>
     </nav>
@@ -213,322 +360,432 @@
 <nav class="nav-mobile" id="nav-mobile" aria-label="Mobile navigation">
   <a href="services.html">Services</a>
   <a href="pricing.html">Pricing</a>
-  <a href="zones.html">Zones</a>
+  <a href="car-zones.html">Ad Builder</a>
+  <a href="zones.html">Mailer Zones</a>
   <a href="faq.html">FAQ</a>
   <a href="about.html">About</a>
   <a href="contact.html" class="btn btn-primary btn-lg">Get a Demo</a>
 </nav>
 
-<!-- Urgency bar -->
-<div class="urgency-bar" style="margin-top: var(--nav-h);">
-  🟢 All 12 zones currently available — category exclusivity is first-come, first-served
-</div>
-
 <!-- PAGE HERO -->
+<div style="margin-top: var(--nav-h);"></div>
 <section class="page-hero">
   <div class="container">
-    <span class="eyebrow">Available Zones</span>
-    <h1>12 zones.<br><em class="display-italic">6 cities. All open.</em></h1>
-    <p style="margin-top:20px; max-width:580px;">Each zone covers a city's highest-traffic routes. Once a category is claimed in a zone, no direct competitor can advertise there. First to claim wins exclusivity.</p>
+    <span class="eyebrow">Direct Mail Co-op</span>
+    <h1>Pick your zones.<br><em class="display-italic">We deliver the mail.</em></h1>
+    <p style="margin-top:20px; max-width:600px;">Every 2 months, a full-color co-op mailer goes to 10,000 homes in each zone. Choose your ad space size, pick which zones you want to reach, and your business lands directly in local mailboxes — no algorithm, no competition for attention.</p>
   </div>
 </section>
 
-<!-- ZONES -->
-<section class="section-pad">
+<!-- AD SPACE TIERS -->
+<section class="section-pad" style="padding-top: 0;">
   <div class="container">
 
-    <!-- Legend + Exclusivity note -->
-    <div class="zone-legend reveal">
-      <div class="legend-item"><span class="legend-dot available"></span> Available — open to claim</div>
-      <div class="legend-item"><span class="legend-dot taken"></span> Taken — category slots sold</div>
+    <div class="section-header reveal">
+      <span class="eyebrow">Ad Space Options</span>
+      <h2>Three sizes. One mailer. Real homes.</h2>
+      <p>Every mailer slot is shared among local businesses — you pick your size, we place it alongside complementary (never competing) businesses. Your category is exclusive within each zone you choose.</p>
     </div>
 
-    <!-- ── LEHI ── -->
+    <div class="tier-grid">
+
+      <!-- Starter -->
+      <div class="tier-card reveal">
+        <span class="tier-badge starter">Starter Space</span>
+        <div class="tier-name">Compact Ad</div>
+        <div class="tier-price">$199<span> / zone / drop</span></div>
+        <div class="tier-size-desc">Small but targeted — 8 businesses share the mailer. Great for brand awareness on a budget.</div>
+        <div class="tier-slots">
+          <div class="slot-dot yours"></div>
+          <div class="slot-dot"></div><div class="slot-dot"></div><div class="slot-dot"></div>
+          <div class="slot-dot"></div><div class="slot-dot"></div><div class="slot-dot"></div><div class="slot-dot"></div>
+        </div>
+        <p style="font-size:11px; color:var(--w38); margin-bottom:16px;">Your slot highlighted in yellow · 8 total</p>
+        <div class="tier-divider"></div>
+        <div class="tier-features">
+          <div class="tier-feature"><span class="tier-check">✓</span> Business name, logo, and tagline</div>
+          <div class="tier-feature"><span class="tier-check">✓</span> QR code or promo code</div>
+          <div class="tier-feature"><span class="tier-check">✓</span> 10,000 homes per zone per drop</div>
+          <div class="tier-feature"><span class="tier-check">✓</span> Category exclusivity within zone</div>
+          <div class="tier-feature"><span class="tier-check">✓</span> Design assistance included</div>
+        </div>
+        <a href="contact.html?mailer=Starter+Space" class="btn btn-secondary" style="width:100%; justify-content:center;">Get Starter Space <span class="btn-arrow">→</span></a>
+      </div>
+
+      <!-- Pro -->
+      <div class="tier-card reveal reveal-delay-1">
+        <span class="tier-badge pro">Pro Space</span>
+        <div class="tier-name">Feature Ad</div>
+        <div class="tier-price">$399<span> / zone / drop</span></div>
+        <div class="tier-size-desc">More space, more impact — only 3 businesses at this tier. Stands out immediately in any mailbox.</div>
+        <div class="tier-slots">
+          <div class="slot-dot yours" style="width:36px;"></div>
+          <div class="slot-dot" style="width:36px;"></div>
+          <div class="slot-dot" style="width:36px;"></div>
+        </div>
+        <p style="font-size:11px; color:var(--w38); margin-bottom:16px;">Your slot highlighted in yellow · 3 total</p>
+        <div class="tier-divider"></div>
+        <div class="tier-features">
+          <div class="tier-feature"><span class="tier-check">✓</span> Full ad panel with headline, image, copy</div>
+          <div class="tier-feature"><span class="tier-check">✓</span> QR code, offer, or phone highlight</div>
+          <div class="tier-feature"><span class="tier-check">✓</span> 10,000 homes per zone per drop</div>
+          <div class="tier-feature"><span class="tier-check">✓</span> Category exclusivity within zone</div>
+          <div class="tier-feature"><span class="tier-check">✓</span> Design assistance included</div>
+          <div class="tier-feature"><span class="tier-check">✓</span> Priority placement on mailer</div>
+        </div>
+        <a href="contact.html?mailer=Pro+Space" class="btn btn-primary" style="width:100%; justify-content:center;">Get Pro Space <span class="btn-arrow">→</span></a>
+      </div>
+
+      <!-- Featured -->
+      <div class="tier-card tier-featured reveal reveal-delay-2">
+        <span class="tier-badge featured">⭐ Featured Space</span>
+        <div class="tier-name">Half-Page Ad</div>
+        <div class="tier-price">$699<span> / zone / drop</span></div>
+        <div class="tier-size-desc">You own half the mailer. Only one business gets this — maximum impact, zero competition for the eye.</div>
+        <div class="tier-slots">
+          <div class="slot-dot yours" style="width:100%; height:18px; border-radius:4px;"></div>
+        </div>
+        <p style="font-size:11px; color:var(--w38); margin-bottom:16px;">Exclusive half-page placement · 1 per mailer</p>
+        <div class="tier-divider"></div>
+        <div class="tier-features">
+          <div class="tier-feature"><span class="tier-check">✓</span> Half-page premium ad space</div>
+          <div class="tier-feature"><span class="tier-check">✓</span> Full creative freedom — headline, imagery, offer</div>
+          <div class="tier-feature"><span class="tier-check">✓</span> 10,000 homes per zone per drop</div>
+          <div class="tier-feature"><span class="tier-check">✓</span> Category exclusivity within zone</div>
+          <div class="tier-feature"><span class="tier-check">✓</span> Priority design support</div>
+          <div class="tier-feature"><span class="tier-check">✓</span> First position in zone — "top of mail" placement</div>
+        </div>
+        <a href="contact.html?mailer=Featured+Space" class="btn btn-primary" style="width:100%; justify-content:center;">Reserve Featured Space <span class="btn-arrow">→</span></a>
+      </div>
+
+    </div>
+
+    <!-- ── Bundle Pricing ── -->
+    <div class="bundle-strip reveal">
+      <div class="section-header" style="text-align:left; margin-bottom:0;">
+        <span class="eyebrow">Zone Bundles</span>
+        <h2 style="font-size:clamp(22px,2.5vw,32px);">Reach more cities.<br>Pay less per zone.</h2>
+        <p style="max-width:520px; margin-top:12px;">Any ad space tier can be bundled across multiple zones. The more zones you add, the bigger the discount — good way to build Utah County coverage without committing to a single big spend.</p>
+      </div>
+      <div class="bundle-grid">
+        <div class="bundle-item">
+          <div class="bundle-zones">1 Zone</div>
+          <div class="bundle-savings">Standard rate</div>
+          <div class="bundle-desc">Full price per zone · test one market before expanding</div>
+        </div>
+        <div class="bundle-item" style="border-color: rgba(230,223,26,0.25);">
+          <div class="bundle-zones">3 Zones</div>
+          <div class="bundle-savings">Save 10% per zone</div>
+          <div class="bundle-desc">Cover 3 cities or sub-zones at a discounted rate</div>
+        </div>
+        <div class="bundle-item" style="border-color: rgba(230,223,26,0.40);">
+          <div class="bundle-zones">6+ Zones</div>
+          <div class="bundle-savings">Save 20% per zone</div>
+          <div class="bundle-desc">Full Utah County coverage — lowest cost-per-home available</div>
+        </div>
+      </div>
+      <p style="font-size:12px; color:var(--w38); margin-top:20px;">Bundle pricing applied automatically. Mix and match any tier across zones. Ask Danyon about custom multi-zone packages.</p>
+    </div>
+
+    <!-- ── How it Works ── -->
+    <div class="section-header reveal">
+      <span class="eyebrow">How It Works</span>
+      <h2>From sign-up to mailbox in 4 steps</h2>
+    </div>
+    <div class="how-steps">
+      <div class="how-step reveal">
+        <div class="how-step-num">1</div>
+        <h4>Choose your tier & zones</h4>
+        <p>Pick your ad space size (Compact, Feature, or Half-Page) and which city zones you want the mailer to reach.</p>
+      </div>
+      <div class="how-step reveal reveal-delay-1">
+        <div class="how-step-num">2</div>
+        <h4>Submit your creative</h4>
+        <p>Send us your logo, tagline, offer, and any copy. We provide a design template — or handle design for you at no extra charge.</p>
+      </div>
+      <div class="how-step reveal reveal-delay-2">
+        <div class="how-step-num">3</div>
+        <h4>We print & mail</h4>
+        <p>Your ad is printed on a full-color co-op mailer and delivered to 10,000 homes per zone, every 2 months.</p>
+      </div>
+      <div class="how-step reveal reveal-delay-3">
+        <div class="how-step-num">4</div>
+        <h4>Track your results</h4>
+        <p>Each ad includes a unique QR code and/or promo code so you can measure exactly how many people engaged from the mailer.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- DELIVERY ZONES BY CITY -->
+<section class="section-pad section-light">
+  <div class="container">
+
+    <div class="section-header reveal">
+      <span class="eyebrow">Delivery Coverage</span>
+      <h2>12 zones. 6 cities.<br><em class="display-italic">60,000+ homes reached per full-county drop.</em></h2>
+      <p>Each zone covers a defined neighborhood cluster within a city — roughly 10,000 homes per zone. Pick the areas where your best customers live.</p>
+    </div>
+
+    <!-- LEHI -->
     <div class="city-block reveal">
       <div class="city-header">
         <div>
           <div class="city-name">Lehi</div>
-          <div class="city-meta">Utah County's fastest-growing city · High retail density · 69,000+ residents</div>
+          <div class="city-meta">2 delivery zones · 20,000 homes · Utah County's fastest-growing city</div>
         </div>
-        <span class="city-avail-badge all-open">2 of 2 Open</span>
+        <span class="city-badge">Zones Open</span>
       </div>
       <div class="zones-pair">
-        <div class="zone-detail-card available">
-          <div class="zone-detail-header">
-            <span class="zone-letter">ZONE A</span>
-            <span class="zone-badge available">Available</span>
+        <div class="zone-mail-card">
+          <div class="zone-letter-tag">Zone A</div>
+          <div class="zone-mail-name">Lehi North — Retail Corridor</div>
+          <div class="zone-mail-stats">
+            <div class="zone-stat"><span class="zone-stat-num">10K</span><span class="zone-stat-lbl">Homes / drop</span></div>
+            <div class="zone-stat"><span class="zone-stat-num">Bi-Mo</span><span class="zone-stat-lbl">Frequency</span></div>
           </div>
-          <h3 style="font-size:18px; margin-bottom:12px;">Lehi North — Costco &amp; Retail Corridor</h3>
-          <div class="zone-highlights">
-            <div class="zone-highlight"><span class="zone-highlight-icon">📍</span> Costco, Walmart, major box stores on Lehi Main</div>
-            <div class="zone-highlight"><span class="zone-highlight-icon">🚗</span> Morning and evening commute routes on SR-73</div>
-            <div class="zone-highlight"><span class="zone-highlight-icon">🏘️</span> Dense residential neighborhoods nearby</div>
+          <div class="zone-mail-highlights">
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏪</span> Costco, Walmart, major retail shoppers</div>
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏘️</span> Dense residential north of Main Street</div>
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">💰</span> High-income, high-discretionary spending</div>
           </div>
-          <div class="zone-impressions">
-            <div class="zone-imp-box">
-              <span class="zone-imp-num">50K+</span>
-              <span class="zone-imp-lbl">Monthly impressions</span>
-            </div>
-            <div class="zone-imp-box">
-              <span class="zone-imp-num">$300</span>
-              <span class="zone-imp-lbl">Starting / month</span>
-            </div>
-          </div>
-          <button class="btn btn-primary" style="width:100%; justify-content:center;" data-zone-cta="Lehi Zone A">Claim Lehi Zone A <span class="btn-arrow">→</span></button>
+          <a href="contact.html?zone=Lehi+Zone+A" class="btn btn-secondary">Add This Zone <span class="btn-arrow">→</span></a>
         </div>
-        <div class="zone-detail-card available">
-          <div class="zone-detail-header">
-            <span class="zone-letter">ZONE B</span>
-            <span class="zone-badge available">Available</span>
+        <div class="zone-mail-card">
+          <div class="zone-letter-tag">Zone B</div>
+          <div class="zone-mail-name">Lehi South — Silicon Slopes</div>
+          <div class="zone-mail-stats">
+            <div class="zone-stat"><span class="zone-stat-num">10K</span><span class="zone-stat-lbl">Homes / drop</span></div>
+            <div class="zone-stat"><span class="zone-stat-num">Bi-Mo</span><span class="zone-stat-lbl">Frequency</span></div>
           </div>
-          <h3 style="font-size:18px; margin-bottom:12px;">Lehi South — Silicon Slopes &amp; Tech Corridor</h3>
-          <div class="zone-highlights">
-            <div class="zone-highlight"><span class="zone-highlight-icon">📍</span> Silicon Slopes tech campus, I-15 access routes</div>
-            <div class="zone-highlight"><span class="zone-highlight-icon">🚗</span> High weekday traffic from tech workers &amp; commuters</div>
-            <div class="zone-highlight"><span class="zone-highlight-icon">🏘️</span> Growing residential development south of downtown</div>
+          <div class="zone-mail-highlights">
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">💼</span> Tech workers, dual-income households</div>
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏘️</span> Growing residential south of tech corridor</div>
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🚀</span> Rapid population growth = low ad saturation</div>
           </div>
-          <div class="zone-impressions">
-            <div class="zone-imp-box">
-              <span class="zone-imp-num">50K+</span>
-              <span class="zone-imp-lbl">Monthly impressions</span>
-            </div>
-            <div class="zone-imp-box">
-              <span class="zone-imp-num">$300</span>
-              <span class="zone-imp-lbl">Starting / month</span>
-            </div>
-          </div>
-          <button class="btn btn-primary" style="width:100%; justify-content:center;" data-zone-cta="Lehi Zone B">Claim Lehi Zone B <span class="btn-arrow">→</span></button>
+          <a href="contact.html?zone=Lehi+Zone+B" class="btn btn-secondary">Add This Zone <span class="btn-arrow">→</span></a>
         </div>
       </div>
     </div>
 
-    <!-- ── AMERICAN FORK ── -->
+    <!-- AMERICAN FORK -->
     <div class="city-block reveal">
       <div class="city-header">
         <div>
           <div class="city-name">American Fork</div>
-          <div class="city-meta">Main Street corridor · Strong local business culture · 35,000+ residents</div>
+          <div class="city-meta">2 delivery zones · 20,000 homes · Strong local business community</div>
         </div>
-        <span class="city-avail-badge all-open">2 of 2 Open</span>
+        <span class="city-badge">Zones Open</span>
       </div>
       <div class="zones-pair">
-        <div class="zone-detail-card available">
-          <div class="zone-detail-header">
-            <span class="zone-letter">ZONE A</span>
-            <span class="zone-badge available">Available</span>
+        <div class="zone-mail-card">
+          <div class="zone-letter-tag">Zone A</div>
+          <div class="zone-mail-name">AF Central — Main Street District</div>
+          <div class="zone-mail-stats">
+            <div class="zone-stat"><span class="zone-stat-num">10K</span><span class="zone-stat-lbl">Homes / drop</span></div>
+            <div class="zone-stat"><span class="zone-stat-num">Bi-Mo</span><span class="zone-stat-lbl">Frequency</span></div>
           </div>
-          <h3 style="font-size:18px; margin-bottom:12px;">American Fork Main — Central District</h3>
-          <div class="zone-highlights">
-            <div class="zone-highlight"><span class="zone-highlight-icon">📍</span> Main Street businesses, Smith's, local shopping</div>
-            <div class="zone-highlight"><span class="zone-highlight-icon">🚗</span> High-traffic intersections at 900 E and Main</div>
-            <div class="zone-highlight"><span class="zone-highlight-icon">🏘️</span> Family neighborhoods with strong local loyalty</div>
+          <div class="zone-mail-highlights">
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏪</span> Main Street shoppers, Smith's, local retail</div>
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏘️</span> Established families, long-term residents</div>
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🤝</span> High loyalty to local businesses they know</div>
           </div>
-          <div class="zone-impressions">
-            <div class="zone-imp-box"><span class="zone-imp-num">50K+</span><span class="zone-imp-lbl">Monthly impressions</span></div>
-            <div class="zone-imp-box"><span class="zone-imp-num">$300</span><span class="zone-imp-lbl">Starting / month</span></div>
-          </div>
-          <button class="btn btn-primary" style="width:100%; justify-content:center;" data-zone-cta="American Fork Zone A">Claim AF Zone A <span class="btn-arrow">→</span></button>
+          <a href="contact.html?zone=American+Fork+Zone+A" class="btn btn-secondary">Add This Zone <span class="btn-arrow">→</span></a>
         </div>
-        <div class="zone-detail-card available">
-          <div class="zone-detail-header">
-            <span class="zone-letter">ZONE B</span>
-            <span class="zone-badge available">Available</span>
+        <div class="zone-mail-card">
+          <div class="zone-letter-tag">Zone B</div>
+          <div class="zone-mail-name">AF East — Residential &amp; Schools</div>
+          <div class="zone-mail-stats">
+            <div class="zone-stat"><span class="zone-stat-num">10K</span><span class="zone-stat-lbl">Homes / drop</span></div>
+            <div class="zone-stat"><span class="zone-stat-num">Bi-Mo</span><span class="zone-stat-lbl">Frequency</span></div>
           </div>
-          <h3 style="font-size:18px; margin-bottom:12px;">American Fork East — Residential &amp; Schools</h3>
-          <div class="zone-highlights">
-            <div class="zone-highlight"><span class="zone-highlight-icon">📍</span> School drop-off zones, parks, rec centers</div>
-            <div class="zone-highlight"><span class="zone-highlight-icon">🚗</span> Afternoon family traffic, school pickup routes</div>
-            <div class="zone-highlight"><span class="zone-highlight-icon">🏘️</span> Dense residential with high homeownership rate</div>
+          <div class="zone-mail-highlights">
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏫</span> School zones, parks, active family areas</div>
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏘️</span> High homeownership, stable income households</div>
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">👨‍👩‍👧</span> Families making purchasing decisions for the home</div>
           </div>
-          <div class="zone-impressions">
-            <div class="zone-imp-box"><span class="zone-imp-num">50K+</span><span class="zone-imp-lbl">Monthly impressions</span></div>
-            <div class="zone-imp-box"><span class="zone-imp-num">$300</span><span class="zone-imp-lbl">Starting / month</span></div>
-          </div>
-          <button class="btn btn-primary" style="width:100%; justify-content:center;" data-zone-cta="American Fork Zone B">Claim AF Zone B <span class="btn-arrow">→</span></button>
+          <a href="contact.html?zone=American+Fork+Zone+B" class="btn btn-secondary">Add This Zone <span class="btn-arrow">→</span></a>
         </div>
       </div>
     </div>
 
-    <!-- ── SARATOGA SPRINGS ── -->
+    <!-- SARATOGA SPRINGS -->
     <div class="city-block reveal">
       <div class="city-header">
         <div>
           <div class="city-name">Saratoga Springs</div>
-          <div class="city-meta">One of Utah's fastest-growing zip codes · New construction · High discretionary income</div>
+          <div class="city-meta">2 delivery zones · 20,000 homes · One of Utah's fastest-growing zip codes</div>
         </div>
-        <span class="city-avail-badge all-open">2 of 2 Open</span>
+        <span class="city-badge">Zones Open</span>
       </div>
       <div class="zones-pair">
-        <div class="zone-detail-card available">
-          <div class="zone-detail-header"><span class="zone-letter">ZONE A</span><span class="zone-badge available">Available</span></div>
-          <h3 style="font-size:18px; margin-bottom:12px;">Saratoga Springs West — Lake Mountain District</h3>
-          <div class="zone-highlights">
-            <div class="zone-highlight"><span class="zone-highlight-icon">📍</span> Grocery, pharmacy, and daily errand corridors</div>
-            <div class="zone-highlight"><span class="zone-highlight-icon">🚗</span> New neighborhoods, high homeowner-to-renter ratio</div>
-            <div class="zone-highlight"><span class="zone-highlight-icon">🏘️</span> Families moving in from Provo and SLC areas</div>
+        <div class="zone-mail-card">
+          <div class="zone-letter-tag">Zone A</div>
+          <div class="zone-mail-name">SS West — Lake Mountain District</div>
+          <div class="zone-mail-stats">
+            <div class="zone-stat"><span class="zone-stat-num">10K</span><span class="zone-stat-lbl">Homes / drop</span></div>
+            <div class="zone-stat"><span class="zone-stat-num">Bi-Mo</span><span class="zone-stat-lbl">Frequency</span></div>
           </div>
-          <div class="zone-impressions">
-            <div class="zone-imp-box"><span class="zone-imp-num">50K+</span><span class="zone-imp-lbl">Monthly impressions</span></div>
-            <div class="zone-imp-box"><span class="zone-imp-num">$300</span><span class="zone-imp-lbl">Starting / month</span></div>
+          <div class="zone-mail-highlights">
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏗️</span> New construction neighborhoods, fresh households</div>
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">💰</span> High discretionary income, new homeowners</div>
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🔓</span> Very low local ad saturation — wide open market</div>
           </div>
-          <button class="btn btn-primary" style="width:100%; justify-content:center;" data-zone-cta="Saratoga Springs Zone A">Claim SS Zone A <span class="btn-arrow">→</span></button>
+          <a href="contact.html?zone=Saratoga+Springs+Zone+A" class="btn btn-secondary">Add This Zone <span class="btn-arrow">→</span></a>
         </div>
-        <div class="zone-detail-card available">
-          <div class="zone-detail-header"><span class="zone-letter">ZONE B</span><span class="zone-badge available">Available</span></div>
-          <h3 style="font-size:18px; margin-bottom:12px;">Saratoga Springs East — Commerce &amp; Crossroads</h3>
-          <div class="zone-highlights">
-            <div class="zone-highlight"><span class="zone-highlight-icon">📍</span> Crossroads retail, fast-growing commercial strip</div>
-            <div class="zone-highlight"><span class="zone-highlight-icon">🚗</span> Heavy commuter traffic toward Lehi/Draper I-15</div>
-            <div class="zone-highlight"><span class="zone-highlight-icon">🏘️</span> Newly established neighborhood businesses</div>
+        <div class="zone-mail-card">
+          <div class="zone-letter-tag">Zone B</div>
+          <div class="zone-mail-name">SS East — Commerce &amp; Crossroads</div>
+          <div class="zone-mail-stats">
+            <div class="zone-stat"><span class="zone-stat-num">10K</span><span class="zone-stat-lbl">Homes / drop</span></div>
+            <div class="zone-stat"><span class="zone-stat-num">Bi-Mo</span><span class="zone-stat-lbl">Frequency</span></div>
           </div>
-          <div class="zone-impressions">
-            <div class="zone-imp-box"><span class="zone-imp-num">50K+</span><span class="zone-imp-lbl">Monthly impressions</span></div>
-            <div class="zone-imp-box"><span class="zone-imp-num">$300</span><span class="zone-imp-lbl">Starting / month</span></div>
+          <div class="zone-mail-highlights">
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🚗</span> Heavy commuter traffic corridor toward I-15</div>
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏘️</span> Newly established neighborhoods, growing families</div>
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">📈</span> Population growing 15%+ per year</div>
           </div>
-          <button class="btn btn-primary" style="width:100%; justify-content:center;" data-zone-cta="Saratoga Springs Zone B">Claim SS Zone B <span class="btn-arrow">→</span></button>
+          <a href="contact.html?zone=Saratoga+Springs+Zone+B" class="btn btn-secondary">Add This Zone <span class="btn-arrow">→</span></a>
         </div>
       </div>
     </div>
 
-    <!-- ── HIGHLAND ── -->
+    <!-- HIGHLAND -->
     <div class="city-block reveal">
       <div class="city-header">
         <div>
           <div class="city-name">Highland</div>
-          <div class="city-meta">Established community · High household income · Strong local brand loyalty</div>
+          <div class="city-meta">2 delivery zones · 20,000 homes · Established community, high household income</div>
         </div>
-        <span class="city-avail-badge all-open">2 of 2 Open</span>
+        <span class="city-badge">Zones Open</span>
       </div>
       <div class="zones-pair">
-        <div class="zone-detail-card available">
-          <div class="zone-detail-header"><span class="zone-letter">ZONE A</span><span class="zone-badge available">Available</span></div>
-          <h3 style="font-size:18px; margin-bottom:12px;">Highland Central — Main Residential Corridor</h3>
-          <div class="zone-highlights">
-            <div class="zone-highlight"><span class="zone-highlight-icon">📍</span> Pioneer Crossing, Highland Drive, daily errand routes</div>
-            <div class="zone-highlight"><span class="zone-highlight-icon">🚗</span> Family-heavy traffic throughout the day</div>
-            <div class="zone-highlight"><span class="zone-highlight-icon">🏘️</span> High-income homeowners who value local providers</div>
+        <div class="zone-mail-card">
+          <div class="zone-letter-tag">Zone A</div>
+          <div class="zone-mail-name">Highland Central — Main Corridor</div>
+          <div class="zone-mail-stats">
+            <div class="zone-stat"><span class="zone-stat-num">10K</span><span class="zone-stat-lbl">Homes / drop</span></div>
+            <div class="zone-stat"><span class="zone-stat-num">Bi-Mo</span><span class="zone-stat-lbl">Frequency</span></div>
           </div>
-          <div class="zone-impressions">
-            <div class="zone-imp-box"><span class="zone-imp-num">50K+</span><span class="zone-imp-lbl">Monthly impressions</span></div>
-            <div class="zone-imp-box"><span class="zone-imp-num">$300</span><span class="zone-imp-lbl">Starting / month</span></div>
+          <div class="zone-mail-highlights">
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">📍</span> Pioneer Crossing, Highland Drive daily routes</div>
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">💰</span> Among highest median incomes in Utah County</div>
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏡</span> Homeowners who invest in quality local services</div>
           </div>
-          <button class="btn btn-primary" style="width:100%; justify-content:center;" data-zone-cta="Highland Zone A">Claim Highland Zone A <span class="btn-arrow">→</span></button>
+          <a href="contact.html?zone=Highland+Zone+A" class="btn btn-secondary">Add This Zone <span class="btn-arrow">→</span></a>
         </div>
-        <div class="zone-detail-card available">
-          <div class="zone-detail-header"><span class="zone-letter">ZONE B</span><span class="zone-badge available">Available</span></div>
-          <h3 style="font-size:18px; margin-bottom:12px;">Highland North — Border with Cedar Hills</h3>
-          <div class="zone-highlights">
-            <div class="zone-highlight"><span class="zone-highlight-icon">📍</span> North Highland, Cedar Hills boundary retail areas</div>
-            <div class="zone-highlight"><span class="zone-highlight-icon">🚗</span> Cross-city commuters, school run traffic</div>
-            <div class="zone-highlight"><span class="zone-highlight-icon">🏘️</span> Long-established residential, low advertiser saturation</div>
+        <div class="zone-mail-card">
+          <div class="zone-letter-tag">Zone B</div>
+          <div class="zone-mail-name">Highland North — Cedar Hills Border</div>
+          <div class="zone-mail-stats">
+            <div class="zone-stat"><span class="zone-stat-num">10K</span><span class="zone-stat-lbl">Homes / drop</span></div>
+            <div class="zone-stat"><span class="zone-stat-num">Bi-Mo</span><span class="zone-stat-lbl">Frequency</span></div>
           </div>
-          <div class="zone-impressions">
-            <div class="zone-imp-box"><span class="zone-imp-num">50K+</span><span class="zone-imp-lbl">Monthly impressions</span></div>
-            <div class="zone-imp-box"><span class="zone-imp-num">$300</span><span class="zone-imp-lbl">Starting / month</span></div>
+          <div class="zone-mail-highlights">
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏘️</span> Long-established residential, loyal community</div>
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🔓</span> Very low local direct mail presence</div>
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">📬</span> Households that engage with physical mail</div>
           </div>
-          <button class="btn btn-primary" style="width:100%; justify-content:center;" data-zone-cta="Highland Zone B">Claim Highland Zone B <span class="btn-arrow">→</span></button>
+          <a href="contact.html?zone=Highland+Zone+B" class="btn btn-secondary">Add This Zone <span class="btn-arrow">→</span></a>
         </div>
       </div>
     </div>
 
-    <!-- ── EAGLE MOUNTAIN ── -->
+    <!-- EAGLE MOUNTAIN -->
     <div class="city-block reveal">
       <div class="city-header">
         <div>
           <div class="city-name">Eagle Mountain</div>
-          <div class="city-meta">Fastest-growing city in Utah · Low advertiser saturation · Families &amp; new homeowners</div>
+          <div class="city-meta">2 delivery zones · 20,000 homes · Fastest-growing city in Utah</div>
         </div>
-        <span class="city-avail-badge all-open">2 of 2 Open</span>
+        <span class="city-badge">Zones Open</span>
       </div>
       <div class="zones-pair">
-        <div class="zone-detail-card available">
-          <div class="zone-detail-header"><span class="zone-letter">ZONE A</span><span class="zone-badge available">Available</span></div>
-          <h3 style="font-size:18px; margin-bottom:12px;">Eagle Mountain South — Civic &amp; Commercial Hub</h3>
-          <div class="zone-highlights">
-            <div class="zone-highlight"><span class="zone-highlight-icon">📍</span> Eagle Mountain City Hall, Harmons, shopping centers</div>
-            <div class="zone-highlight"><span class="zone-highlight-icon">🚗</span> Primary commercial streets with new development</div>
-            <div class="zone-highlight"><span class="zone-highlight-icon">🏘️</span> Young families, new construction, service-hungry market</div>
+        <div class="zone-mail-card">
+          <div class="zone-letter-tag">Zone A</div>
+          <div class="zone-mail-name">EM South — Civic &amp; Commercial Hub</div>
+          <div class="zone-mail-stats">
+            <div class="zone-stat"><span class="zone-stat-num">10K</span><span class="zone-stat-lbl">Homes / drop</span></div>
+            <div class="zone-stat"><span class="zone-stat-num">Bi-Mo</span><span class="zone-stat-lbl">Frequency</span></div>
           </div>
-          <div class="zone-impressions">
-            <div class="zone-imp-box"><span class="zone-imp-num">50K+</span><span class="zone-imp-lbl">Monthly impressions</span></div>
-            <div class="zone-imp-box"><span class="zone-imp-num">$300</span><span class="zone-imp-lbl">Starting / month</span></div>
+          <div class="zone-mail-highlights">
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏪</span> Harmons, city hall, main shopping area</div>
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">👨‍👩‍👧</span> Young families actively using local services</div>
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🔓</span> Virtually zero local direct mail competition</div>
           </div>
-          <button class="btn btn-primary" style="width:100%; justify-content:center;" data-zone-cta="Eagle Mountain Zone A">Claim EM Zone A <span class="btn-arrow">→</span></button>
+          <a href="contact.html?zone=Eagle+Mountain+Zone+A" class="btn btn-secondary">Add This Zone <span class="btn-arrow">→</span></a>
         </div>
-        <div class="zone-detail-card available">
-          <div class="zone-detail-header"><span class="zone-letter">ZONE B</span><span class="zone-badge available">Available</span></div>
-          <h3 style="font-size:18px; margin-bottom:12px;">Eagle Mountain North — Residential Expansion</h3>
-          <div class="zone-highlights">
-            <div class="zone-highlight"><span class="zone-highlight-icon">📍</span> New neighborhoods, schools, daily errand routes</div>
-            <div class="zone-highlight"><span class="zone-highlight-icon">🚗</span> Commuter routes to Saratoga Springs and Lehi</div>
-            <div class="zone-highlight"><span class="zone-highlight-icon">🏘️</span> Virtually zero competing local advertisers in this area</div>
+        <div class="zone-mail-card">
+          <div class="zone-letter-tag">Zone B</div>
+          <div class="zone-mail-name">EM North — Residential Expansion</div>
+          <div class="zone-mail-stats">
+            <div class="zone-stat"><span class="zone-stat-num">10K</span><span class="zone-stat-lbl">Homes / drop</span></div>
+            <div class="zone-stat"><span class="zone-stat-num">Bi-Mo</span><span class="zone-stat-lbl">Frequency</span></div>
           </div>
-          <div class="zone-impressions">
-            <div class="zone-imp-box"><span class="zone-imp-num">50K+</span><span class="zone-imp-lbl">Monthly impressions</span></div>
-            <div class="zone-imp-box"><span class="zone-imp-num">$300</span><span class="zone-imp-lbl">Starting / month</span></div>
+          <div class="zone-mail-highlights">
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏗️</span> New neighborhoods, new homeowners</div>
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🚗</span> Commuter families, service-ready market</div>
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">📈</span> Under-served by local advertisers — first-mover advantage</div>
           </div>
-          <button class="btn btn-primary" style="width:100%; justify-content:center;" data-zone-cta="Eagle Mountain Zone B">Claim EM Zone B <span class="btn-arrow">→</span></button>
+          <a href="contact.html?zone=Eagle+Mountain+Zone+B" class="btn btn-secondary">Add This Zone <span class="btn-arrow">→</span></a>
         </div>
       </div>
     </div>
 
-    <!-- ── PLEASANT GROVE ── -->
+    <!-- PLEASANT GROVE -->
     <div class="city-block reveal">
       <div class="city-header">
         <div>
           <div class="city-name">Pleasant Grove</div>
-          <div class="city-meta">Strong community ties · Active local economy · Gateway city between Utah Valley cities</div>
+          <div class="city-meta">2 delivery zones · 20,000 homes · Gateway city between Utah Valley cities</div>
         </div>
-        <span class="city-avail-badge all-open">2 of 2 Open</span>
+        <span class="city-badge">Zones Open</span>
       </div>
       <div class="zones-pair">
-        <div class="zone-detail-card available">
-          <div class="zone-detail-header"><span class="zone-letter">ZONE A</span><span class="zone-badge available">Available</span></div>
-          <h3 style="font-size:18px; margin-bottom:12px;">Pleasant Grove Central — State Street &amp; Main</h3>
-          <div class="zone-highlights">
-            <div class="zone-highlight"><span class="zone-highlight-icon">📍</span> State Street retail, Smith's, Macey's, daily traffic</div>
-            <div class="zone-highlight"><span class="zone-highlight-icon">🚗</span> Main commuter corridor between PG and Lindon</div>
-            <div class="zone-highlight"><span class="zone-highlight-icon">🏘️</span> Established community with consistent daily patterns</div>
+        <div class="zone-mail-card">
+          <div class="zone-letter-tag">Zone A</div>
+          <div class="zone-mail-name">PG Central — State Street &amp; Main</div>
+          <div class="zone-mail-stats">
+            <div class="zone-stat"><span class="zone-stat-num">10K</span><span class="zone-stat-lbl">Homes / drop</span></div>
+            <div class="zone-stat"><span class="zone-stat-num">Bi-Mo</span><span class="zone-stat-lbl">Frequency</span></div>
           </div>
-          <div class="zone-impressions">
-            <div class="zone-imp-box"><span class="zone-imp-num">50K+</span><span class="zone-imp-lbl">Monthly impressions</span></div>
-            <div class="zone-imp-box"><span class="zone-imp-num">$300</span><span class="zone-imp-lbl">Starting / month</span></div>
+          <div class="zone-mail-highlights">
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🛒</span> State Street retail, Smith's, Macey's corridor</div>
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏘️</span> Established community, consistent daily patterns</div>
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🤝</span> Strong local business loyalty across the area</div>
           </div>
-          <button class="btn btn-primary" style="width:100%; justify-content:center;" data-zone-cta="Pleasant Grove Zone A">Claim PG Zone A <span class="btn-arrow">→</span></button>
+          <a href="contact.html?zone=Pleasant+Grove+Zone+A" class="btn btn-secondary">Add This Zone <span class="btn-arrow">→</span></a>
         </div>
-        <div class="zone-detail-card available">
-          <div class="zone-detail-header"><span class="zone-letter">ZONE B</span><span class="zone-badge available">Available</span></div>
-          <h3 style="font-size:18px; margin-bottom:12px;">Pleasant Grove East — Foothill &amp; Residential</h3>
-          <div class="zone-highlights">
-            <div class="zone-highlight"><span class="zone-highlight-icon">📍</span> East-side neighborhoods, cul-de-sac communities</div>
-            <div class="zone-highlight"><span class="zone-highlight-icon">🚗</span> School and family traffic, errands to AF/Orem</div>
-            <div class="zone-highlight"><span class="zone-highlight-icon">🏘️</span> Loyal to local businesses they discover organically</div>
+        <div class="zone-mail-card">
+          <div class="zone-letter-tag">Zone B</div>
+          <div class="zone-mail-name">PG East — Foothill &amp; Residential</div>
+          <div class="zone-mail-stats">
+            <div class="zone-stat"><span class="zone-stat-num">10K</span><span class="zone-stat-lbl">Homes / drop</span></div>
+            <div class="zone-stat"><span class="zone-stat-num">Bi-Mo</span><span class="zone-stat-lbl">Frequency</span></div>
           </div>
-          <div class="zone-impressions">
-            <div class="zone-imp-box"><span class="zone-imp-num">50K+</span><span class="zone-imp-lbl">Monthly impressions</span></div>
-            <div class="zone-imp-box"><span class="zone-imp-num">$300</span><span class="zone-imp-lbl">Starting / month</span></div>
+          <div class="zone-mail-highlights">
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏡</span> East-side neighborhoods, homeowner-heavy</div>
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏫</span> School communities, family-centric areas</div>
+            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">📬</span> Receptive to direct mail from local businesses</div>
           </div>
-          <button class="btn btn-primary" style="width:100%; justify-content:center;" data-zone-cta="Pleasant Grove Zone B">Claim PG Zone B <span class="btn-arrow">→</span></button>
+          <a href="contact.html?zone=Pleasant+Grove+Zone+B" class="btn btn-secondary">Add This Zone <span class="btn-arrow">→</span></a>
         </div>
       </div>
     </div>
 
-    <!-- Exclusivity note -->
-    <div class="exclusivity-note reveal">
-      <p><strong>How category exclusivity works:</strong> When you claim a zone, you tell us your business category (HVAC, dental, restaurant, etc.). No other business in that same category can advertise in your zone for the duration of your plan. You're protected from direct competitors — they can't share the same ad vehicle or mailer zone. If you cancel, your exclusivity expires and the category reopens.</p>
-    </div>
   </div>
 </section>
 
 <!-- CTA BAND -->
 <section class="cta-band">
   <div class="container">
-    <span class="eyebrow reveal">Don't wait on this one</span>
-    <h2 class="reveal">Every zone is open right now.<br><em class="display-italic">That won't last long.</em></h2>
-    <p class="reveal reveal-delay-1">Once a competitor in your category claims your zone, you're locked out until they cancel. Book a free 15-minute demo and we'll help you pick the right zone before it's gone.</p>
+    <span class="eyebrow reveal">Ready to reach local mailboxes?</span>
+    <h2 class="reveal">12 zones. All open.<br><em class="display-italic">Your category, your mailboxes.</em></h2>
+    <p class="reveal reveal-delay-1">No bidding wars. No algorithm changes. Just your ad landing in front of 10,000 real Utah County households every two months — with your business the only one in your category in those zones.</p>
     <div class="cta-buttons reveal reveal-delay-2">
-      <a href="contact.html" class="btn btn-primary btn-lg">Claim My Zone <span class="btn-arrow">→</span></a>
-      <a href="pricing.html" class="btn btn-secondary btn-lg">See Pricing</a>
+      <a href="contact.html" class="btn btn-primary btn-lg">Talk to Danyon <span class="btn-arrow">→</span></a>
+      <a href="pricing.html" class="btn btn-secondary btn-lg">See All Pricing</a>
     </div>
   </div>
 </section>
@@ -554,7 +811,8 @@
     <div class="footer-col">
       <span class="footer-col-title">Company</span>
       <a href="about.html">About Drivertise</a>
-      <a href="zones.html">Available Zones</a>
+      <a href="car-zones.html">Ad Zone Builder</a>
+      <a href="zones.html">Mailer Zones</a>
       <a href="faq.html">FAQ</a>
       <a href="contact.html">Contact / Demo</a>
     </div>

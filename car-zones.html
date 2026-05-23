@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Preview your logo on Drivertise USA's Volvo S60 ad zones. Click any zone, upload your design, and see exactly what your ad will look like on the vehicle before you commit.">
+  <title>Ad Zone Builder — Drivertise USA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    /* ── Zone Picker Grid ── */
+    .zone-picker {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 48px;
+    }
+    .zone-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0;
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .zone-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--border);
+      transition: background 0.2s;
+    }
+    .zone-card:hover,
+    .zone-card.active {
+      border-color: var(--yellow);
+      box-shadow: 0 0 0 1px var(--yellow), 0 8px 32px rgba(230,223,26,0.12);
+      transform: translateY(-2px);
+    }
+    .zone-card:hover::before,
+    .zone-card.active::before {
+      background: linear-gradient(90deg, var(--gold), var(--yellow));
+    }
+    .zone-card.active {
+      transform: none;
+    }
+    .zone-thumb {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #fff;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .zone-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transition: transform 0.3s;
+    }
+    .zone-card:hover .zone-thumb img { transform: scale(1.04); }
+    .zone-thumb-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #f0f0f0 0%, #e8e8e8 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+    }
+    .zone-card-body {
+      padding: 16px;
+    }
+    .zone-card-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--yellow);
+      margin-bottom: 4px;
+    }
+    .zone-card-name {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--cream);
+      margin-bottom: 4px;
+    }
+    .zone-card-desc {
+      font-size: 12px;
+      color: var(--w55);
+      line-height: 1.5;
+    }
+    .zone-card-cta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--w38);
+      transition: color 0.2s;
+    }
+    .zone-card:hover .zone-card-cta,
+    .zone-card.active .zone-card-cta { color: var(--yellow); }
+
+    /* ── Editor Workspace ── */
+    .editor-workspace {
+      display: none;
+      margin-top: 48px;
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      position: relative;
+    }
+    .editor-workspace.open { display: block; }
+    .editor-workspace::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--yellow));
+      z-index: 2;
+    }
+    .editor-layout {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      min-height: 540px;
+    }
+
+    /* ── Canvas Panel ── */
+    .canvas-panel {
+      background: #F0EEE8;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    .canvas-toolbar {
+      background: #fff;
+      border-bottom: 1px solid rgba(10,13,18,0.10);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .canvas-toolbar-title {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 800;
+      color: #0A0D12;
+      flex: 1;
+    }
+    .canvas-toolbar-hint {
+      font-size: 11px;
+      color: rgba(10,13,18,0.45);
+    }
+    .canvas-area {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: default;
+      min-height: 400px;
+    }
+    .zone-bg-img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+    .canvas-drop-hint {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      pointer-events: none;
+    }
+    .canvas-drop-hint.has-logo { display: none; }
+    .drop-icon {
+      width: 56px;
+      height: 56px;
+      background: rgba(230,223,26,0.12);
+      border: 2px dashed rgba(230,223,26,0.40);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+    .drop-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(10,13,18,0.50);
+    }
+
+    /* ── Logo wrapper (the draggable/resizable/rotatable element) ── */
+    .logo-wrapper {
+      position: absolute;
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+    }
+    .logo-wrapper:active { cursor: grabbing; }
+    .logo-wrapper img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      pointer-events: none;
+      border: 2px dashed rgba(230,223,26,0.70);
+      border-radius: 4px;
+      padding: 4px;
+      background: rgba(255,255,255,0.25);
+    }
+    .logo-wrapper.no-select img { border-color: rgba(230,223,26,0.40); }
+
+    /* Handles */
+    .lw-handle {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: var(--yellow);
+      border: 2px solid #0A0D12;
+      border-radius: 3px;
+      z-index: 10;
+    }
+    .lw-handle-tl { top: -6px; left: -6px; cursor: nw-resize; }
+    .lw-handle-tr { top: -6px; right: -6px; cursor: ne-resize; }
+    .lw-handle-bl { bottom: -6px; left: -6px; cursor: sw-resize; }
+    .lw-handle-br { bottom: -6px; right: -6px; cursor: se-resize; }
+    .lw-handle-rotate {
+      position: absolute;
+      top: -36px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 24px;
+      height: 24px;
+      background: var(--yellow);
+      border: 2px solid #0A0D12;
+      border-radius: 50%;
+      cursor: grab;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      line-height: 1;
+      z-index: 10;
+    }
+    .lw-handle-rotate::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 14px;
+      background: var(--yellow);
+    }
+    .lw-handle-rotate:active { cursor: grabbing; }
+
+    /* Canvas drag-over state */
+    .canvas-area.drag-over {
+      outline: 3px dashed var(--yellow);
+      outline-offset: -8px;
+    }
+
+    /* ── Controls Panel ── */
+    .controls-panel {
+      background: var(--bg2);
+      border-left: 1px solid var(--border);
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      overflow-y: auto;
+    }
+    .controls-zone-name {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--cream);
+      letter-spacing: -0.025em;
+      margin-bottom: 4px;
+    }
+    .controls-zone-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--yellow);
+      margin-bottom: 16px;
+    }
+    .controls-zone-desc {
+      font-size: 14px;
+      color: var(--w70);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .controls-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 16px 0;
+    }
+    .controls-meta-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .controls-meta-icon {
+      font-size: 16px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .controls-meta-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--w38);
+      margin-bottom: 2px;
+    }
+    .controls-meta-val {
+      font-size: 13px;
+      color: var(--w70);
+    }
+
+    /* Upload section */
+    .upload-section {
+      margin-top: 8px;
+    }
+    .upload-section-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--w38);
+      margin-bottom: 12px;
+    }
+    .upload-btn-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--bg3);
+      border: 1px dashed var(--border-gold);
+      border-radius: var(--radius);
+      padding: 16px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--yellow);
+      transition: background 0.2s, border-color 0.2s;
+      text-align: center;
+    }
+    .upload-btn-label:hover {
+      background: var(--yellow-dim);
+      border-color: var(--yellow);
+    }
+    .upload-btn-label span { font-size: 20px; }
+    #logo-upload { display: none; }
+
+    .logo-controls {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .logo-controls.visible { display: flex; }
+    .logo-ctrl-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--w70);
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+      text-align: left;
+      font-family: var(--font-body);
+    }
+    .logo-ctrl-btn:hover { border-color: var(--border-gold); color: var(--cream); }
+    .logo-ctrl-btn span { font-size: 16px; }
+
+    /* Instruction hints */
+    .hint-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .hint-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--w38);
+    }
+    .hint-icon {
+      width: 24px;
+      height: 24px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    /* CTA */
+    .controls-cta {
+      margin-top: auto;
+      padding-top: 20px;
+    }
+    .controls-cta .btn {
+      width: 100%;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+    .controls-cta-note {
+      font-size: 11px;
+      color: var(--w38);
+      text-align: center;
+    }
+
+    /* ── No zone selected state ── */
+    .editor-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 280px;
+      gap: 16px;
+      padding: 48px;
+    }
+    .editor-placeholder-icon {
+      width: 72px;
+      height: 72px;
+      background: var(--yellow-dim);
+      border: 1px solid rgba(230,223,26,0.20);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+    }
+    .editor-placeholder h3 {
+      font-size: 20px;
+      color: var(--cream);
+      margin-bottom: 6px;
+    }
+    .editor-placeholder p {
+      font-size: 14px;
+      color: var(--w38);
+      max-width: 340px;
+      text-align: center;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 1100px) {
+      .zone-picker { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 860px) {
+      .zone-picker { grid-template-columns: repeat(2, 1fr); }
+      .editor-layout { grid-template-columns: 1fr; }
+      .controls-panel { border-left: none; border-top: 1px solid var(--border); }
+      .controls-cta { margin-top: 24px; }
+    }
+    @media (max-width: 520px) {
+      .zone-picker { grid-template-columns: 1fr 1fr; gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo">DRIVERTISE<span class="text-yellow">.</span></a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="services.html">Services</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="zones.html">Zones</a>
+      <a href="faq.html">FAQ</a>
+      <a href="about.html">About</a>
+    </nav>
+    <a href="contact.html" class="btn btn-primary nav-cta">Get a Demo</a>
+    <button class="nav-toggle" aria-label="Open navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<nav class="nav-mobile" id="nav-mobile" aria-label="Mobile navigation">
+  <a href="services.html">Services</a>
+  <a href="pricing.html">Pricing</a>
+  <a href="zones.html">Zones</a>
+  <a href="faq.html">FAQ</a>
+  <a href="about.html">About</a>
+  <a href="contact.html" class="btn btn-primary btn-lg">Get a Demo</a>
+</nav>
+
+<!-- PAGE HERO -->
+<div style="margin-top: var(--nav-h);"></div>
+<section class="page-hero">
+  <div class="container">
+    <span class="eyebrow">Ad Zone Builder</span>
+    <h1>See your brand<br><em class="display-italic">on the car.</em></h1>
+    <p style="margin-top:20px; max-width:540px;">Click any zone below. Upload your logo. Drag, resize, and rotate it into position — then request a quote for that exact zone. No commitment required.</p>
+  </div>
+</section>
+
+<!-- ZONE PICKER + EDITOR -->
+<section class="section-pad" style="padding-top: 0;">
+  <div class="container">
+
+    <!-- Zone Cards -->
+    <div class="zone-picker" id="zone-picker">
+
+      <div class="zone-card reveal" data-zone="driver-door" tabindex="0" role="button" aria-label="Select Driver Door zone">
+        <div class="zone-thumb">
+          <img src="assets/zone-side-left.png" alt="Driver door zone" style="object-position: 52% center;">
+        </div>
+        <div class="zone-card-body">
+          <div class="zone-card-label">Front Left</div>
+          <div class="zone-card-name">Driver Door</div>
+          <div class="zone-card-desc">Faces oncoming traffic at every intersection and stop.</div>
+          <div class="zone-card-cta">Preview this zone <span class="btn-arrow">→</span></div>
+        </div>
+      </div>
+
+      <div class="zone-card reveal reveal-delay-1" data-zone="rear-driver-door" tabindex="0" role="button" aria-label="Select Rear Driver Door zone">
+        <div class="zone-thumb">
+          <img src="assets/zone-side-left.png" alt="Rear driver door zone" style="object-position: 68% center;">
+        </div>
+        <div class="zone-card-body">
+          <div class="zone-card-label">Rear Left</div>
+          <div class="zone-card-name">Rear Driver Door</div>
+          <div class="zone-card-desc">Rear driver side — high visibility at traffic lights.</div>
+          <div class="zone-card-cta">Preview this zone <span class="btn-arrow">→</span></div>
+        </div>
+      </div>
+
+      <div class="zone-card reveal reveal-delay-2" data-zone="passenger-door" tabindex="0" role="button" aria-label="Select Passenger Door zone">
+        <div class="zone-thumb">
+          <img src="assets/zone-side-right.png" alt="Passenger door zone" style="object-position: 48% center;">
+        </div>
+        <div class="zone-card-body">
+          <div class="zone-card-label">Front Right</div>
+          <div class="zone-card-name">Passenger Door</div>
+          <div class="zone-card-desc">Curb-side visibility — close-up views from pedestrians.</div>
+          <div class="zone-card-cta">Preview this zone <span class="btn-arrow">→</span></div>
+        </div>
+      </div>
+
+      <div class="zone-card reveal reveal-delay-3" data-zone="rear-passenger-door" tabindex="0" role="button" aria-label="Select Rear Passenger Door zone">
+        <div class="zone-thumb">
+          <img src="assets/zone-side-right.png" alt="Rear passenger door zone" style="object-position: 65% center;">
+        </div>
+        <div class="zone-card-body">
+          <div class="zone-card-label">Rear Right</div>
+          <div class="zone-card-name">Rear Passenger Door</div>
+          <div class="zone-card-desc">Full side coverage — great for four-door packages.</div>
+          <div class="zone-card-cta">Preview this zone <span class="btn-arrow">→</span></div>
+        </div>
+      </div>
+
+      <div class="zone-card reveal" data-zone="hood" tabindex="0" role="button" aria-label="Select Hood zone">
+        <div class="zone-thumb">
+          <img src="assets/zone-top-view.png" alt="Hood zone" style="object-position: 80% center;">
+        </div>
+        <div class="zone-card-body">
+          <div class="zone-card-label">Top Front</div>
+          <div class="zone-card-name">Hood</div>
+          <div class="zone-card-desc">Massive surface visible from parking structures &amp; elevated angles.</div>
+          <div class="zone-card-cta">Preview this zone <span class="btn-arrow">→</span></div>
+        </div>
+      </div>
+
+      <div class="zone-card reveal reveal-delay-1" data-zone="rear-window" tabindex="0" role="button" aria-label="Select Rear Window zone">
+        <div class="zone-thumb">
+          <img src="assets/zone-top-view.png" alt="Rear window zone" style="object-position: 20% center;">
+        </div>
+        <div class="zone-card-body">
+          <div class="zone-card-label">Perforated Vinyl</div>
+          <div class="zone-card-name">Rear Window</div>
+          <div class="zone-card-desc">See-through from inside, opaque outside — direct line of sight from trailing cars.</div>
+          <div class="zone-card-cta">Preview this zone <span class="btn-arrow">→</span></div>
+        </div>
+      </div>
+
+      <div class="zone-card reveal reveal-delay-2" data-zone="billboard" tabindex="0" role="button" aria-label="Select Electric Billboard zone">
+        <div class="zone-thumb zone-thumb-placeholder">
+          ⚡
+        </div>
+        <div class="zone-card-body">
+          <div class="zone-card-label">Roof LED Display</div>
+          <div class="zone-card-name">Electric Billboard</div>
+          <div class="zone-card-desc">Dynamic LED panel on roof — visible day &amp; night, update anytime.</div>
+          <div class="zone-card-cta">Preview this zone <span class="btn-arrow">→</span></div>
+        </div>
+      </div>
+
+    </div><!-- /zone-picker -->
+
+    <!-- Editor Workspace -->
+    <div class="editor-workspace" id="editor-workspace">
+
+      <!-- Initial: no zone selected -->
+      <div class="editor-placeholder" id="editor-placeholder">
+        <div class="editor-placeholder-icon">👆</div>
+        <div>
+          <h3>Select a zone above to start</h3>
+          <p>Click any zone card to open the preview builder. Upload your logo and see it placed on the vehicle.</p>
+        </div>
+      </div>
+
+      <!-- Active editor (hidden until zone selected) -->
+      <div class="editor-layout" id="editor-layout" style="display:none;">
+
+        <!-- Left: Canvas -->
+        <div class="canvas-panel">
+          <div class="canvas-toolbar">
+            <div class="canvas-toolbar-title" id="editor-zone-name-bar">Zone Preview</div>
+            <div class="canvas-toolbar-hint">Drag · resize · rotate your logo</div>
+          </div>
+          <div class="canvas-area" id="canvas-area">
+            <img class="zone-bg-img" id="zone-bg-img" src="" alt="Zone template">
+            <div class="canvas-drop-hint" id="canvas-drop-hint">
+              <div class="drop-icon">📁</div>
+              <div class="drop-text">Upload your logo to place it here</div>
+            </div>
+            <!-- .logo-wrapper injected here by JS -->
+          </div>
+        </div>
+
+        <!-- Right: Controls -->
+        <div class="controls-panel">
+          <div class="controls-zone-label" id="ctrl-zone-label">—</div>
+          <div class="controls-zone-name" id="ctrl-zone-name">—</div>
+          <div class="controls-zone-desc" id="ctrl-zone-desc">—</div>
+
+          <div class="controls-divider"></div>
+
+          <div class="controls-meta-row">
+            <span class="controls-meta-icon">📐</span>
+            <div>
+              <div class="controls-meta-label">Approx. Dimensions</div>
+              <div class="controls-meta-val" id="ctrl-dims">—</div>
+            </div>
+          </div>
+          <div class="controls-meta-row">
+            <span class="controls-meta-icon">👁️</span>
+            <div>
+              <div class="controls-meta-label">Best Visibility</div>
+              <div class="controls-meta-val" id="ctrl-visibility">—</div>
+            </div>
+          </div>
+
+          <div class="controls-divider"></div>
+
+          <!-- Upload -->
+          <div class="upload-section">
+            <div class="upload-section-title">Your Logo / Design</div>
+            <label class="upload-btn-label" for="logo-upload">
+              <span>📤</span> Upload logo or design file
+            </label>
+            <input type="file" id="logo-upload" accept="image/*">
+
+            <!-- Controls shown after upload -->
+            <div class="logo-controls" id="logo-controls">
+              <button class="logo-ctrl-btn" id="btn-center"><span>⊕</span> Center logo in zone</button>
+              <button class="logo-ctrl-btn" id="btn-reset-rotation"><span>↺</span> Reset rotation</button>
+              <button class="logo-ctrl-btn" id="btn-clear-logo"><span>✕</span> Remove logo</button>
+            </div>
+
+            <!-- Hints -->
+            <div class="hint-list" style="margin-top:16px;" id="upload-hints">
+              <div class="hint-row"><div class="hint-icon">🖱️</div> Drag to reposition</div>
+              <div class="hint-row"><div class="hint-icon">↕</div> Pull corners to resize</div>
+              <div class="hint-row"><div class="hint-icon">↻</div> Use top handle to rotate</div>
+            </div>
+          </div>
+
+          <div class="controls-divider" style="margin-top:16px;"></div>
+
+          <div class="controls-cta">
+            <a href="contact.html" class="btn btn-primary" id="ctrl-quote-btn">
+              Get a Quote for This Zone <span class="btn-arrow">→</span>
+            </a>
+            <a href="pricing.html" class="btn btn-secondary" style="width:100%; justify-content:center; margin-top:8px;">
+              View Pricing
+            </a>
+            <p class="controls-cta-note" style="margin-top:12px;">Free 15-min demo. No commitment required.</p>
+          </div>
+        </div>
+
+      </div><!-- /editor-layout -->
+    </div><!-- /editor-workspace -->
+
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section class="cta-band">
+  <div class="container">
+    <span class="eyebrow reveal">Like what you see?</span>
+    <h2 class="reveal">Your brand on the road<br><em class="display-italic">in 5–10 business days.</em></h2>
+    <p class="reveal reveal-delay-1">Pick your zone, submit your creative, and we handle everything else. Call or schedule a free demo — Danyon will walk you through the exact zones that fit your business.</p>
+    <div class="cta-buttons reveal reveal-delay-2">
+      <a href="contact.html" class="btn btn-primary btn-lg">Schedule a Free Demo <span class="btn-arrow">→</span></a>
+      <a href="pricing.html" class="btn btn-secondary btn-lg">See Pricing</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <a href="index.html" class="nav-logo" style="margin-bottom:16px; display:inline-block;">DRIVERTISE<span class="text-yellow">.</span></a>
+      <p>Mobile advertising for Utah County businesses. We put your brand everywhere your customers already go.</p>
+      <div class="footer-contact" style="margin-top:20px;">
+        <a href="tel:+13852046561">(385) 204-6561</a>
+        <a href="mailto:hello@drivertiseusa.com">hello@drivertiseusa.com</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <span class="footer-col-title">Services</span>
+      <a href="services.html#car-wrap">Car Wrap Ads</a>
+      <a href="services.html#billboard">Electric Billboard</a>
+      <a href="services.html#direct-mail">Direct Mail Co-op</a>
+      <a href="pricing.html">View Pricing</a>
+    </div>
+    <div class="footer-col">
+      <span class="footer-col-title">Company</span>
+      <a href="about.html">About Drivertise</a>
+      <a href="zones.html">Mailer Zones</a>
+      <a href="faq.html">FAQ</a>
+      <a href="contact.html">Contact / Demo</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container footer-bottom-inner">
+      <p>© 2026 Drivertise USA. All rights reserved. Serving Utah County, Utah.</p>
+      <div class="footer-legal">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/car-zones.js"></script>
+</body>
+</html>
