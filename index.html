@@ -136,8 +136,8 @@
       to   { opacity: 1; transform: translateY(0); }
     }
     @keyframes heroFloat {
-      0%,  100% { transform: translateY(0px) rotate(-2deg); }
-      50%        { transform: translateY(-14px) rotate(-2deg); }
+      0%,  100% { transform: translateY(0px); }
+      50%        { transform: translateY(-14px); }
     }
 
     /* Route card */
@@ -538,6 +538,70 @@
       .stats-strip-yellow { grid-template-columns: 1fr 1fr; }
       .city-card-grid { grid-template-columns: 1fr 1fr; }
     }
+    /* ════════════════════════════════
+       LIGHT SECTION CARD VARIANTS
+    ════════════════════════════════ */
+    .how-step-light {
+      background: #fff;
+      border: 1px solid rgba(10,13,18,0.08);
+      border-radius: var(--radius-lg);
+      padding: 40px 32px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+    .how-step-light:hover {
+      border-color: rgba(200,151,58,0.40);
+      box-shadow: 0 8px 32px rgba(10,13,18,0.10);
+    }
+    .how-step-light .how-step-ghost { color: rgba(10,13,18,0.06); }
+    .how-step-light .how-step-circle {
+      background: rgba(200,151,58,0.12);
+      border-color: rgba(200,151,58,0.40);
+      color: var(--gold);
+    }
+    .how-step-light h3 { color: #0A0D12; }
+    .how-step-light p  { color: rgba(10,13,18,0.65); }
+
+    .service-card-light {
+      background: #fff;
+      border: 1px solid rgba(10,13,18,0.08);
+      border-radius: var(--radius-lg);
+      padding: 44px 40px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease), transform 0.3s var(--ease);
+    }
+    .service-card-light:hover {
+      border-color: rgba(200,151,58,0.40);
+      box-shadow: 0 12px 48px rgba(10,13,18,0.12);
+      transform: translateY(-6px);
+    }
+    .service-card-light-featured {
+      border-color: rgba(200,151,58,0.35);
+    }
+    .service-card-light .service-num { color: rgba(10,13,18,0.04); }
+    .service-card-light h3 { color: #0A0D12; }
+    .service-card-light p  { color: rgba(10,13,18,0.65); }
+    .service-card-light .service-price-period { color: rgba(10,13,18,0.45); }
+    .service-card-light .service-feature-list li { color: rgba(10,13,18,0.70); }
+    .service-card-light .service-feature-list li span { color: #1DB870; }
+    .service-card-light .card-link { color: #0A0D12; font-weight: 700; }
+
+    .section-light .testimonial-card {
+      background: #fff;
+      border-color: rgba(10,13,18,0.08);
+    }
+    .section-light .testimonial-quote { color: rgba(10,13,18,0.70); }
+    .section-light .testimonial-name  { color: #0A0D12; }
+    .section-light .testimonial-biz   { color: rgba(10,13,18,0.45); }
+    .section-light .testimonial-stars .testimonial-star { color: var(--gold); }
+    .section-light .testimonial-avatar {
+      background: rgba(200,151,58,0.12);
+      border-color: rgba(200,151,58,0.30);
+      color: var(--gold);
+    }
+
   </style>
 </head>
 <body>
@@ -571,8 +635,8 @@
 <!-- ════ TICKER ════ -->
 <div class="ticker" style="margin-top: var(--nav-h);">
   <div class="ticker-track">
-    <span class="ticker-text">Lehi <span>·</span> American Fork <span>·</span> Saratoga Springs <span>·</span> Highland <span>·</span> Eagle Mountain <span>·</span> Pleasant Grove <span>·</span> Serving Utah County Since 2026 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-    <span class="ticker-text">Lehi <span>·</span> American Fork <span>·</span> Saratoga Springs <span>·</span> Highland <span>·</span> Eagle Mountain <span>·</span> Pleasant Grove <span>·</span> Serving Utah County Since 2026 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <span class="ticker-text">Lehi <span>·</span> American Fork <span>·</span> Saratoga Springs <span>·</span> Highland <span>·</span> Eagle Mountain <span>·</span> Pleasant Grove <span>·</span> Sandy <span>·</span> Draper <span>·</span> Bluffdale <span>·</span> Riverton <span>·</span> Serving Utah County &amp; Salt Lake County Since 2026 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <span class="ticker-text">Lehi <span>·</span> American Fork <span>·</span> Saratoga Springs <span>·</span> Highland <span>·</span> Eagle Mountain <span>·</span> Pleasant Grove <span>·</span> Sandy <span>·</span> Draper <span>·</span> Bluffdale <span>·</span> Riverton <span>·</span> Serving Utah County &amp; Salt Lake County Since 2026 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
   </div>
 </div>
 
@@ -585,7 +649,7 @@
 
     <!-- Left: content -->
     <div class="hero-content">
-      <span class="eyebrow">Mobile Advertising · Utah County</span>
+      <span class="eyebrow">Mobile Advertising · Utah County &amp; Salt Lake County</span>
       <h1 class="hero-headline">
         Your brand.<br>
         <em class="hero-em">Everywhere</em><br>
@@ -597,11 +661,11 @@
         <span class="hero-count-label">impressions this week</span>
       </div>
       <p class="hero-sub">
-        The most targeted mobile advertising in Utah County. Real-world impressions across Lehi, American Fork, Saratoga Springs, and beyond — no algorithms, no opt-ins, no guesswork.
+        The most targeted mobile advertising in Utah County. Real-world impressions across Lehi, American Fork, Saratoga Springs, Sandy, and beyond — covering Utah County and southern Salt Lake County — no algorithms, no opt-ins, no guesswork.
       </p>
       <div class="hero-actions">
-        <a href="zones.html" class="btn btn-primary btn-lg">
-          See Available Zones <span class="btn-arrow">→</span>
+        <a href="services.html" class="btn btn-primary btn-lg">
+          Explore Our Services <span class="btn-arrow">→</span>
         </a>
         <a href="pricing.html" class="btn btn-secondary btn-lg">View Pricing</a>
       </div>
@@ -612,7 +676,7 @@
         </div>
         <div class="trust-item">
           <span style="color:var(--gold);">◆</span>
-          6 cities covered
+          2 counties covered
         </div>
         <div class="trust-item">
           <span style="color:var(--w20);">◆</span>
@@ -677,14 +741,14 @@
     <span class="stat-label-y">Take action after<br>seeing a vehicle wrap</span>
   </div>
   <div class="stat-item-y">
-    <span class="stat-num-y" data-counter data-target="12">12</span>
+    <span class="stat-num-y" data-counter data-target="6">6</span>
     <span class="stat-label-y">Zones across Utah County<br>&amp; southern Salt Lake County</span>
   </div>
 </div>
 <p style="text-align:center; font-size:11px; color:var(--w20); padding:12px 0 0; position:relative; z-index:1;">Daily impression estimate based on Utah County route data, OAAA suburban vehicle advertising methodology, and Costco/Smith's foot traffic averages. Individual results vary.</p>
 
 <!-- ════ HOW IT WORKS ════ -->
-<section class="section-pad" id="how">
+<section class="section-pad section-light" id="how">
   <div class="container">
     <div class="section-header reveal">
       <span class="eyebrow">How It Works</span>
@@ -692,23 +756,23 @@
       <p>No complicated setup. No long contracts required to start. We handle the details so you can focus on running your business.</p>
     </div>
     <div class="grid-3">
-      <div class="how-step-dark reveal">
+      <div class="how-step-light reveal">
         <span class="how-step-ghost">01</span>
         <div class="how-step-circle">1</div>
-        <h3 style="color:var(--cream); margin-bottom:10px; font-size:20px;">Pick Your Zone</h3>
-        <p style="font-size:14px; color:var(--w55); line-height:1.75;">Choose from 6 delivery zones across Utah County and southern Salt Lake County. Each zone covers high-traffic routes — grocery stores, shopping districts, commute corridors in your target area.</p>
+        <h3 style="margin-bottom:10px; font-size:20px;">Choose Your Service</h3>
+        <p style="font-size:14px; line-height:1.75;">Select from Magnetic Zone Ads (door signs), Electric Billboard (roof LED display), or Direct Mail Co-op (10,000 homes per zone). Mix and match for maximum reach.</p>
       </div>
-      <div class="how-step-dark reveal reveal-delay-2">
+      <div class="how-step-light reveal reveal-delay-2">
         <span class="how-step-ghost">02</span>
         <div class="how-step-circle">2</div>
-        <h3 style="color:var(--cream); margin-bottom:10px; font-size:20px;">Submit Your Creative</h3>
-        <p style="font-size:14px; color:var(--w55); line-height:1.75;">Send us your logo, message, and preferred design. Need help? We'll guide you. You review and approve everything before anything goes on the vehicle.</p>
+        <h3 style="margin-bottom:10px; font-size:20px;">Submit Your Creative</h3>
+        <p style="font-size:14px; line-height:1.75;">Send us your logo, message, and preferred design. Need help? We'll guide you. You review and approve everything before anything goes on the vehicle.</p>
       </div>
-      <div class="how-step-dark reveal reveal-delay-3">
+      <div class="how-step-light reveal reveal-delay-3">
         <span class="how-step-ghost">03</span>
         <div class="how-step-circle">3</div>
-        <h3 style="color:var(--cream); margin-bottom:10px; font-size:20px;">We Drive Daily</h3>
-        <p style="font-size:14px; color:var(--w55); line-height:1.75;">Your brand hits high-traffic areas every day. You receive weekly impression reports. Add a QR code or promo code to track direct response from the very first week.</p>
+        <h3 style="margin-bottom:10px; font-size:20px;">We Do The Rest</h3>
+        <p style="font-size:14px; line-height:1.75;">Your brand hits the road daily. Weekly impression reports delivered automatically. Mailer clients receive a print proof before full production. We handle every detail.</p>
       </div>
     </div>
     <div style="text-align:center; margin-top:48px;">
@@ -718,7 +782,7 @@
 </section>
 
 <!-- ════ SERVICES ════ -->
-<section class="section-pad" id="services">
+<section class="section-pad section-light" id="services">
   <div class="container">
     <div class="section-header reveal">
       <span class="eyebrow">Our Services</span>
@@ -728,10 +792,10 @@
     <div class="grid-3">
 
       <!-- Service 1: Magnetic Zone Ads -->
-      <div class="service-card reveal">
+      <div class="service-card-light reveal">
         <span class="service-num">01</span>
         <div class="service-icon" style="background:rgba(200,151,58,0.12); border:1px solid rgba(200,151,58,0.25);">🧲</div>
-        <h3 style="color:var(--cream); margin-bottom:12px;">Magnetic Zone Ads</h3>
+        <h3 style="margin-bottom:12px;">Magnetic Zone Ads</h3>
         <p style="font-size:14px; color:var(--w55); line-height:1.75;">Your logo on magnetic vinyl signs professionally mounted to the vehicle's doors — easy to swap when clients change, impossible to ignore when driving. Your brand in your zone, every single day.</p>
         <ul class="service-feature-list">
           <li><span>✓</span> Magnetic vinyl — easy remove &amp; replace</li>
@@ -739,16 +803,16 @@
           <li><span>✓</span> QR code or promo code tracking</li>
           <li><span>✓</span> Month-to-month, cancel anytime</li>
         </ul>
-        <div class="service-price">$199<span style="font-size:18px; font-weight:500; color:var(--w38);">/mo</span></div>
+        <div class="service-price" style="color:var(--gold);">$199<span style="font-size:18px; font-weight:500; color:rgba(10,13,18,0.45);">/mo</span></div>
         <div class="service-price-period">starting price · per zone · no contract</div>
         <a href="services.html#magnetic" class="card-link">Full details <span class="btn-arrow">→</span></a>
       </div>
 
       <!-- Service 2: Electric Billboard (Featured) -->
-      <div class="service-card service-card-featured reveal reveal-delay-2">
+      <div class="service-card-light service-card-light-featured reveal reveal-delay-2">
         <span class="service-num">02</span>
         <div class="service-icon" style="background:rgba(200,151,58,0.12); border:1px solid rgba(200,151,58,0.25);">⚡</div>
-        <h3 style="color:var(--cream); margin-bottom:12px;">Electric Billboard</h3>
+        <h3 style="margin-bottom:12px;">Electric Billboard</h3>
         <p style="font-size:14px; color:var(--w55); line-height:1.75;">A roof-mounted LED display showing your rotating ad to everyone nearby. Update your creative anytime — promote a sale, an event, or a seasonal offer. Works day and night, in any weather.</p>
         <ul class="service-feature-list">
           <li><span>✓</span> High-visibility digital LED display</li>
@@ -756,16 +820,16 @@
           <li><span>✓</span> Static or animated creative</li>
           <li><span>✓</span> Pair with car wrap for full impact</li>
         </ul>
-        <div class="service-price" style="font-size:clamp(28px,3vw,38px);">Add-on</div>
+        <div class="service-price" style="font-size:clamp(28px,3vw,38px); color:var(--gold);">Add-on</div>
         <div class="service-price-period">to any wrap package · ask for pricing</div>
         <a href="contact.html" class="card-link">Ask about pricing <span class="btn-arrow">→</span></a>
       </div>
 
       <!-- Service 3: Direct Mail -->
-      <div class="service-card reveal reveal-delay-3">
+      <div class="service-card-light reveal reveal-delay-3">
         <span class="service-num">03</span>
         <div class="service-icon" style="background:rgba(77,232,160,0.10); border:1px solid rgba(77,232,160,0.20);">📬</div>
-        <h3 style="color:var(--cream); margin-bottom:12px;">Direct Mail Co-op</h3>
+        <h3 style="margin-bottom:12px;">Direct Mail Co-op</h3>
         <p style="font-size:14px; color:var(--w55); line-height:1.75;">Co-op ad space in a targeted mailer delivered to 10,000 homes per zone across Utah County and southern Salt Lake County. Your offer alongside complementary local businesses — no competing ads in your category, trackable promo codes included.</p>
         <ul class="service-feature-list">
           <li><span>✓</span> 10,000 targeted homes per zone</li>
@@ -773,7 +837,7 @@
           <li><span>✓</span> Exclusive category per zone</li>
           <li><span>✓</span> Promo code tracking included</li>
         </ul>
-        <div class="service-price">$199<span style="font-size:18px; font-weight:500; color:var(--w38);">/zone</span></div>
+        <div class="service-price" style="color:var(--gold);">$199<span style="font-size:18px; font-weight:500; color:rgba(10,13,18,0.45);">/zone</span></div>
         <div class="service-price-period">starting price · per zone · bi-monthly drops</div>
         <a href="services.html#direct-mail" class="card-link">Full details <span class="btn-arrow">→</span></a>
       </div>
@@ -829,78 +893,9 @@
   </div>
 </section>
 
-<!-- ════ ZONE AVAILABILITY TEASER ════ -->
-<section class="section-pad section-light" id="zone-map">
-  <div class="container">
-    <div class="section-header reveal">
-      <span class="eyebrow">Available Zones</span>
-      <h2>6 zones across Utah County & southern SL County — all still open</h2>
-      <p>Each zone covers a distinct market area. Once your business category is claimed in a zone, no direct competitors can advertise there. First come, first served.</p>
-    </div>
-    <div class="city-card-grid reveal">
-      <div class="city-card">
-        <div class="city-zone-name">Lehi</div>
-        <div class="city-zone-status">2 zones · Both available</div>
-        <div class="city-zone-dots">
-          <div class="zone-dot open" title="Zone A — Available"></div>
-          <div class="zone-dot open" title="Zone B — Available"></div>
-        </div>
-      </div>
-      <div class="city-card">
-        <div class="city-zone-name">American Fork</div>
-        <div class="city-zone-status">2 zones · Both available</div>
-        <div class="city-zone-dots">
-          <div class="zone-dot open"></div>
-          <div class="zone-dot open"></div>
-        </div>
-      </div>
-      <div class="city-card">
-        <div class="city-zone-name">Saratoga Springs</div>
-        <div class="city-zone-status">2 zones · Both available</div>
-        <div class="city-zone-dots">
-          <div class="zone-dot open"></div>
-          <div class="zone-dot open"></div>
-        </div>
-      </div>
-      <div class="city-card">
-        <div class="city-zone-name">Highland</div>
-        <div class="city-zone-status">2 zones · Both available</div>
-        <div class="city-zone-dots">
-          <div class="zone-dot open"></div>
-          <div class="zone-dot open"></div>
-        </div>
-      </div>
-      <div class="city-card">
-        <div class="city-zone-name">Eagle Mountain</div>
-        <div class="city-zone-status">2 zones · Both available</div>
-        <div class="city-zone-dots">
-          <div class="zone-dot open"></div>
-          <div class="zone-dot open"></div>
-        </div>
-      </div>
-      <div class="city-card">
-        <div class="city-zone-name">Pleasant Grove</div>
-        <div class="city-zone-status">2 zones · Both available</div>
-        <div class="city-zone-dots">
-          <div class="zone-dot open"></div>
-          <div class="zone-dot open"></div>
-        </div>
-      </div>
-    </div>
-    <div style="display:flex; align-items:center; gap:24px; margin-top:36px; flex-wrap:wrap;">
-      <div style="display:flex; align-items:center; gap:8px; font-size:13px; color:rgba(10,13,18,0.55);">
-        <span style="width:10px; height:10px; border-radius:50%; background:#4DE8A0; display:inline-block;"></span> Zone available
-      </div>
-      <div style="display:flex; align-items:center; gap:8px; font-size:13px; color:rgba(10,13,18,0.55);">
-        <span style="width:10px; height:10px; border-radius:50%; background:rgba(10,13,18,0.20); display:inline-block;"></span> Zone taken
-      </div>
-      <a href="zones.html" class="btn btn-primary" style="margin-left:auto;">View all zones &amp; details <span class="btn-arrow">→</span></a>
-    </div>
-  </div>
-</section>
 
 <!-- ════ TESTIMONIALS ════ -->
-<section class="section-pad" id="testimonials">
+<section class="section-pad section-light" id="testimonials">
   <div class="container">
     <div class="section-header reveal">
       <span class="eyebrow">Client Results</span>
@@ -967,7 +962,7 @@
   <div class="container footer-inner">
     <div class="footer-brand">
       <a href="index.html" class="nav-logo" style="margin-bottom:16px; display:inline-block;">DRIVERTISE<span class="text-yellow">.</span></a>
-      <p>Mobile advertising for Utah County businesses. We put your brand everywhere your customers already go — no algorithms, no opt-ins, real-world presence.</p>
+      <p>Mobile advertising for Utah County and southern Salt Lake County businesses. We put your brand everywhere your customers already go — no algorithms, no opt-ins, real-world presence.</p>
       <div class="footer-contact" style="margin-top:20px;">
         <a href="tel:+13852046561">(385) 204-6561</a>
         <a href="mailto:hello@drivertiseusa.com">hello@drivertiseusa.com</a>

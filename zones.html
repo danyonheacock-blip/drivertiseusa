@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
     /* ── Tier Pricing Cards ── */
     .tier-grid {
@@ -545,6 +546,26 @@
   </div>
 </section>
 
+<!-- INTERACTIVE MAP -->
+<section class="section-pad" id="zone-map-section" style="padding-bottom:0;">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">Zone Coverage Map</span>
+      <h2>See where we deliver.<br><em class="display-italic">Click a zone to explore.</em></h2>
+      <p>Green zones are in Utah County. Gold zones are in southern Salt Lake County. Click any polygon to see zone details, household estimates, and anchor locations.</p>
+    </div>
+    <div id="leaflet-zone-map" style="height:480px; border-radius:var(--radius-lg); overflow:hidden; border:1px solid var(--border); margin-bottom:0;" class="reveal"></div>
+    <div style="display:flex; gap:24px; flex-wrap:wrap; margin-top:16px; margin-bottom:0; padding-bottom:0;" class="reveal">
+      <div style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--w55);">
+        <span style="width:16px; height:10px; background:rgba(77,232,160,0.50); border:2px solid #1DB870; border-radius:3px; display:inline-block;"></span> Utah County Zones
+      </div>
+      <div style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--w55);">
+        <span style="width:16px; height:10px; background:rgba(200,151,58,0.50); border:2px solid #A07020; border-radius:3px; display:inline-block;"></span> Salt Lake County Zones
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- DELIVERY ZONES -->
 <section class="section-pad section-light">
   <div class="container">
@@ -800,5 +821,7 @@
 </footer>
 
 <script src="js/main.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="js/zone-map.js"></script>
 </body>
 </html>
