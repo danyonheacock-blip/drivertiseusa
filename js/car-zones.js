@@ -37,7 +37,7 @@ const ZONES = {
     desc: 'The curb-side panel — pedestrians, riders, and parking lot foot traffic get a close-up, personal view of your brand every time.',
     dims: 'Approx. 36" × 22"',
     visibility: 'Pedestrians, curb-side, parking areas',
-    editorImg: 'assets/zone-front-door-close.png',
+    editorImg: 'assets/zone-door-panel.png',
     contactParam: 'Passenger Door',
   },
   'rear-passenger-door': {
