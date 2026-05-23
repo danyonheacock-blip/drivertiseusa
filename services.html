@@ -140,6 +140,53 @@
       .service-stat-row { gap: 8px; }
       .service-price-block { flex-direction: column; align-items: flex-start; gap: 12px; }
     }
+
+    /* ── Magnetic Zone Packages ── */
+    .mzp-toggle-wrap { display:flex; align-items:center; justify-content:center; gap:4px; background:var(--bg3); border:1px solid var(--border); border-radius:10px; padding:4px; width:fit-content; margin:0 auto 40px; }
+    .mzp-toggle-btn { font-family:var(--font-body); font-size:13px; font-weight:600; padding:10px 20px; border-radius:7px; color:var(--w55); background:transparent; border:none; cursor:pointer; transition:background 0.2s var(--ease),color 0.2s; display:flex; align-items:center; gap:8px; white-space:nowrap; }
+    .mzp-toggle-btn.mzp-toggle-active { background:var(--bg); color:var(--cream); box-shadow:0 2px 8px rgba(0,0,0,0.3); }
+    .mzp-save-badge { background:var(--yellow-dim); color:var(--yellow); border:1px solid rgba(230,223,26,0.25); font-size:10px; font-weight:700; letter-spacing:0.5px; padding:2px 8px; border-radius:20px; }
+    .mzp-storage-banner { display:flex; align-items:center; gap:16px; background:linear-gradient(90deg,rgba(200,151,58,0.10) 0%,rgba(200,151,58,0.04) 100%); border:1px solid var(--border-gold); border-radius:var(--radius-lg); padding:18px 24px; margin-bottom:52px; font-size:14px; color:var(--w70); line-height:1.55; }
+    .mzp-storage-icon { font-size:28px; flex-shrink:0; }
+    .mzp-storage-banner strong { color:var(--gold); }
+    .mzp-grid { align-items:start; }
+    .mzp-card { display:flex; flex-direction:column; }
+    .mzp-subtitle { font-size:13px; color:var(--w55); margin-top:4px; margin-bottom:24px; line-height:1.5; }
+    .mzp-price-block { margin-bottom:4px; }
+    .mzp-period { margin-top:6px; }
+    .mzp-sixmo-note { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:8px; }
+    .mzp-sixmo-total { font-size:13px; color:var(--w55); }
+    .mzp-savings-pill { background:var(--yellow-dim); border:1px solid rgba(230,223,26,0.25); color:var(--yellow); font-size:11px; font-weight:700; letter-spacing:0.5px; padding:3px 10px; border-radius:20px; }
+    .mzp-price-num { display:inline-block; transition:opacity 0.2s var(--ease); }
+    .mzp-price-num.swapping { opacity:0; }
+    .mzp-cta-btn { width:100%; justify-content:center; margin-top:auto; padding-top:14px; padding-bottom:14px; }
+    .mzp-zone-pick { margin-top:20px; border-top:1px solid var(--border); padding-top:16px; }
+    .mzp-zone-label { display:block; font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--w38); margin-bottom:10px; }
+    .mzp-zones { display:flex; flex-wrap:wrap; gap:6px; }
+    .mzp-zone-chip { font-size:11px; font-weight:600; padding:4px 11px; border-radius:20px; background:var(--w04); border:1px solid var(--border); color:var(--w38); }
+    .mzp-zone-chip.mzp-zone-active { background:var(--green-dim); border-color:rgba(77,232,160,0.25); color:var(--green); }
+    .mzp-alacarte { margin-top:48px; background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; }
+    .mzp-alacarte-inner { display:grid; grid-template-columns:1fr 1fr; gap:0; }
+    .mzp-alacarte-left { padding:40px; border-right:1px solid var(--border); }
+    .mzp-alacarte-right { padding:40px; }
+    .mzp-alacarte-eyebrow { display:block; font-family:var(--font-body); font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:12px; }
+    .mzp-alacarte-title { font-family:var(--font-display); font-size:22px; font-weight:800; color:var(--cream); letter-spacing:-0.02em; line-height:1.1; margin-bottom:14px; }
+    .mzp-alacarte-desc { font-size:14px; color:var(--w55); line-height:1.7; }
+    .mzp-alacarte-doors { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .mzp-door-box { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:14px 16px; text-align:center; transition:border-color 0.2s,box-shadow 0.2s; }
+    .mzp-door-box:hover { border-color:var(--border-gold); box-shadow:0 2px 12px rgba(200,151,58,0.10); }
+    .mzp-door-icon { font-size:20px; margin-bottom:6px; }
+    .mzp-door-name { font-size:11px; font-weight:600; color:var(--w55); margin-bottom:6px; line-height:1.3; }
+    .mzp-door-price { font-family:var(--font-display); font-size:18px; font-weight:800; color:var(--cream); letter-spacing:-0.02em; }
+    .mzp-door-price span { font-size:12px; font-weight:500; color:var(--w38); letter-spacing:0; }
+    .mzp-policy { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:36px; padding:32px; background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius-lg); }
+    .mzp-policy-item { display:flex; gap:14px; align-items:flex-start; }
+    .mzp-policy-icon { font-size:22px; flex-shrink:0; margin-top:2px; }
+    .mzp-policy-item strong { display:block; font-family:var(--font-display); font-size:14px; font-weight:700; color:var(--cream); margin-bottom:6px; }
+    .mzp-policy-item p { font-size:13px; color:var(--w55); line-height:1.65; }
+    @media (max-width:900px) { .mzp-alacarte-inner { grid-template-columns:1fr; } .mzp-alacarte-left { border-right:none; border-bottom:1px solid var(--border); } .mzp-policy { grid-template-columns:1fr; gap:20px; } }
+    @media (max-width:768px) { .mzp-toggle-wrap { flex-direction:column; width:100%; max-width:340px; } .mzp-toggle-btn { width:100%; justify-content:center; } .mzp-alacarte-left,.mzp-alacarte-right { padding:28px 24px; } .mzp-policy { padding:24px; } }
+    @media (max-width:480px) { .mzp-storage-banner { flex-direction:column; text-align:center; } }
   </style>
 </head>
 <body>
@@ -267,6 +314,159 @@
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ═══ MAGNETIC ZONE PACKAGES ═══ -->
+<section class="service-section" id="magnetic-zones" style="background:var(--bg3);">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="eyebrow">Magnetic Zone Packages</span>
+      <h2>Pick your doors.<br><em class="display-italic">Own your audience.</em></h2>
+      <p>Physical magnetic signs on a Volvo S60 driven daily through Utah County's highest-traffic corridors. No wrap installation. No long-term lock-in required. Just your brand on the road — and safely stored when you pause.</p>
+    </div>
+
+    <div class="mzp-toggle-wrap reveal reveal-delay-1" role="group" aria-label="Billing period">
+      <button class="mzp-toggle-btn mzp-toggle-active" id="mzp-btn-monthly" aria-pressed="true">Month-to-Month</button>
+      <button class="mzp-toggle-btn" id="mzp-btn-sixmo" aria-pressed="false">6-Month Commitment <span class="mzp-save-badge">Save 20%</span></button>
+    </div>
+
+    <div class="mzp-storage-banner reveal reveal-delay-2">
+      <span class="mzp-storage-icon">🔄</span>
+      <div><strong>Stored between campaigns.</strong> Your magnet stays with Drivertise when you pause or cancel — no reprint needed when you're ready to resume. Same sign, same brand, zero hassle.</div>
+    </div>
+
+    <div class="pricing-grid mzp-grid reveal reveal-delay-1">
+
+      <!-- Singleshot -->
+      <div class="pricing-card mzp-card" data-package="singleshot">
+        <div class="pricing-name">Singleshot</div>
+        <div class="mzp-subtitle">One door. Your choice of any zone.</div>
+        <div class="mzp-price-block">
+          <div class="pricing-price" data-monthly="149" data-sixmo="119"><sup>$</sup><span class="mzp-price-num">149</span></div>
+          <div class="pricing-period mzp-period">/ month, billed monthly</div>
+          <div class="mzp-sixmo-note" style="display:none;"><span class="mzp-sixmo-total">$714 billed every 6 months</span><span class="mzp-savings-pill">You save $180</span></div>
+        </div>
+        <div class="pricing-divider"></div>
+        <div class="pricing-features">
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>1 magnetic door sign — any door you choose</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>~30,000–40,000 monthly impressions</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Exclusive category — no direct competitor on any door</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Weekly GPS-verified impression report</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>1 design change included per campaign period</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Sign stored free when you pause or cancel</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Cancel with 30-day notice (month-to-month)</span></div>
+        </div>
+        <a href="contact.html?package=singleshot" class="btn btn-secondary mzp-cta-btn">Get This Package <span class="btn-arrow">→</span></a>
+        <div class="mzp-zone-pick">
+          <span class="mzp-zone-label">Available zones:</span>
+          <div class="mzp-zones">
+            <span class="mzp-zone-chip">Driver Door</span>
+            <span class="mzp-zone-chip">Rear Driver</span>
+            <span class="mzp-zone-chip">Passenger Door</span>
+            <span class="mzp-zone-chip">Rear Passenger</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Driver Side — FEATURED -->
+      <div class="pricing-card mzp-card featured" data-package="driverside">
+        <div class="pricing-name">Driver Side</div>
+        <div class="mzp-subtitle">Full left-side coverage — both driver doors.</div>
+        <div class="mzp-price-block">
+          <div class="pricing-price" data-monthly="249" data-sixmo="199"><sup>$</sup><span class="mzp-price-num">249</span></div>
+          <div class="pricing-period mzp-period">/ month, billed monthly</div>
+          <div class="mzp-sixmo-note" style="display:none;"><span class="mzp-sixmo-total">$1,194 billed every 6 months</span><span class="mzp-savings-pill">You save $300</span></div>
+        </div>
+        <div class="pricing-divider"></div>
+        <div class="pricing-features">
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>2 magnetic signs — front + rear driver side</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>~55,000–65,000 monthly impressions</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Exclusive category — locked across all 4 doors</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Weekly GPS-verified impression report</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>1 design change per campaign period</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Both signs stored free between campaigns</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Direct contact with Danyon — call or text anytime</span></div>
+        </div>
+        <a href="contact.html?package=driverside" class="btn btn-primary mzp-cta-btn">Get This Package <span class="btn-arrow">→</span></a>
+        <div class="mzp-zone-pick">
+          <span class="mzp-zone-label">Zones included:</span>
+          <div class="mzp-zones">
+            <span class="mzp-zone-chip mzp-zone-active">Driver Door</span>
+            <span class="mzp-zone-chip mzp-zone-active">Rear Driver</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Full Coverage -->
+      <div class="pricing-card mzp-card" data-package="fullcoverage">
+        <div class="pricing-name">Full Coverage</div>
+        <div class="mzp-subtitle">All four doors. Maximum street presence.</div>
+        <div class="mzp-price-block">
+          <div class="pricing-price" data-monthly="399" data-sixmo="319"><sup>$</sup><span class="mzp-price-num">399</span></div>
+          <div class="pricing-period mzp-period">/ month, billed monthly</div>
+          <div class="mzp-sixmo-note" style="display:none;"><span class="mzp-sixmo-total">$1,914 billed every 6 months</span><span class="mzp-savings-pill">You save $480</span></div>
+        </div>
+        <div class="pricing-divider"></div>
+        <div class="pricing-features">
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>4 magnetic signs — all doors, both sides</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>~80,000–100,000+ monthly impressions</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Complete zone exclusivity across the vehicle</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Weekly GPS-verified impression report</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>1 design change per campaign period</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>All 4 signs stored free when you pause</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Priority scheduling for route adjustments</span></div>
+        </div>
+        <a href="contact.html?package=fullcoverage" class="btn btn-secondary mzp-cta-btn">Get This Package <span class="btn-arrow">→</span></a>
+        <div class="mzp-zone-pick">
+          <span class="mzp-zone-label">All zones included:</span>
+          <div class="mzp-zones">
+            <span class="mzp-zone-chip mzp-zone-active">Driver Door</span>
+            <span class="mzp-zone-chip mzp-zone-active">Rear Driver</span>
+            <span class="mzp-zone-chip mzp-zone-active">Passenger Door</span>
+            <span class="mzp-zone-chip mzp-zone-active">Rear Passenger</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Build Your Own -->
+    <div class="mzp-alacarte reveal reveal-delay-2">
+      <div class="mzp-alacarte-inner">
+        <div class="mzp-alacarte-left">
+          <span class="mzp-alacarte-eyebrow">Build Your Own</span>
+          <h4 class="mzp-alacarte-title">Mix and match any doors.</h4>
+          <p class="mzp-alacarte-desc">Not ready for a full package? Add individual door zones at <strong style="color:var(--cream);">$149 per door / per month</strong>. Combine any doors that fit your strategy — just tell Danyon which zones you want.</p>
+        </div>
+        <div class="mzp-alacarte-right">
+          <div class="mzp-alacarte-doors">
+            <div class="mzp-door-box"><div class="mzp-door-icon">🚗</div><div class="mzp-door-name">Driver Door</div><div class="mzp-door-price">$149<span>/mo</span></div></div>
+            <div class="mzp-door-box"><div class="mzp-door-icon">🚗</div><div class="mzp-door-name">Rear Driver</div><div class="mzp-door-price">$149<span>/mo</span></div></div>
+            <div class="mzp-door-box"><div class="mzp-door-icon">🚙</div><div class="mzp-door-name">Passenger Door</div><div class="mzp-door-price">$149<span>/mo</span></div></div>
+            <div class="mzp-door-box"><div class="mzp-door-icon">🚙</div><div class="mzp-door-name">Rear Passenger</div><div class="mzp-door-price">$149<span>/mo</span></div></div>
+          </div>
+          <a href="contact.html?package=custom" class="btn btn-secondary" style="margin-top:20px; width:100%; justify-content:center;">Build a Custom Package <span class="btn-arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Policy Row -->
+    <div class="mzp-policy reveal reveal-delay-3">
+      <div class="mzp-policy-item">
+        <span class="mzp-policy-icon">🎨</span>
+        <div><strong>Design changes</strong><p>One design change included per campaign period. Additional changes require a magnet reprint — available for a flat <strong style="color:var(--cream);">$45 reprint fee</strong> per door.</p></div>
+      </div>
+      <div class="mzp-policy-item">
+        <span class="mzp-policy-icon">📅</span>
+        <div><strong>Commitment &amp; cancellation</strong><p>Month-to-month plans cancel with 30 days written notice. Six-month commitments are prepaid; early cancellation forfeits remaining months. No hidden fees.</p></div>
+      </div>
+      <div class="mzp-policy-item">
+        <span class="mzp-policy-icon">🏷️</span>
+        <div><strong>Category exclusivity</strong><p>When you claim a package, your business category is locked across all 4 doors for the duration of your campaign. No competitor shares the vehicle.</p></div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -539,5 +739,38 @@
 </footer>
 
 <script src="js/main.js"></script>
+<script>
+(function () {
+  'use strict';
+  var btnMonthly = document.getElementById('mzp-btn-monthly');
+  var btnSixmo   = document.getElementById('mzp-btn-sixmo');
+  if (!btnMonthly || !btnSixmo) return;
+  var cards = document.querySelectorAll('.mzp-card');
+
+  function setMode(sixmo) {
+    btnMonthly.classList.toggle('mzp-toggle-active', !sixmo);
+    btnSixmo.classList.toggle('mzp-toggle-active', sixmo);
+    btnMonthly.setAttribute('aria-pressed', String(!sixmo));
+    btnSixmo.setAttribute('aria-pressed', String(sixmo));
+    cards.forEach(function (card) {
+      var priceEl  = card.querySelector('.mzp-price-num');
+      var periodEl = card.querySelector('.mzp-period');
+      var noteEl   = card.querySelector('.mzp-sixmo-note');
+      var priceBox = card.querySelector('.pricing-price');
+      if (!priceEl || !priceBox) return;
+      priceEl.classList.add('swapping');
+      setTimeout(function () {
+        priceEl.textContent = sixmo ? priceBox.dataset.sixmo : priceBox.dataset.monthly;
+        if (periodEl) periodEl.textContent = sixmo ? '/ month — 6-month commitment' : '/ month, billed monthly';
+        priceEl.classList.remove('swapping');
+      }, 120);
+      if (noteEl) noteEl.style.display = sixmo ? 'flex' : 'none';
+    });
+  }
+
+  btnMonthly.addEventListener('click', function () { setMode(false); });
+  btnSixmo.addEventListener('click',   function () { setMode(true);  });
+}());
+</script>
 </body>
 </html>
