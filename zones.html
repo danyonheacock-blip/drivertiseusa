@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Drivertise USA direct mail co-op zones — 12 delivery areas across 6 Utah County cities. Choose your ad space tier and the zones you want to reach. Bi-monthly mailings to 10,000 homes per zone.">
+  <meta name="description" content="Drivertise USA direct mail co-op zones — 6 delivery areas across Utah County & southern Salt Lake County. Choose your ad space tier and the zones you want to reach. Bi-monthly mailings to 10,000 homes per zone.">
   <title>Mailer Delivery Zones — Drivertise USA</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -175,118 +175,135 @@
       line-height: 1.5;
     }
 
-    /* ── City/Zone blocks ── */
-    .city-block {
-      margin-bottom: 56px;
+    /* ── Zone Cards Grid ── */
+    .zones-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 48px;
     }
-    .city-block:last-child { margin-bottom: 0; }
-    .city-header {
+    .zone-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--border);
-      flex-wrap: wrap;
-      gap: 12px;
+      flex-direction: column;
+      gap: 0;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
-    .city-name {
-      font-family: var(--font-display);
-      font-size: 28px;
-      font-weight: 800;
-      letter-spacing: -0.025em;
-      color: var(--cream);
+    .zone-card:hover {
+      border-color: rgba(77,232,160,0.30);
+      box-shadow: 0 6px 24px rgba(77,232,160,0.07);
     }
-    .city-meta {
-      font-size: 13px;
-      color: var(--w55);
-      margin-top: 4px;
+    .zone-card.zone-slco {
+      border-color: rgba(230,181,26,0.22);
     }
-    .city-badge {
-      font-size: 11px;
+    .zone-card.zone-slco:hover {
+      border-color: var(--border-gold);
+      box-shadow: 0 6px 24px rgba(230,223,26,0.08);
+    }
+    .zone-county-pill {
+      display: inline-block;
+      font-size: 9px;
       font-weight: 700;
       letter-spacing: 1.5px;
       text-transform: uppercase;
-      padding: 6px 14px;
+      padding: 3px 10px;
       border-radius: 20px;
-      background: var(--green-dim);
+      margin-bottom: 14px;
+      width: fit-content;
+    }
+    .zone-county-pill.utah-co {
+      background: rgba(77,232,160,0.10);
       color: var(--green);
       border: 1px solid rgba(77,232,160,0.25);
     }
-
-    .zones-pair {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
+    .zone-county-pill.sl-co {
+      background: rgba(230,181,26,0.12);
+      color: var(--gold);
+      border: 1px solid rgba(230,181,26,0.30);
     }
-    .zone-mail-card {
-      background: var(--bg3);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px;
-      transition: border-color 0.2s;
-    }
-    .zone-mail-card:hover {
-      border-color: rgba(77,232,160,0.30);
-    }
-    .zone-letter-tag {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--w38);
-      margin-bottom: 8px;
-    }
-    .zone-mail-name {
+    .zone-card-name {
       font-family: var(--font-display);
-      font-size: 17px;
+      font-size: 19px;
       font-weight: 800;
       color: var(--cream);
-      margin-bottom: 12px;
+      margin-bottom: 18px;
+      line-height: 1.25;
     }
-    .zone-mail-stats {
-      display: flex;
-      gap: 12px;
+    .zone-card-divider {
+      height: 1px;
+      background: var(--border);
       margin-bottom: 16px;
     }
-    .zone-stat {
-      flex: 1;
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px;
-      text-align: center;
-    }
-    .zone-stat-num {
-      font-family: var(--font-display);
-      font-size: 18px;
-      font-weight: 800;
-      color: var(--yellow);
-      display: block;
-    }
-    .zone-stat-lbl {
-      font-size: 10px;
-      color: var(--w38);
-      letter-spacing: 0.5px;
-    }
-    .zone-mail-highlights {
+    .zone-card-stats {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
       margin-bottom: 16px;
     }
-    .zone-mail-hl {
+    .zone-card-stat {
       display: flex;
       align-items: flex-start;
       gap: 8px;
       font-size: 12px;
       color: var(--w55);
+      line-height: 1.4;
     }
-    .zone-mail-hl-icon { flex-shrink: 0; font-size: 12px; }
-    .zone-mail-card .btn {
+    .zone-card-stat-icon { flex-shrink: 0; font-size: 13px; }
+    .zone-card-anchors {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-bottom: 18px;
+    }
+    .zone-card-anchor {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--w55);
+      line-height: 1.4;
+    }
+    .zone-card-anchor::before {
+      content: '•';
+      color: var(--yellow);
+      flex-shrink: 0;
+      font-weight: 700;
+      margin-top: 1px;
+    }
+    .zone-status-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .zone-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: var(--green-dim);
+      color: var(--green);
+      border: 1px solid rgba(77,232,160,0.25);
+    }
+    .zone-status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      flex-shrink: 0;
+    }
+    .zone-card .btn {
       width: 100%;
       justify-content: center;
       font-size: 13px;
+      margin-top: auto;
     }
 
     /* ── How it works ── */
@@ -325,13 +342,16 @@
       line-height: 1.6;
     }
 
+    @media (max-width: 1024px) {
+      .zones-grid { grid-template-columns: repeat(2, 1fr); }
+    }
     @media (max-width: 900px) {
       .tier-grid { grid-template-columns: 1fr; }
       .bundle-grid { grid-template-columns: 1fr; }
       .how-steps { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 600px) {
-      .zones-pair { grid-template-columns: 1fr; }
+      .zones-grid { grid-template-columns: 1fr; }
       .how-steps { grid-template-columns: 1fr; }
       .bundle-strip { padding: 28px 20px; }
     }
@@ -371,7 +391,7 @@
   <div class="container">
     <span class="eyebrow">Direct Mail Co-op</span>
     <h1>Pick your zones.<br><em class="display-italic">We deliver the mail.</em></h1>
-    <p style="margin-top:20px; max-width:600px;">Every 2 months, a full-color co-op mailer goes to 10,000 homes in each zone. Choose your ad space size, pick which zones you want to reach, and your business lands directly in local mailboxes — no algorithm, no competition for attention.</p>
+    <p style="margin-top:20px; max-width:620px;">Every 2 months, a full-color co-op mailer goes to 10,000 homes in each zone across Utah County &amp; southern Salt Lake County. Choose your ad space size, pick which zones you want to reach, and your business lands directly in local mailboxes — no algorithm, no competition for attention.</p>
   </div>
 </section>
 
@@ -463,7 +483,7 @@
       <div class="section-header" style="text-align:left; margin-bottom:0;">
         <span class="eyebrow">Zone Bundles</span>
         <h2 style="font-size:clamp(22px,2.5vw,32px);">Reach more cities.<br>Pay less per zone.</h2>
-        <p style="max-width:520px; margin-top:12px;">Any ad space tier can be bundled across multiple zones. The more zones you add, the bigger the discount — good way to build Utah County coverage without committing to a single big spend.</p>
+        <p style="max-width:520px; margin-top:12px;">Any ad space tier can be bundled across multiple zones. The more zones you add, the bigger the discount — a smart way to build coverage across Utah County &amp; southern Salt Lake County without committing to a single big spend.</p>
       </div>
       <div class="bundle-grid">
         <div class="bundle-item">
@@ -474,12 +494,12 @@
         <div class="bundle-item" style="border-color: rgba(230,223,26,0.25);">
           <div class="bundle-zones">3 Zones</div>
           <div class="bundle-savings">Save 10% per zone</div>
-          <div class="bundle-desc">Cover 3 cities or sub-zones at a discounted rate</div>
+          <div class="bundle-desc">Cover 3 areas at a discounted rate</div>
         </div>
         <div class="bundle-item" style="border-color: rgba(230,223,26,0.40);">
-          <div class="bundle-zones">6+ Zones</div>
+          <div class="bundle-zones">All 6 Zones</div>
           <div class="bundle-savings">Save 20% per zone</div>
-          <div class="bundle-desc">Full Utah County coverage — lowest cost-per-home available</div>
+          <div class="bundle-desc">Full regional coverage — lowest cost-per-home available</div>
         </div>
       </div>
       <p style="font-size:12px; color:var(--w38); margin-top:20px;">Bundle pricing applied automatically. Mix and match any tier across zones. Ask Danyon about custom multi-zone packages.</p>
@@ -525,260 +545,204 @@
   </div>
 </section>
 
-<!-- DELIVERY ZONES BY CITY -->
+<!-- DELIVERY ZONES -->
 <section class="section-pad section-light">
   <div class="container">
 
     <div class="section-header reveal">
       <span class="eyebrow">Delivery Coverage</span>
-      <h2>12 zones. 6 cities.<br><em class="display-italic">60,000+ homes reached per full-county drop.</em></h2>
-      <p>Each zone covers a defined neighborhood cluster within a city — roughly 10,000 homes per zone. Pick the areas where your best customers live.</p>
+      <h2>6 zones. 60,000+ homes.<br><em class="display-italic">Utah County &amp; southern Salt Lake County.</em></h2>
+      <p>Each zone targets 10,000 homes per bi-monthly drop. Pick the areas where your best customers live — your business category stays exclusive in every zone you hold.</p>
     </div>
 
-    <!-- LEHI -->
-    <div class="city-block reveal">
-      <div class="city-header">
-        <div>
-          <div class="city-name">Lehi</div>
-          <div class="city-meta">2 delivery zones · 20,000 homes · Utah County's fastest-growing city</div>
-        </div>
-        <span class="city-badge">Zones Open</span>
-      </div>
-      <div class="zones-pair">
-        <div class="zone-mail-card">
-          <div class="zone-letter-tag">Zone A</div>
-          <div class="zone-mail-name">Lehi North — Retail Corridor</div>
-          <div class="zone-mail-stats">
-            <div class="zone-stat"><span class="zone-stat-num">10K</span><span class="zone-stat-lbl">Homes / drop</span></div>
-            <div class="zone-stat"><span class="zone-stat-num">Bi-Mo</span><span class="zone-stat-lbl">Frequency</span></div>
-          </div>
-          <div class="zone-mail-highlights">
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏪</span> Costco, Walmart, major retail shoppers</div>
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏘️</span> Dense residential north of Main Street</div>
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">💰</span> High-income, high-discretionary spending</div>
-          </div>
-          <a href="contact.html?zone=Lehi+Zone+A" class="btn btn-secondary">Add This Zone <span class="btn-arrow">→</span></a>
-        </div>
-        <div class="zone-mail-card">
-          <div class="zone-letter-tag">Zone B</div>
-          <div class="zone-mail-name">Lehi South — Silicon Slopes</div>
-          <div class="zone-mail-stats">
-            <div class="zone-stat"><span class="zone-stat-num">10K</span><span class="zone-stat-lbl">Homes / drop</span></div>
-            <div class="zone-stat"><span class="zone-stat-num">Bi-Mo</span><span class="zone-stat-lbl">Frequency</span></div>
-          </div>
-          <div class="zone-mail-highlights">
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">💼</span> Tech workers, dual-income households</div>
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏘️</span> Growing residential south of tech corridor</div>
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🚀</span> Rapid population growth = low ad saturation</div>
-          </div>
-          <a href="contact.html?zone=Lehi+Zone+B" class="btn btn-secondary">Add This Zone <span class="btn-arrow">→</span></a>
-        </div>
-      </div>
-    </div>
+    <div class="zones-grid">
 
-    <!-- AMERICAN FORK -->
-    <div class="city-block reveal">
-      <div class="city-header">
-        <div>
-          <div class="city-name">American Fork</div>
-          <div class="city-meta">2 delivery zones · 20,000 homes · Strong local business community</div>
+      <!-- Zone 1: Saratoga Springs & Eagle Mountain -->
+      <div class="zone-card reveal">
+        <span class="zone-county-pill utah-co">Utah County</span>
+        <div class="zone-card-name">Saratoga Springs &amp; Eagle Mountain</div>
+        <div class="zone-card-divider"></div>
+        <div class="zone-card-stats">
+          <div class="zone-card-stat">
+            <span class="zone-card-stat-icon">📍</span>
+            Est. ~27,500 total households in area
+          </div>
+          <div class="zone-card-stat">
+            <span class="zone-card-stat-icon">📬</span>
+            Mailer targets 10,000 homes per drop
+          </div>
+          <div class="zone-card-stat">
+            <span class="zone-card-stat-icon">🗓</span>
+            Bi-monthly drops (6x per year)
+          </div>
         </div>
-        <span class="city-badge">Zones Open</span>
+        <div class="zone-card-divider"></div>
+        <div class="zone-card-anchors">
+          <div class="zone-card-anchor">Fastest-growing area in Utah — booming new-construction neighborhoods along Redwood Rd &amp; SR-68</div>
+          <div class="zone-card-anchor">Young family demographic, Costco Saratoga Springs location drives heavy local retail traffic</div>
+          <div class="zone-card-anchor">Rapidly expanding retail corridor with very low direct mail ad saturation</div>
+        </div>
+        <div class="zone-status-row">
+          <span class="zone-status-badge"><span class="zone-status-dot"></span> Available</span>
+        </div>
+        <a href="contact.html?zone=Saratoga+Springs+Eagle+Mountain" class="btn btn-secondary">Add This Zone <span class="btn-arrow">→</span></a>
       </div>
-      <div class="zones-pair">
-        <div class="zone-mail-card">
-          <div class="zone-letter-tag">Zone A</div>
-          <div class="zone-mail-name">AF Central — Main Street District</div>
-          <div class="zone-mail-stats">
-            <div class="zone-stat"><span class="zone-stat-num">10K</span><span class="zone-stat-lbl">Homes / drop</span></div>
-            <div class="zone-stat"><span class="zone-stat-num">Bi-Mo</span><span class="zone-stat-lbl">Frequency</span></div>
-          </div>
-          <div class="zone-mail-highlights">
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏪</span> Main Street shoppers, Smith's, local retail</div>
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏘️</span> Established families, long-term residents</div>
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🤝</span> High loyalty to local businesses they know</div>
-          </div>
-          <a href="contact.html?zone=American+Fork+Zone+A" class="btn btn-secondary">Add This Zone <span class="btn-arrow">→</span></a>
-        </div>
-        <div class="zone-mail-card">
-          <div class="zone-letter-tag">Zone B</div>
-          <div class="zone-mail-name">AF East — Residential &amp; Schools</div>
-          <div class="zone-mail-stats">
-            <div class="zone-stat"><span class="zone-stat-num">10K</span><span class="zone-stat-lbl">Homes / drop</span></div>
-            <div class="zone-stat"><span class="zone-stat-num">Bi-Mo</span><span class="zone-stat-lbl">Frequency</span></div>
-          </div>
-          <div class="zone-mail-highlights">
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏫</span> School zones, parks, active family areas</div>
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏘️</span> High homeownership, stable income households</div>
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">👨‍👩‍👧</span> Families making purchasing decisions for the home</div>
-          </div>
-          <a href="contact.html?zone=American+Fork+Zone+B" class="btn btn-secondary">Add This Zone <span class="btn-arrow">→</span></a>
-        </div>
-      </div>
-    </div>
 
-    <!-- SARATOGA SPRINGS -->
-    <div class="city-block reveal">
-      <div class="city-header">
-        <div>
-          <div class="city-name">Saratoga Springs</div>
-          <div class="city-meta">2 delivery zones · 20,000 homes · One of Utah's fastest-growing zip codes</div>
+      <!-- Zone 2: Sandy & Draper -->
+      <div class="zone-card zone-slco reveal reveal-delay-1">
+        <span class="zone-county-pill sl-co">Salt Lake County</span>
+        <div class="zone-card-name">Sandy &amp; Draper</div>
+        <div class="zone-card-divider"></div>
+        <div class="zone-card-stats">
+          <div class="zone-card-stat">
+            <span class="zone-card-stat-icon">📍</span>
+            Est. ~56,000 total households in area
+          </div>
+          <div class="zone-card-stat">
+            <span class="zone-card-stat-icon">📬</span>
+            Mailer targets 10,000 homes per drop
+          </div>
+          <div class="zone-card-stat">
+            <span class="zone-card-stat-icon">🗓</span>
+            Bi-monthly drops (6x per year)
+          </div>
         </div>
-        <span class="city-badge">Zones Open</span>
+        <div class="zone-card-divider"></div>
+        <div class="zone-card-anchors">
+          <div class="zone-card-anchor">Dense suburban market — Draper ranks among the highest household incomes in the state</div>
+          <div class="zone-card-anchor">South Towne Mall corridor and Costco on 123rd S anchor major retail activity</div>
+          <div class="zone-card-anchor">High purchasing power, high discretionary spending — premium ad returns</div>
+        </div>
+        <div class="zone-status-row">
+          <span class="zone-status-badge"><span class="zone-status-dot"></span> Available</span>
+        </div>
+        <a href="contact.html?zone=Sandy+Draper" class="btn btn-secondary">Add This Zone <span class="btn-arrow">→</span></a>
       </div>
-      <div class="zones-pair">
-        <div class="zone-mail-card">
-          <div class="zone-letter-tag">Zone A</div>
-          <div class="zone-mail-name">SS West — Lake Mountain District</div>
-          <div class="zone-mail-stats">
-            <div class="zone-stat"><span class="zone-stat-num">10K</span><span class="zone-stat-lbl">Homes / drop</span></div>
-            <div class="zone-stat"><span class="zone-stat-num">Bi-Mo</span><span class="zone-stat-lbl">Frequency</span></div>
-          </div>
-          <div class="zone-mail-highlights">
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏗️</span> New construction neighborhoods, fresh households</div>
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">💰</span> High discretionary income, new homeowners</div>
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🔓</span> Very low local ad saturation — wide open market</div>
-          </div>
-          <a href="contact.html?zone=Saratoga+Springs+Zone+A" class="btn btn-secondary">Add This Zone <span class="btn-arrow">→</span></a>
-        </div>
-        <div class="zone-mail-card">
-          <div class="zone-letter-tag">Zone B</div>
-          <div class="zone-mail-name">SS East — Commerce &amp; Crossroads</div>
-          <div class="zone-mail-stats">
-            <div class="zone-stat"><span class="zone-stat-num">10K</span><span class="zone-stat-lbl">Homes / drop</span></div>
-            <div class="zone-stat"><span class="zone-stat-num">Bi-Mo</span><span class="zone-stat-lbl">Frequency</span></div>
-          </div>
-          <div class="zone-mail-highlights">
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🚗</span> Heavy commuter traffic corridor toward I-15</div>
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏘️</span> Newly established neighborhoods, growing families</div>
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">📈</span> Population growing 15%+ per year</div>
-          </div>
-          <a href="contact.html?zone=Saratoga+Springs+Zone+B" class="btn btn-secondary">Add This Zone <span class="btn-arrow">→</span></a>
-        </div>
-      </div>
-    </div>
 
-    <!-- HIGHLAND -->
-    <div class="city-block reveal">
-      <div class="city-header">
-        <div>
-          <div class="city-name">Highland</div>
-          <div class="city-meta">2 delivery zones · 20,000 homes · Established community, high household income</div>
+      <!-- Zone 3: Highland & Alpine -->
+      <div class="zone-card reveal reveal-delay-2">
+        <span class="zone-county-pill utah-co">Utah County</span>
+        <div class="zone-card-name">Highland &amp; Alpine</div>
+        <div class="zone-card-divider"></div>
+        <div class="zone-card-stats">
+          <div class="zone-card-stat">
+            <span class="zone-card-stat-icon">📍</span>
+            Est. ~9,300 total households in area
+          </div>
+          <div class="zone-card-stat">
+            <span class="zone-card-stat-icon">📬</span>
+            Mailer targets 10,000 homes per drop
+          </div>
+          <div class="zone-card-stat">
+            <span class="zone-card-stat-icon">🗓</span>
+            Bi-monthly drops (6x per year)
+          </div>
         </div>
-        <span class="city-badge">Zones Open</span>
+        <div class="zone-card-divider"></div>
+        <div class="zone-card-anchors">
+          <div class="zone-card-anchor">Established affluent community with high disposable income — one of Utah's premium residential markets</div>
+          <div class="zone-card-anchor">Tight-knit community that trusts and stays loyal to businesses they recognize</div>
+          <div class="zone-card-anchor">Very loyal local-first shopping behavior — mailers have outsized impact here</div>
+        </div>
+        <div class="zone-status-row">
+          <span class="zone-status-badge"><span class="zone-status-dot"></span> Available</span>
+        </div>
+        <a href="contact.html?zone=Highland+Alpine" class="btn btn-secondary">Add This Zone <span class="btn-arrow">→</span></a>
       </div>
-      <div class="zones-pair">
-        <div class="zone-mail-card">
-          <div class="zone-letter-tag">Zone A</div>
-          <div class="zone-mail-name">Highland Central — Main Corridor</div>
-          <div class="zone-mail-stats">
-            <div class="zone-stat"><span class="zone-stat-num">10K</span><span class="zone-stat-lbl">Homes / drop</span></div>
-            <div class="zone-stat"><span class="zone-stat-num">Bi-Mo</span><span class="zone-stat-lbl">Frequency</span></div>
-          </div>
-          <div class="zone-mail-highlights">
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">📍</span> Pioneer Crossing, Highland Drive daily routes</div>
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">💰</span> Among highest median incomes in Utah County</div>
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏡</span> Homeowners who invest in quality local services</div>
-          </div>
-          <a href="contact.html?zone=Highland+Zone+A" class="btn btn-secondary">Add This Zone <span class="btn-arrow">→</span></a>
-        </div>
-        <div class="zone-mail-card">
-          <div class="zone-letter-tag">Zone B</div>
-          <div class="zone-mail-name">Highland North — Cedar Hills Border</div>
-          <div class="zone-mail-stats">
-            <div class="zone-stat"><span class="zone-stat-num">10K</span><span class="zone-stat-lbl">Homes / drop</span></div>
-            <div class="zone-stat"><span class="zone-stat-num">Bi-Mo</span><span class="zone-stat-lbl">Frequency</span></div>
-          </div>
-          <div class="zone-mail-highlights">
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏘️</span> Long-established residential, loyal community</div>
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🔓</span> Very low local direct mail presence</div>
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">📬</span> Households that engage with physical mail</div>
-          </div>
-          <a href="contact.html?zone=Highland+Zone+B" class="btn btn-secondary">Add This Zone <span class="btn-arrow">→</span></a>
-        </div>
-      </div>
-    </div>
 
-    <!-- EAGLE MOUNTAIN -->
-    <div class="city-block reveal">
-      <div class="city-header">
-        <div>
-          <div class="city-name">Eagle Mountain</div>
-          <div class="city-meta">2 delivery zones · 20,000 homes · Fastest-growing city in Utah</div>
+      <!-- Zone 4: American Fork & Pleasant Grove -->
+      <div class="zone-card reveal">
+        <span class="zone-county-pill utah-co">Utah County</span>
+        <div class="zone-card-name">American Fork &amp; Pleasant Grove</div>
+        <div class="zone-card-divider"></div>
+        <div class="zone-card-stats">
+          <div class="zone-card-stat">
+            <span class="zone-card-stat-icon">📍</span>
+            Est. ~26,500 total households in area
+          </div>
+          <div class="zone-card-stat">
+            <span class="zone-card-stat-icon">📬</span>
+            Mailer targets 10,000 homes per drop
+          </div>
+          <div class="zone-card-stat">
+            <span class="zone-card-stat-icon">🗓</span>
+            Bi-monthly drops (6x per year)
+          </div>
         </div>
-        <span class="city-badge">Zones Open</span>
+        <div class="zone-card-divider"></div>
+        <div class="zone-card-anchors">
+          <div class="zone-card-anchor">Central Utah County commercial hub with direct I-15 access and heavy daily traffic volume</div>
+          <div class="zone-card-anchor">Smith's and Macey's grocery anchors plus major retail strip on State St drive consistent foot traffic</div>
+          <div class="zone-card-anchor">Established families with strong local business loyalty across both communities</div>
+        </div>
+        <div class="zone-status-row">
+          <span class="zone-status-badge"><span class="zone-status-dot"></span> Available</span>
+        </div>
+        <a href="contact.html?zone=American+Fork+Pleasant+Grove" class="btn btn-secondary">Add This Zone <span class="btn-arrow">→</span></a>
       </div>
-      <div class="zones-pair">
-        <div class="zone-mail-card">
-          <div class="zone-letter-tag">Zone A</div>
-          <div class="zone-mail-name">EM South — Civic &amp; Commercial Hub</div>
-          <div class="zone-mail-stats">
-            <div class="zone-stat"><span class="zone-stat-num">10K</span><span class="zone-stat-lbl">Homes / drop</span></div>
-            <div class="zone-stat"><span class="zone-stat-num">Bi-Mo</span><span class="zone-stat-lbl">Frequency</span></div>
-          </div>
-          <div class="zone-mail-highlights">
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏪</span> Harmons, city hall, main shopping area</div>
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">👨‍👩‍👧</span> Young families actively using local services</div>
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🔓</span> Virtually zero local direct mail competition</div>
-          </div>
-          <a href="contact.html?zone=Eagle+Mountain+Zone+A" class="btn btn-secondary">Add This Zone <span class="btn-arrow">→</span></a>
-        </div>
-        <div class="zone-mail-card">
-          <div class="zone-letter-tag">Zone B</div>
-          <div class="zone-mail-name">EM North — Residential Expansion</div>
-          <div class="zone-mail-stats">
-            <div class="zone-stat"><span class="zone-stat-num">10K</span><span class="zone-stat-lbl">Homes / drop</span></div>
-            <div class="zone-stat"><span class="zone-stat-num">Bi-Mo</span><span class="zone-stat-lbl">Frequency</span></div>
-          </div>
-          <div class="zone-mail-highlights">
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏗️</span> New neighborhoods, new homeowners</div>
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🚗</span> Commuter families, service-ready market</div>
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">📈</span> Under-served by local advertisers — first-mover advantage</div>
-          </div>
-          <a href="contact.html?zone=Eagle+Mountain+Zone+B" class="btn btn-secondary">Add This Zone <span class="btn-arrow">→</span></a>
-        </div>
-      </div>
-    </div>
 
-    <!-- PLEASANT GROVE -->
-    <div class="city-block reveal">
-      <div class="city-header">
-        <div>
-          <div class="city-name">Pleasant Grove</div>
-          <div class="city-meta">2 delivery zones · 20,000 homes · Gateway city between Utah Valley cities</div>
+      <!-- Zone 5: Lehi -->
+      <div class="zone-card reveal reveal-delay-1">
+        <span class="zone-county-pill utah-co">Utah County</span>
+        <div class="zone-card-name">Lehi</div>
+        <div class="zone-card-divider"></div>
+        <div class="zone-card-stats">
+          <div class="zone-card-stat">
+            <span class="zone-card-stat-icon">📍</span>
+            Est. ~30,000 total households in area
+          </div>
+          <div class="zone-card-stat">
+            <span class="zone-card-stat-icon">📬</span>
+            Mailer targets 10,000 homes per drop
+          </div>
+          <div class="zone-card-stat">
+            <span class="zone-card-stat-icon">🗓</span>
+            Bi-monthly drops (6x per year)
+          </div>
         </div>
-        <span class="city-badge">Zones Open</span>
+        <div class="zone-card-divider"></div>
+        <div class="zone-card-anchors">
+          <div class="zone-card-anchor">Fastest-growing city in Utah — Silicon Slopes tech corridor brings young professional and family demographics</div>
+          <div class="zone-card-anchor">Costco on Traverse Mountain Blvd anchors a major retail concentration with strong consumer spending</div>
+          <div class="zone-card-anchor">Continuous new development means a fresh, underserved audience with low existing ad saturation</div>
+        </div>
+        <div class="zone-status-row">
+          <span class="zone-status-badge"><span class="zone-status-dot"></span> Available</span>
+        </div>
+        <a href="contact.html?zone=Lehi" class="btn btn-secondary">Add This Zone <span class="btn-arrow">→</span></a>
       </div>
-      <div class="zones-pair">
-        <div class="zone-mail-card">
-          <div class="zone-letter-tag">Zone A</div>
-          <div class="zone-mail-name">PG Central — State Street &amp; Main</div>
-          <div class="zone-mail-stats">
-            <div class="zone-stat"><span class="zone-stat-num">10K</span><span class="zone-stat-lbl">Homes / drop</span></div>
-            <div class="zone-stat"><span class="zone-stat-num">Bi-Mo</span><span class="zone-stat-lbl">Frequency</span></div>
+
+      <!-- Zone 6: Bluffdale & Riverton -->
+      <div class="zone-card zone-slco reveal reveal-delay-2">
+        <span class="zone-county-pill sl-co">Salt Lake County</span>
+        <div class="zone-card-name">Bluffdale &amp; Riverton</div>
+        <div class="zone-card-divider"></div>
+        <div class="zone-card-stats">
+          <div class="zone-card-stat">
+            <span class="zone-card-stat-icon">📍</span>
+            Est. ~22,500 total households in area
           </div>
-          <div class="zone-mail-highlights">
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🛒</span> State Street retail, Smith's, Macey's corridor</div>
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏘️</span> Established community, consistent daily patterns</div>
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🤝</span> Strong local business loyalty across the area</div>
+          <div class="zone-card-stat">
+            <span class="zone-card-stat-icon">📬</span>
+            Mailer targets 10,000 homes per drop
           </div>
-          <a href="contact.html?zone=Pleasant+Grove+Zone+A" class="btn btn-secondary">Add This Zone <span class="btn-arrow">→</span></a>
+          <div class="zone-card-stat">
+            <span class="zone-card-stat-icon">🗓</span>
+            Bi-monthly drops (6x per year)
+          </div>
         </div>
-        <div class="zone-mail-card">
-          <div class="zone-letter-tag">Zone B</div>
-          <div class="zone-mail-name">PG East — Foothill &amp; Residential</div>
-          <div class="zone-mail-stats">
-            <div class="zone-stat"><span class="zone-stat-num">10K</span><span class="zone-stat-lbl">Homes / drop</span></div>
-            <div class="zone-stat"><span class="zone-stat-num">Bi-Mo</span><span class="zone-stat-lbl">Frequency</span></div>
-          </div>
-          <div class="zone-mail-highlights">
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏡</span> East-side neighborhoods, homeowner-heavy</div>
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">🏫</span> School communities, family-centric areas</div>
-            <div class="zone-mail-hl"><span class="zone-mail-hl-icon">📬</span> Receptive to direct mail from local businesses</div>
-          </div>
-          <a href="contact.html?zone=Pleasant+Grove+Zone+B" class="btn btn-secondary">Add This Zone <span class="btn-arrow">→</span></a>
+        <div class="zone-card-divider"></div>
+        <div class="zone-card-anchors">
+          <div class="zone-card-anchor">Southern SL County suburban growth corridor — family-oriented communities with rising homeownership</div>
+          <div class="zone-card-anchor">Proximity to Jordan Landing retail corridor and Riverton Costco drives strong consumer activity</div>
+          <div class="zone-card-anchor">Underserved by local direct mail — wide-open opportunity for first-mover businesses</div>
         </div>
+        <div class="zone-status-row">
+          <span class="zone-status-badge"><span class="zone-status-dot"></span> Available</span>
+        </div>
+        <a href="contact.html?zone=Bluffdale+Riverton" class="btn btn-secondary">Add This Zone <span class="btn-arrow">→</span></a>
       </div>
+
     </div>
 
   </div>
@@ -788,8 +752,8 @@
 <section class="cta-band">
   <div class="container">
     <span class="eyebrow reveal">Ready to reach local mailboxes?</span>
-    <h2 class="reveal">12 zones. All open.<br><em class="display-italic">Your category, your mailboxes.</em></h2>
-    <p class="reveal reveal-delay-1">No bidding wars. No algorithm changes. Just your ad landing in front of 10,000 real Utah County households every two months — with your business the only one in your category in those zones.</p>
+    <h2 class="reveal">6 zones. All open.<br><em class="display-italic">Your category, your mailboxes.</em></h2>
+    <p class="reveal reveal-delay-1">No bidding wars. No algorithm changes. Just your ad landing in front of 10,000 real households every two months across Utah County &amp; southern Salt Lake County — with your business the only one in your category in those zones.</p>
     <div class="cta-buttons reveal reveal-delay-2">
       <a href="contact.html" class="btn btn-primary btn-lg">Talk to Danyon <span class="btn-arrow">→</span></a>
       <a href="pricing.html" class="btn btn-secondary btn-lg">See All Pricing</a>

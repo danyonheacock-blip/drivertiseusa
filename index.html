@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Mobile advertising for Utah County businesses. 50,000+ daily impressions via car wraps, electric billboard, and direct mail. Transparent pricing starting at $300/month. Serving Lehi, American Fork, Saratoga Springs, and more.">
+  <meta name="description" content="Mobile advertising for Utah County & southern Salt Lake County businesses. 15,000+ daily impressions via magnetic zone ads, electric billboard, and direct mail. Transparent pricing starting at $199/month. Serving Lehi, American Fork, Saratoga Springs, Sandy, and more.">
   <title>Drivertise USA — Mobile Advertising for Utah County Businesses</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -513,11 +513,15 @@
        RESPONSIVE
     ════════════════════════════════ */
     @media (max-width: 1024px) {
-      .hero-inner { grid-template-columns: 1fr; }
+      .hero-inner { grid-template-columns: 1fr 380px; }
       .hero-card-wrap { max-width: 520px; }
       .stats-strip-yellow { grid-template-columns: repeat(3, 1fr); }
       .why-section .diff-wrap { grid-template-columns: 1fr; gap: 48px; }
       .diff-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-card-wrap { max-width: 520px; }
     }
     @media (max-width: 768px) {
       .hero { padding: 52px 0 64px; min-height: auto; }
@@ -589,7 +593,7 @@
       </h1>
       <div class="hero-live-bar">
         <span class="live-badge"><span class="live-dot"></span>Active Route</span>
-        <span class="hero-count" data-counter data-target="50247">50,247</span>
+        <span class="hero-count" data-counter data-target="13000">13,000</span>
         <span class="hero-count-label">impressions this week</span>
       </div>
       <p class="hero-sub">
@@ -604,7 +608,7 @@
       <div class="trust-row">
         <div class="trust-item">
           <span class="trust-dot"></span>
-          12 zones available
+          6 zones available
         </div>
         <div class="trust-item">
           <span style="color:var(--gold);">◆</span>
@@ -612,7 +616,7 @@
         </div>
         <div class="trust-item">
           <span style="color:var(--w20);">◆</span>
-          Starting at $300/mo
+          Starting at $199/mo
         </div>
         <div class="trust-item">
           <span style="color:var(--w20);">◆</span>
@@ -628,24 +632,24 @@
           <span class="hero-card-title">Route Overview · Utah County</span>
           <span class="live-badge"><span class="live-dot"></span>Active</span>
         </div>
-        <div class="hero-stat-big">50,247</div>
+        <div class="hero-stat-big">13,000</div>
         <p class="hero-stat-label">estimated impressions this week</p>
         <div>
           <div class="hero-route-row">
             <span class="hero-route-city">Lehi Crossroads</span>
-            <span class="hero-route-val">18,400</span>
+            <span class="hero-route-val">5,200</span>
           </div>
           <div class="hero-route-row">
             <span class="hero-route-city">American Fork Main St.</span>
-            <span class="hero-route-val">16,200</span>
+            <span class="hero-route-val">4,600</span>
           </div>
           <div class="hero-route-row">
             <span class="hero-route-city">Saratoga Springs</span>
-            <span class="hero-route-val">15,647</span>
+            <span class="hero-route-val">3,200</span>
           </div>
           <div class="hero-route-row">
             <span class="hero-route-city" style="font-weight:700; color:var(--cream);">Open Zones</span>
-            <span class="hero-route-status">12 available</span>
+            <span class="hero-route-status">6 available</span>
           </div>
         </div>
       </div>
@@ -657,7 +661,7 @@
 <!-- ════ STATS STRIP — YELLOW ════ -->
 <div class="stats-strip-yellow reveal">
   <div class="stat-item-y">
-    <span class="stat-num-y" data-counter data-target="70" data-suffix="K+">70K+</span>
+    <span class="stat-num-y" data-counter data-target="15" data-suffix="K+">15K+</span>
     <span class="stat-label-y">Daily impressions<br>per vehicle</span>
   </div>
   <div class="stat-item-y">
@@ -665,7 +669,7 @@
     <span class="stat-label-y">Recall rate for<br>vehicle wrap ads</span>
   </div>
   <div class="stat-item-y">
-    <span class="stat-num-y" data-counter data-prefix="$" data-target="0.77" data-decimals="2">$0.77</span>
+    <span class="stat-num-y" data-counter data-prefix="$" data-target="0.44" data-decimals="2">$0.44</span>
     <span class="stat-label-y">Cost per 1,000<br>impressions (CPM)</span>
   </div>
   <div class="stat-item-y">
@@ -674,10 +678,10 @@
   </div>
   <div class="stat-item-y">
     <span class="stat-num-y" data-counter data-target="12">12</span>
-    <span class="stat-label-y">Zones across<br>6 Utah County cities</span>
+    <span class="stat-label-y">Zones across Utah County<br>&amp; southern Salt Lake County</span>
   </div>
 </div>
-<p style="text-align:center; font-size:11px; color:var(--w20); padding:12px 0 0; position:relative; z-index:1;">Stats sourced from OAAA, Nielsen, and industry research. Individual results vary.</p>
+<p style="text-align:center; font-size:11px; color:var(--w20); padding:12px 0 0; position:relative; z-index:1;">Daily impression estimate based on Utah County route data, OAAA suburban vehicle advertising methodology, and Costco/Smith's foot traffic averages. Individual results vary.</p>
 
 <!-- ════ HOW IT WORKS ════ -->
 <section class="section-pad" id="how">
@@ -692,7 +696,7 @@
         <span class="how-step-ghost">01</span>
         <div class="how-step-circle">1</div>
         <h3 style="color:var(--cream); margin-bottom:10px; font-size:20px;">Pick Your Zone</h3>
-        <p style="font-size:14px; color:var(--w55); line-height:1.75;">Choose from 12 dedicated ad zones across 6 Utah County cities. Each zone covers high-traffic routes — grocery stores, shopping districts, commute corridors in your target area.</p>
+        <p style="font-size:14px; color:var(--w55); line-height:1.75;">Choose from 6 delivery zones across Utah County and southern Salt Lake County. Each zone covers high-traffic routes — grocery stores, shopping districts, commute corridors in your target area.</p>
       </div>
       <div class="how-step-dark reveal reveal-delay-2">
         <span class="how-step-ghost">02</span>
@@ -723,21 +727,21 @@
     </div>
     <div class="grid-3">
 
-      <!-- Service 1: Car Wrap -->
+      <!-- Service 1: Magnetic Zone Ads -->
       <div class="service-card reveal">
         <span class="service-num">01</span>
-        <div class="service-icon" style="background:rgba(200,151,58,0.12); border:1px solid rgba(200,151,58,0.25);">🚗</div>
-        <h3 style="color:var(--cream); margin-bottom:12px;">Car Wrap Ads</h3>
-        <p style="font-size:14px; color:var(--w55); line-height:1.75;">Your logo and creative on the vehicle exterior, driving through your zone's highest-traffic locations every day. Grocery stores, gas stations, commute routes — wherever locals spend their time.</p>
+        <div class="service-icon" style="background:rgba(200,151,58,0.12); border:1px solid rgba(200,151,58,0.25);">🧲</div>
+        <h3 style="color:var(--cream); margin-bottom:12px;">Magnetic Zone Ads</h3>
+        <p style="font-size:14px; color:var(--w55); line-height:1.75;">Your logo on magnetic vinyl signs professionally mounted to the vehicle's doors — easy to swap when clients change, impossible to ignore when driving. Your brand in your zone, every single day.</p>
         <ul class="service-feature-list">
-          <li><span>✓</span> 50,000+ monthly impressions per zone</li>
-          <li><span>✓</span> Weekly impression report included</li>
-          <li><span>✓</span> QR code tracking available</li>
+          <li><span>✓</span> Magnetic vinyl — easy remove &amp; replace</li>
+          <li><span>✓</span> Weekly impression reports included</li>
+          <li><span>✓</span> QR code or promo code tracking</li>
           <li><span>✓</span> Month-to-month, cancel anytime</li>
         </ul>
-        <div class="service-price">$300<span style="font-size:18px; font-weight:500; color:var(--w38);">/mo</span></div>
-        <div class="service-price-period">per zone · no long-term contract</div>
-        <a href="services.html#car-wrap" class="card-link">Full details <span class="btn-arrow">→</span></a>
+        <div class="service-price">$199<span style="font-size:18px; font-weight:500; color:var(--w38);">/mo</span></div>
+        <div class="service-price-period">starting price · per zone · no contract</div>
+        <a href="services.html#magnetic" class="card-link">Full details <span class="btn-arrow">→</span></a>
       </div>
 
       <!-- Service 2: Electric Billboard (Featured) -->
@@ -762,15 +766,15 @@
         <span class="service-num">03</span>
         <div class="service-icon" style="background:rgba(77,232,160,0.10); border:1px solid rgba(77,232,160,0.20);">📬</div>
         <h3 style="color:var(--cream); margin-bottom:12px;">Direct Mail Co-op</h3>
-        <p style="font-size:14px; color:var(--w55); line-height:1.75;">Co-op ad space in a targeted mailer delivered to 10,000 Utah County homes. Your offer alongside complementary local businesses — no competing ads in your category, trackable promo codes included.</p>
+        <p style="font-size:14px; color:var(--w55); line-height:1.75;">Co-op ad space in a targeted mailer delivered to 10,000 homes per zone across Utah County and southern Salt Lake County. Your offer alongside complementary local businesses — no competing ads in your category, trackable promo codes included.</p>
         <ul class="service-feature-list">
           <li><span>✓</span> 10,000 targeted homes per zone</li>
           <li><span>✓</span> One drop every 2 months</li>
           <li><span>✓</span> Exclusive category per zone</li>
           <li><span>✓</span> Promo code tracking included</li>
         </ul>
-        <div class="service-price">$1,200<span style="font-size:18px; font-weight:500; color:var(--w38);">/drop</span></div>
-        <div class="service-price-period">per zone · one mailing every 2 months</div>
+        <div class="service-price">$199<span style="font-size:18px; font-weight:500; color:var(--w38);">/zone</span></div>
+        <div class="service-price-period">starting price · per zone · bi-monthly drops</div>
         <a href="services.html#direct-mail" class="card-link">Full details <span class="btn-arrow">→</span></a>
       </div>
 
@@ -830,8 +834,8 @@
   <div class="container">
     <div class="section-header reveal">
       <span class="eyebrow">Available Zones</span>
-      <h2>12 zones across Utah County — most still open</h2>
-      <p>Each city has two dedicated ad zones. Once your category is claimed in a zone, no direct competitors can advertise there. First come, first served.</p>
+      <h2>6 zones across Utah County & southern SL County — all still open</h2>
+      <p>Each zone covers a distinct market area. Once your business category is claimed in a zone, no direct competitors can advertise there. First come, first served.</p>
     </div>
     <div class="city-card-grid reveal">
       <div class="city-card">
@@ -971,7 +975,7 @@
     </div>
     <div class="footer-col">
       <span class="footer-col-title">Services</span>
-      <a href="services.html#car-wrap">Car Wrap Ads</a>
+      <a href="services.html#magnetic">Magnetic Zone Ads</a>
       <a href="services.html#billboard">Electric Billboard</a>
       <a href="services.html#direct-mail">Direct Mail Co-op</a>
       <a href="pricing.html">View Pricing</a>
