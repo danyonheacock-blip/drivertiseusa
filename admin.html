@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Drivertise — Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -391,32 +392,56 @@ input:focus,select:focus{border-color:rgba(200,151,58,0.4);}
       <div class="page-sub">Upload daily Google Timeline screenshots for each client</div>
 
       <div class="card">
-        <div class="card-title">Upload Route Screenshot</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
-          <div class="form-group">
-            <label style="display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Client</label>
-            <select id="rm-client-select" onchange="loadClientRoutes()" style="width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-size:13px;">
-              <option value="">— Select Client —</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label style="display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Route Date</label>
-            <input type="date" id="rm-date" style="width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-size:13px;" />
-          </div>
-        </div>
-        <div class="form-group" style="margin-bottom:16px;">
-          <label style="display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Screenshot</label>
-          <input type="file" id="rm-file" accept="image/*" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-size:13px;width:100%;cursor:pointer;" />
-        </div>
-        <div class="form-group" style="margin-bottom:20px;">
-          <label style="display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Notes (optional)</label>
-          <textarea id="rm-notes" rows="2" placeholder="Optional notes about this route..." style="width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-size:13px;resize:vertical;font-family:'DM Sans',sans-serif;"></textarea>
-        </div>
-        <button onclick="uploadRouteMap()" style="background:var(--amber);color:#0A0D12;border:none;padding:12px 28px;border-radius:8px;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
-          Upload Route Map
-        </button>
-        <span id="rm-upload-msg" style="margin-left:16px;font-size:13px;color:var(--muted);"></span>
-      </div>
+  <div class="card-title">Upload KML Route</div>
+  <div class="page-sub" style="margin-bottom:20px;">Export from Google Maps → Timeline → select day → ··· → Export this day</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+    <div class="form-group">
+      <label style="display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Client</label>
+      <select id="rm-client-select" onchange="loadClientRoutes()" style="width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-size:13px;">
+        <option value="">— Select Client —</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label style="display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Route Date</label>
+      <input type="date" id="rm-date" style="width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-size:13px;" />
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+    <div class="form-group">
+      <label style="display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Area Name</label>
+      <input type="text" id="rm-area" placeholder="e.g. Lehi / Alpine Corridor" style="width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-size:13px;" />
+    </div>
+    <div class="form-group">
+      <label style="display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Hours Out</label>
+      <input type="number" id="rm-hours" min="0.5" step="0.5" placeholder="e.g. 4.5" style="width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-size:13px;" />
+    </div>
+  </div>
+
+  <div class="form-group" style="margin-bottom:16px;">
+    <label style="display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">KML File</label>
+    <input type="file" id="rm-file" accept=".kml" onchange="handleKMLSelect(this)" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-size:13px;width:100%;cursor:pointer;" />
+    <div id="rm-parse-error" style="display:none;color:#e07070;font-size:12px;margin-top:6px;"></div>
+  </div>
+
+  <!-- KML preview map — hidden until file parsed -->
+  <div id="rm-preview-map-wrap" style="display:none;margin-bottom:16px;">
+    <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Route Preview</div>
+    <div id="rm-preview-map" style="height:240px;border-radius:10px;overflow:hidden;border:1px solid var(--border);"></div>
+    <div id="rm-parse-info" style="font-size:12px;color:var(--muted);margin-top:6px;"></div>
+  </div>
+
+  <div class="form-group" style="margin-bottom:20px;">
+    <label style="display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Notes (internal only)</label>
+    <textarea id="rm-notes" rows="2" placeholder="Optional internal notes..." style="width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-size:13px;resize:vertical;font-family:'DM Sans',sans-serif;"></textarea>
+  </div>
+
+  <button id="rm-save-btn" onclick="saveRouteMap()" disabled style="background:var(--amber);color:#0A0D12;border:none;padding:12px 28px;border-radius:8px;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:opacity 0.2s;opacity:0.4;" onmouseover="if(!this.disabled)this.style.opacity='0.85'" onmouseout="if(!this.disabled)this.style.opacity='1'">
+    Save Route
+  </button>
+  <span id="rm-upload-msg" style="margin-left:16px;font-size:13px;color:var(--muted);"></span>
+</div>
 
       <div class="card" id="rm-preview-card" style="display:none;">
         <div class="card-title">Recent Uploads — <span id="rm-preview-client-name">Client</span></div>
@@ -465,6 +490,7 @@ input:focus,select:focus{border-color:rgba(200,151,58,0.4);}
 </div>
 </div>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const SUPABASE_URL = 'https://dwwgavyzgogmhjaerevg.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3d2dhdnl6Z29nbWhqYWVyZXZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MDgwNjAsImV4cCI6MjA5MDk4NDA2MH0.4ulbzEw-AM2bIBXDyIgBMuIEjQDTOxGaHfaquG2sTaY';
