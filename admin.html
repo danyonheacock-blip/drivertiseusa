@@ -447,6 +447,51 @@ input:focus,select:focus{border-color:rgba(200,151,58,0.4);}
         <div class="card-title">Recent Uploads — <span id="rm-preview-client-name">Client</span></div>
         <div id="rm-preview-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;"></div>
       </div>
+
+      <!-- BUSINESS CARD DROPS -->
+      <div class="card" style="margin-top:24px;">
+        <div class="card-title">Business Card Drop Log</div>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:20px;">Log each delivery — client sees date, neighborhood, count, and photo in their portal.</div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+          <div class="form-group">
+            <label style="display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Client</label>
+            <select id="cd-client-select" style="width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-size:13px;">
+              <option value="">— Select Client —</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label style="display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Drop Date</label>
+            <input type="date" id="cd-date" style="width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-size:13px;" />
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+          <div class="form-group">
+            <label style="display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Neighborhood</label>
+            <input type="text" id="cd-neighborhood" placeholder="e.g. Saratoga Springs Zone 1" style="width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-size:13px;" />
+          </div>
+          <div class="form-group">
+            <label style="display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Cards Delivered</label>
+            <input type="number" id="cd-cards" min="1" placeholder="e.g. 12" style="width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-size:13px;" />
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:16px;">
+          <label style="display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Verification Photo (optional)</label>
+          <input type="file" id="cd-photo" accept="image/*" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-size:13px;width:100%;cursor:pointer;" />
+        </div>
+
+        <div class="form-group" style="margin-bottom:20px;">
+          <label style="display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Notes (optional)</label>
+          <textarea id="cd-notes" rows="2" placeholder="Optional notes..." style="width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-size:13px;resize:vertical;font-family:'DM Sans',sans-serif;"></textarea>
+        </div>
+
+        <button onclick="saveCardDrop()" style="background:var(--amber);color:#0A0D12;border:none;padding:12px 28px;border-radius:8px;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+          Log Card Drop
+        </button>
+        <span id="cd-msg" style="margin-left:16px;font-size:13px;color:var(--muted);"></span>
+      </div>
     </div>
 
     <!-- EMAIL -->
@@ -1037,6 +1082,16 @@ async function loadRouteMapClients() {
     opt.textContent = c.business_name || c.name || c.id;
     sel.appendChild(opt);
   });
+
+  var cdSelect = document.getElementById('cd-client-select');
+  if (cdSelect) {
+    cdSelect.innerHTML = '<option value="">— Select Client —</option>' +
+      data.map(function(c) {
+        return '<option value="' + c.id + '">' + (c.business_name || c.name || 'Unknown') + '</option>';
+      }).join('');
+  }
+  var cdDateEl = document.getElementById('cd-date');
+  if (cdDateEl && !cdDateEl.value) cdDateEl.value = new Date().toISOString().split('T')[0];
 }
 
 async function loadClientRoutes() {
@@ -1143,6 +1198,10 @@ function handleKMLSelect(input) {
     saveBtn.disabled = false;
     saveBtn.style.opacity = '1';
   };
+  reader.onerror = function() {
+    errorEl.textContent = 'Could not read file. Please try again.';
+    errorEl.style.display = 'block';
+  };
   reader.readAsText(file);
 }
 
@@ -1198,6 +1257,57 @@ async function saveRouteMap() {
 
   setTimeout(function() { msg.textContent = ''; }, 4000);
   loadClientRoutes();
+}
+
+async function saveCardDrop() {
+  var clientId = document.getElementById('cd-client-select').value;
+  var dropDate = document.getElementById('cd-date').value;
+  var neighborhood = document.getElementById('cd-neighborhood').value.trim();
+  var cardsDelivered = parseInt(document.getElementById('cd-cards').value) || 0;
+  var photoFile = document.getElementById('cd-photo').files[0];
+  var notes = document.getElementById('cd-notes').value.trim();
+  var msg = document.getElementById('cd-msg');
+
+  if (!clientId) { alert('Select a client.'); return; }
+  if (!dropDate) { alert('Select a drop date.'); return; }
+  if (!neighborhood) { alert('Enter a neighborhood.'); return; }
+  if (!cardsDelivered) { alert('Enter the number of cards delivered.'); return; }
+
+  msg.textContent = 'Saving...';
+
+  var photoUrl = null;
+  if (photoFile) {
+    var ext = photoFile.name.split('.').pop();
+    var path = clientId + '/' + dropDate + '-' + Date.now() + '.' + ext;
+    var uploadResult = await sb.storage.from('card-drop-photos').upload(path, photoFile, { upsert: false });
+    if (uploadResult.error) {
+      msg.textContent = 'Photo upload failed: ' + uploadResult.error.message;
+      return;
+    }
+    var urlData = sb.storage.from('card-drop-photos').getPublicUrl(path);
+    photoUrl = urlData.data.publicUrl;
+  }
+
+  var result = await sb.from('card_drops').insert({
+    client_id: clientId,
+    drop_date: dropDate,
+    neighborhood: neighborhood,
+    cards_delivered: cardsDelivered,
+    photo_url: photoUrl,
+    notes: notes || null
+  });
+
+  if (result.error) {
+    msg.textContent = 'Save failed: ' + result.error.message;
+    return;
+  }
+
+  msg.textContent = '✓ Drop logged — ' + cardsDelivered + ' cards in ' + neighborhood;
+  document.getElementById('cd-neighborhood').value = '';
+  document.getElementById('cd-cards').value = '';
+  document.getElementById('cd-photo').value = '';
+  document.getElementById('cd-notes').value = '';
+  setTimeout(function() { msg.textContent = ''; }, 4000);
 }
 
 // ── GMAIL & CALENDAR SNAPSHOT ───────────────
