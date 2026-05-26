@@ -118,6 +118,7 @@ input:focus,select:focus{border-color:rgba(200,151,58,0.4);}
     <div class="sidebar-label">Zones</div>
     <div class="nav-item" onclick="showPage('zones')">🚗 Zone Manager</div>
     <div class="nav-item" onclick="showPage('waitlist')">⏳ Waitlist</div>
+    <div class="nav-item" onclick="showPage('billboard-waitlist')">📺 Billboard Waitlist</div>
     <div class="sidebar-label">Clients</div>
     <div class="nav-item" onclick="showPage('clients')">👥 All Clients</div>
     <div class="nav-item" onclick="showPage('add-sub')">➕ New Subscription</div>
@@ -149,6 +150,11 @@ input:focus,select:focus{border-color:rgba(200,151,58,0.4);}
         <div class="stat-mini"><div class="stat-mini-num" id="ds-zones">—</div><div class="stat-mini-label">Zones Taken</div></div>
         <div class="stat-mini"><div class="stat-mini-num" id="ds-mrr">—</div><div class="stat-mini-label">Monthly Revenue</div></div>
         <div class="stat-mini"><div class="stat-mini-num" id="ds-renewals">—</div><div class="stat-mini-label">Renewals Due (10 days)</div></div>
+        <div class="stat-mini" style="border:1px solid rgba(200,151,58,0.30); background:rgba(200,151,58,0.06);">
+          <div class="stat-mini-num" id="ds-founding" style="color:#C8973A;">—</div>
+          <div class="stat-mini-label">⭐ Founding Spots Left</div>
+          <button class="btn btn-ghost" style="font-size:11px; padding:4px 10px; margin-top:8px;" onclick="markAsFoundingClient()">Mark Client as Founding</button>
+        </div>
       </div>
       <div class="card">
         <div class="card-title">Quick Actions</div>
@@ -192,6 +198,17 @@ input:focus,select:focus{border-color:rgba(200,151,58,0.4);}
       <div class="page-title">Waitlist</div>
       <div class="page-sub">People waiting for taken zones. When a zone flips to available, text everyone in the queue.</div>
       <div id="waitlist-table"><div class="loading">Loading waitlist...</div></div>
+    </div>
+
+    <!-- BILLBOARD WAITLIST -->
+    <div id="page-billboard-waitlist" class="page">
+      <div class="page-title">Billboard Waitlist</div>
+      <div class="page-sub">People who signed up for the billboard. When it launches, work down this list by position.</div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-title">Waitlist Entries</div>
+        <div id="bb-waitlist-table"><div class="loading">Loading billboard waitlist...</div></div>
+        <div id="bb-waitlist-msg" class="msg" style="margin-top:12px;"></div>
+      </div>
     </div>
 
     <!-- CLIENTS -->
@@ -473,6 +490,7 @@ let clients = [], zones = [];
 async function loadAll() {
   await Promise.all([loadClients(), loadZones()]);
   loadDashboardStats();
+  loadFoundingCounter();
   setDefaults();
   loadLeads();
   loadRouteMapClients();
@@ -508,6 +526,92 @@ async function loadDashboardStats() {
   if (!(renewals || []).length) document.getElementById('renewal-count').style.display = 'none';
 }
 
+// ── FOUNDING CLIENT COUNTER ────────────────
+async function loadFoundingCounter() {
+  try {
+    const { data } = await sb.from('settings').select('value').eq('key', 'founding_clients_remaining').single();
+    if (data) {
+      const el = document.getElementById('ds-founding');
+      if (el) el.textContent = data.value;
+    }
+  } catch(e) { /* settings table may not exist yet */ }
+}
+
+async function markAsFoundingClient() {
+  if (!confirm('Mark one founding client as claimed? This permanently decrements the counter and cannot be undone.')) return;
+  try {
+    const { data: curr } = await sb.from('settings').select('value').eq('key','founding_clients_remaining').single();
+    const current = parseInt(curr?.value || '10', 10);
+    if (current <= 0) { alert('No founding spots remaining.'); return; }
+    const { error } = await sb.from('settings').update({ value: String(current - 1), updated_at: new Date().toISOString() }).eq('key','founding_clients_remaining');
+    if (error) throw error;
+    loadFoundingCounter();
+    alert('✓ Founding spot marked. Counter updated to ' + (current - 1) + ' remaining.');
+  } catch(e) {
+    alert('Error updating counter. Check Supabase settings table.');
+    console.error(e);
+  }
+}
+
+// ── BILLBOARD WAITLIST ─────────────────────
+async function loadBillboardWaitlist() {
+  const el = document.getElementById('bb-waitlist-table');
+  if (!el) return;
+  el.innerHTML = '<div class="loading">Loading...</div>';
+  const { data, error } = await sb.from('billboard_waitlist').select('*').order('created_at', { ascending: true });
+  if (error || !data?.length) {
+    el.innerHTML = '<div style="padding:24px; color:var(--muted); text-align:center;">No waitlist entries yet. They appear here when someone submits the form on the pricing page.</div>';
+    return;
+  }
+  const statusOpts = ['waiting','contacted','confirmed','dropped'].map(s => `<option value="${s}">${s}</option>`).join('');
+  el.innerHTML = `
+    <div style="overflow-x:auto;">
+    <table style="width:100%; border-collapse:collapse; font-size:13px;">
+      <thead>
+        <tr style="border-bottom:1px solid var(--border); color:var(--muted); text-transform:uppercase; font-size:11px; letter-spacing:1px;">
+          <th style="text-align:left;padding:10px 8px;">#</th>
+          <th style="text-align:left;padding:10px 8px;">Name</th>
+          <th style="text-align:left;padding:10px 8px;">Business</th>
+          <th style="text-align:left;padding:10px 8px;">Email</th>
+          <th style="text-align:left;padding:10px 8px;">Phone</th>
+          <th style="text-align:left;padding:10px 8px;">Package</th>
+          <th style="text-align:left;padding:10px 8px;">Deposit</th>
+          <th style="text-align:left;padding:10px 8px;">Status</th>
+          <th style="text-align:left;padding:10px 8px;">Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${data.map((r, i) => `
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:10px 8px; color:var(--muted);">${i+1}</td>
+          <td style="padding:10px 8px;">${r.name || '—'}</td>
+          <td style="padding:10px 8px; color:var(--muted);">${r.business_name || '—'}</td>
+          <td style="padding:10px 8px;"><a href="mailto:${r.email}" style="color:#C8973A;">${r.email}</a></td>
+          <td style="padding:10px 8px; color:var(--muted);">${r.phone || '—'}</td>
+          <td style="padding:10px 8px;">${r.package || '—'}</td>
+          <td style="padding:10px 8px;">
+            <input type="checkbox" ${r.deposit_paid ? 'checked' : ''} onchange="updateWaitlistDeposit('${r.id}', this.checked)" style="cursor:pointer;">
+          </td>
+          <td style="padding:10px 8px;">
+            <select onchange="updateWaitlistStatus('${r.id}', this.value)" style="background:var(--surface);border:1px solid var(--border);color:var(--cream);border-radius:4px;padding:4px 8px;font-size:12px;">
+              ${['waiting','contacted','confirmed','dropped'].map(s => `<option value="${s}" ${r.status===s?'selected':''}>${s}</option>`).join('')}
+            </select>
+          </td>
+          <td style="padding:10px 8px; color:var(--muted); font-size:12px;">${new Date(r.created_at).toLocaleDateString()}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+    </div>`;
+}
+
+async function updateWaitlistDeposit(id, paid) {
+  await sb.from('billboard_waitlist').update({ deposit_paid: paid }).eq('id', id);
+}
+
+async function updateWaitlistStatus(id, status) {
+  await sb.from('billboard_waitlist').update({ status }).eq('id', id);
+}
+
 function populateClientDropdowns() {
   const opts = clients.map(c => `<option value="${c.id}">${c.business_name}</option>`).join('');
   ['route-client','photo-client','inv-client','sub-client'].forEach(id => {
@@ -536,6 +640,7 @@ function showPage(name) {
   if (name === 'renewals') loadRenewals();
   if (name === 'zones') renderZoneGrid();
   if (name === 'waitlist') loadWaitlist();
+  if (name === 'billboard-waitlist') loadBillboardWaitlist();
   if (name === 'clients') renderClientsTable();
   if (name === 'add-sub') populateZoneDropdown();
   if (name === 'leads') loadLeads();

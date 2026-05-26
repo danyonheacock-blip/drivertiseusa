@@ -124,6 +124,226 @@
     .mzp2-price-num, .bb2-price-num { display:inline-block; transition:opacity 0.2s; }
     .mzp2-price-num.swapping, .bb2-price-num.swapping { opacity:0; }
     @media (max-width:768px) { .mzp-toggle-wrap { flex-direction:column; width:100%; max-width:340px; } .mzp-toggle-btn { width:100%; justify-content:center; } }
+
+    /* ── Founding client banner ── */
+    .founding-banner {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(200,151,58,0.10);
+      border: 1px solid rgba(200,151,58,0.30);
+      border-radius: 10px;
+      padding: 14px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--gold);
+      margin: 0 auto 40px;
+      max-width: 640px;
+      text-align: center;
+      justify-content: center;
+    }
+    .founding-banner strong { color: var(--cream); font-size: 18px; }
+
+    /* ── Founding / regular rate display ── */
+    .founding-rate .pricing-price { margin-bottom: 0; }
+    .regular-rate { padding-top: 4px; }
+
+    /* ── Mailer diagram ── */
+    .mailer-diagram {
+      background: var(--bg3);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      margin: 48px 0;
+      overflow: hidden;
+    }
+    .mailer-diagram-label {
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--w38);
+      margin-bottom: 20px;
+    }
+    .mailer-panels {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3px;
+      border: 1px solid var(--border-gold);
+      border-radius: 8px;
+      overflow: hidden;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .mailer-panel {
+      background: var(--bg4);
+      border: 1px solid var(--border);
+      padding: 20px;
+      min-height: 160px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+    }
+    .mailer-panel-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--w35);
+    }
+    .mailer-panel-title {
+      font-family: var(--font-heading);
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--cream);
+    }
+    .mailer-panel-sub {
+      font-size: 12px;
+      color: var(--w55);
+      line-height: 1.5;
+    }
+    .mailer-panel.cover {
+      background: linear-gradient(135deg, var(--bg4) 0%, rgba(200,151,58,0.08) 100%);
+      border-color: rgba(200,151,58,0.20);
+    }
+    .mailer-panel.main-slot {
+      border: 2px solid rgba(200,151,58,0.50);
+      background: rgba(200,151,58,0.05);
+    }
+    .mailer-inner-grid {
+      display: grid;
+      grid-template-rows: auto auto;
+      gap: 3px;
+    }
+    .mailer-features-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3px;
+    }
+    .mailer-compact-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 3px;
+    }
+    .mailer-slot {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 10px 8px;
+      text-align: center;
+    }
+    .mailer-slot.feature-slot {
+      border-color: rgba(77,232,160,0.20);
+      background: rgba(77,232,160,0.04);
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .mailer-slot.compact-slot {
+      min-height: 56px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .mailer-slot-label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--w35);
+      margin-bottom: 3px;
+    }
+    .mailer-slot-price {
+      font-family: var(--font-heading);
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--gold);
+    }
+    .mailer-slot.feature-slot .mailer-slot-price {
+      color: var(--green);
+      font-size: 14px;
+    }
+    .mailer-slot.compact-slot .mailer-slot-price {
+      font-size: 12px;
+    }
+    .mailer-panel.back {
+      background: var(--bg4);
+    }
+    .mailer-back-strip {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .mailer-back-line {
+      height: 8px;
+      background: var(--border);
+      border-radius: 2px;
+      opacity: 0.5;
+    }
+
+    /* ── Billboard waitlist form ── */
+    .waitlist-section {
+      background: var(--bg3);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      margin-top: 40px;
+      max-width: 560px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .waitlist-section h3 {
+      font-family: var(--font-heading);
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+    .waitlist-section p {
+      font-size: 14px;
+      color: var(--w55);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+    .waitlist-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .waitlist-form input,
+    .waitlist-form select {
+      width: 100%;
+      background: var(--bg4);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--cream);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .waitlist-form input::placeholder { color: var(--w35); }
+    .waitlist-form input:focus,
+    .waitlist-form select:focus { border-color: var(--gold); }
+    .waitlist-form select option { background: var(--bg4); }
+    .waitlist-success {
+      text-align: center;
+      padding: 24px;
+    }
+    .waitlist-success .success-icon { font-size: 40px; margin-bottom: 12px; display: block; }
+    .waitlist-success h4 { font-size: 18px; margin-bottom: 8px; color: var(--green); }
+    .waitlist-success p { font-size: 14px; color: var(--w55); margin-bottom: 8px; }
+
+    @media (max-width: 900px) {
+      .mailer-panels { grid-template-columns: 1fr; }
+      .mailer-panel { min-height: auto; }
+      .mailer-compact-grid { grid-template-columns: repeat(2, 1fr); }
+    }
   </style>
 </head>
 <body>
@@ -165,82 +385,108 @@
   </div>
 </section>
 
-<!-- MAGNETIC ZONE AD PRICING -->
+<!-- MAGNETIC AD SPOT PRICING -->
 <section class="section-pad" id="magnetic-pricing">
   <div class="container">
     <div class="section-header reveal">
-      <span class="eyebrow">Magnetic Zone Ad Pricing</span>
-      <h2>Pick your doors.<br><em class="display-italic">Own your audience.</em></h2>
-      <p>Physical magnetic signs on a vehicle driven daily through Utah County's highest-traffic corridors. Month-to-month or save with a 6-month commitment.</p>
+      <span class="eyebrow">Magnetic Ad Spot Pricing</span>
+      <h2>Choose your doors.<br><em class="display-italic">Own the corridor.</em></h2>
+      <p>High-quality magnetic signs on a vehicle driven daily through Saratoga Springs, Lehi, Alpine, and Highland — 6AM to 9PM. Your brand moving through Utah County's fastest-growing corridor.</p>
     </div>
 
-    <div class="mzp-toggle-wrap reveal reveal-delay-1" id="mzp-pricing-toggle" role="group" aria-label="Billing period">
-      <button class="mzp-toggle-btn mzp-toggle-active" id="mzp2-btn-monthly" aria-pressed="true">Month-to-Month</button>
-      <button class="mzp-toggle-btn" id="mzp2-btn-sixmo" aria-pressed="false">6-Month Commitment <span class="mzp-save-badge">Save 20%</span></button>
+    <!-- Founding client banner — hidden by JS when spots hit 0 -->
+    <div class="founding-banner reveal" id="founding-banner">
+      <span>⭐</span>
+      <strong id="founding-spots">10</strong> of 10 founding spots remaining — founding rates are locked in permanently for the life of your contract.
     </div>
 
     <div class="pricing-wrap">
 
-      <!-- Singleshot -->
-      <div class="pricing-card reveal" data-mzp2-monthly="149" data-mzp2-sixmo="119">
-        <div class="pricing-name">Singleshot</div>
-        <div style="font-size:13px; color:var(--w55); margin-bottom:16px;">One door · Any zone</div>
-        <div class="pricing-price"><sup>$</sup><span class="mzp2-price-num">149</span></div>
-        <div class="pricing-period mzp2-period">/ month, billed monthly</div>
-        <div class="mzp2-sixmo-note" style="display:none; margin-top:6px; display:none;"><span style="font-size:13px; color:var(--w55);">$714 billed every 6 months</span> <span class="savings-badge">Save $180</span></div>
+      <!-- Single Door -->
+      <div class="pricing-card reveal">
+        <div class="pricing-name">Single Door</div>
+        <div style="font-size:13px; color:var(--w55); margin-bottom:20px;">1 front door — driver or passenger side</div>
+
+        <div class="founding-rate">
+          <div style="font-size:11px; font-weight:700; letter-spacing:1px; color:var(--gold); text-transform:uppercase; margin-bottom:4px;">⭐ Founding Rate</div>
+          <div class="pricing-price"><sup>$</sup>199</div>
+          <div class="pricing-period">/ month · rate locked permanently</div>
+        </div>
+        <div class="regular-rate">
+          <div style="font-size:11px; font-weight:700; letter-spacing:1px; color:var(--w35); text-transform:uppercase; margin-top:12px; margin-bottom:4px;">Regular Rate After</div>
+          <div style="font-size:26px; font-weight:700; color:var(--w55);">$299<span style="font-size:15px;">/mo</span></div>
+        </div>
+
         <div class="pricing-divider"></div>
         <div class="pricing-features">
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>1 magnetic door sign — your choice of any door</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>1 magnetic door sign — driver or passenger front</span></div>
           <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>~30,000–40,000 monthly impressions</span></div>
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Exclusive category — no competitor on any door</span></div>
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Weekly GPS-verified impression report</span></div>
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Sign stored free when you pause or cancel</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Exclusive category — no competitor on that ad spot</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Digital proof approval before print</span></div>
           <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Cancel with 30-day notice</span></div>
         </div>
-        <a href="contact.html?package=singleshot" class="btn btn-secondary" style="width:100%; justify-content:center;">Get Singleshot <span class="btn-arrow">→</span></a>
+        <a href="contact.html?package=single-door" class="btn btn-secondary" style="width:100%; justify-content:center;">Reserve This Spot <span class="btn-arrow">→</span></a>
       </div>
 
-      <!-- Driver Side — Featured -->
-      <div class="pricing-card featured reveal reveal-delay-2" data-mzp2-monthly="249" data-mzp2-sixmo="199">
-        <div class="pricing-name">Driver Side</div>
-        <div style="font-size:13px; color:var(--w55); margin-bottom:16px;">Both driver doors · Full left-side coverage</div>
-        <div class="pricing-price"><sup>$</sup><span class="mzp2-price-num">249</span></div>
-        <div class="pricing-period mzp2-period">/ month, billed monthly</div>
-        <div class="mzp2-sixmo-note" style="display:none;"><span style="font-size:13px; color:var(--w55);">$1,194 billed every 6 months</span> <span class="savings-badge">Save $300</span></div>
+      <!-- Front Pair — Featured -->
+      <div class="pricing-card featured reveal reveal-delay-2">
+        <div class="pricing-name">Front Pair</div>
+        <div style="font-size:13px; color:var(--w55); margin-bottom:20px;">Driver front + passenger front doors</div>
+
+        <div class="founding-rate">
+          <div style="font-size:11px; font-weight:700; letter-spacing:1px; color:var(--gold); text-transform:uppercase; margin-bottom:4px;">⭐ Founding Rate</div>
+          <div class="pricing-price"><sup>$</sup>349</div>
+          <div class="pricing-period">/ month · rate locked permanently</div>
+        </div>
+        <div class="regular-rate">
+          <div style="font-size:11px; font-weight:700; letter-spacing:1px; color:var(--w35); text-transform:uppercase; margin-top:12px; margin-bottom:4px;">Regular Rate After</div>
+          <div style="font-size:26px; font-weight:700; color:var(--w55);">$499<span style="font-size:15px;">/mo</span></div>
+        </div>
+
         <div class="pricing-divider"></div>
         <div class="pricing-features">
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>2 magnetic signs — front + rear driver side</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>2 magnetic signs — both front doors, both sides visible</span></div>
           <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>~55,000–65,000 monthly impressions</span></div>
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Exclusive category locked across all 4 doors</span></div>
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Weekly GPS-verified impression report</span></div>
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Both signs stored free between campaigns</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Exclusive category across both front ad spots</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Digital proof approval before print</span></div>
           <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Direct contact with Danyon — call or text</span></div>
         </div>
-        <a href="contact.html?package=driverside" class="btn btn-primary" style="width:100%; justify-content:center;">Get Driver Side <span class="btn-arrow">→</span></a>
+        <a href="contact.html?package=front-pair" class="btn btn-primary" style="width:100%; justify-content:center;">Reserve This Spot <span class="btn-arrow">→</span></a>
       </div>
 
-      <!-- Full Coverage -->
-      <div class="pricing-card reveal reveal-delay-3" data-mzp2-monthly="399" data-mzp2-sixmo="319">
-        <div class="pricing-name">Full Coverage</div>
-        <div style="font-size:13px; color:var(--w55); margin-bottom:16px;">All four doors · Maximum street presence</div>
-        <div class="pricing-price"><sup>$</sup><span class="mzp2-price-num">399</span></div>
-        <div class="pricing-period mzp2-period">/ month, billed monthly</div>
-        <div class="mzp2-sixmo-note" style="display:none;"><span style="font-size:13px; color:var(--w55);">$1,914 billed every 6 months</span> <span class="savings-badge">Save $480</span></div>
+      <!-- Rear Pair -->
+      <div class="pricing-card reveal reveal-delay-3">
+        <div class="pricing-name">Rear Pair</div>
+        <div style="font-size:13px; color:var(--w55); margin-bottom:20px;">Rear driver + rear passenger doors</div>
+
+        <div class="founding-rate">
+          <div style="font-size:11px; font-weight:700; letter-spacing:1px; color:var(--gold); text-transform:uppercase; margin-bottom:4px;">⭐ Founding Rate</div>
+          <div class="pricing-price"><sup>$</sup>279</div>
+          <div class="pricing-period">/ month · rate locked permanently</div>
+        </div>
+        <div class="regular-rate">
+          <div style="font-size:11px; font-weight:700; letter-spacing:1px; color:var(--w35); text-transform:uppercase; margin-top:12px; margin-bottom:4px;">Regular Rate After</div>
+          <div style="font-size:26px; font-weight:700; color:var(--w55);">$399<span style="font-size:15px;">/mo</span></div>
+        </div>
+
         <div class="pricing-divider"></div>
         <div class="pricing-features">
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>4 magnetic signs — all doors, both sides</span></div>
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>~80,000–100,000+ monthly impressions</span></div>
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Complete zone exclusivity across the vehicle</span></div>
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Weekly GPS-verified impression report</span></div>
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>All 4 signs stored free when you pause</span></div>
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Priority scheduling for route adjustments</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>2 magnetic signs — rear driver + rear passenger</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>~45,000–55,000 monthly impressions</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Exclusive category across both rear ad spots</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Digital proof approval before print</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Cancel with 30-day notice</span></div>
         </div>
-        <a href="contact.html?package=fullcoverage" class="btn btn-secondary" style="width:100%; justify-content:center;">Get Full Coverage <span class="btn-arrow">→</span></a>
+        <a href="contact.html?package=rear-pair" class="btn btn-secondary" style="width:100%; justify-content:center;">Reserve This Spot <span class="btn-arrow">→</span></a>
       </div>
 
     </div>
 
-    <p style="text-align:center; font-size:12px; color:var(--w38); margin-top:16px;">Want a single door? Individual doors available at $149/door/month. <a href="contact.html" style="color:var(--yellow);">Ask Danyon.</a></p>
+    <div style="margin-top:28px; text-align:center;">
+      <p style="font-size:13px; color:var(--w55); margin-bottom:8px;">50% due upfront to reserve your exclusive category ad spot and cover production. 50% due at install.</p>
+      <p style="font-size:13px; color:var(--w38); margin-bottom:8px;">Rear window perforated vinyl available — <a href="contact.html" style="color:var(--yellow);">contact for quote</a>.</p>
+      <p style="font-size:13px; color:var(--w38);">6-month commitment saves 20% — ask Danyon.</p>
+    </div>
   </div>
 </section>
 
@@ -275,7 +521,7 @@
           <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Remote creative updates anytime</span></div>
           <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Weekly impression reports included</span></div>
         </div>
-        <a href="contact.html?service=Billboard+Solo" class="btn btn-secondary" style="width:100%; justify-content:center;">Get Started <span class="btn-arrow">→</span></a>
+        <a href="#billboard-waitlist" class="btn btn-secondary" style="width:100%; justify-content:center;">Join Waitlist <span class="btn-arrow">→</span></a>
       </div>
 
       <!-- Share 2-Slot — Featured -->
@@ -315,68 +561,184 @@
       </div>
 
     </div>
+
+    <!-- Billboard Waitlist Form -->
+    <div class="waitlist-section reveal" id="billboard-waitlist">
+      <h3>Join the Billboard Waitlist</h3>
+      <p>$50 deposit holds your spot and applies to your first month when the billboard launches. We'll contact you directly when it's ready — no pressure, no spam.</p>
+      <div id="wl-form-wrap">
+        <form class="waitlist-form" onsubmit="submitBillboardWaitlist(event)">
+          <input type="text" id="wl-name" placeholder="Your Name" required>
+          <input type="text" id="wl-business" placeholder="Business Name">
+          <input type="email" id="wl-email" placeholder="Email Address" required>
+          <input type="tel" id="wl-phone" placeholder="Phone Number">
+          <select id="wl-package">
+            <option value="solo">Billboard Solo — $449/mo (exclusive)</option>
+            <option value="share-2">Share 2-Slot — $249/mo</option>
+            <option value="share-3">Share 3-Slot — $179/mo</option>
+          </select>
+          <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Join Waitlist <span class="btn-arrow">→</span></button>
+        </form>
+      </div>
+      <div id="wl-success" class="waitlist-success" style="display:none;">
+        <span class="success-icon">✅</span>
+        <h4>You're on the list!</h4>
+        <p>You're <strong>#<span id="wl-position"></span></strong> on the billboard waitlist.</p>
+        <p>To lock in your spot, send your $50 deposit to <strong>[Payment method coming soon — Mercury banking pending]</strong>. We'll reach out directly with details.</p>
+      </div>
+    </div>
+
   </div>
 </section>
 
 <!-- ════ DIRECT MAIL CO-OP PRICING ════ -->
 <section class="section-pad" id="mailer-pricing">
   <div class="container">
-    <div class="section-header reveal" style="text-align:center; margin-bottom:48px;">
+    <div class="section-header reveal" style="text-align:center; margin-bottom:32px;">
       <span class="eyebrow">Direct Mail Co-op</span>
-      <h2>Ad Mailer Pricing</h2>
-      <p style="max-width:560px; margin:0 auto;">Your ad delivered to 10,000 targeted homes per zone, per drop. Choose your ad size — no monthly commitment, pay per campaign.</p>
+      <h2>Neighborhood Deal Passport</h2>
+      <p style="max-width:600px; margin:0 auto;">Your ad delivered to 10,000 targeted homes per zone per quarterly drop. Category exclusivity included. <strong style="color:var(--cream);">Every ad must feature a special offer or QR code deal</strong> — that's what makes families keep it on the fridge.</p>
     </div>
 
+    <!-- Mailer Visual Diagram -->
+    <div class="mailer-diagram reveal">
+      <div class="mailer-diagram-label">11" × 17" folded glossy cardstock — how your ad appears in the mailer</div>
+      <div class="mailer-panels">
+
+        <!-- Front Cover -->
+        <div class="mailer-panel cover">
+          <div class="mailer-panel-label">Front Cover</div>
+          <div class="mailer-panel-title">Neighborhood Deals for Lehi Residents</div>
+          <div class="mailer-panel-sub">Drivertise branded cover — every home in your zone receives this quarterly.</div>
+          <div style="margin-top:auto; font-size:11px; color:var(--gold); font-weight:700; letter-spacing:1px;">DRIVERTISE · NEIGHBORHOOD PASSPORT</div>
+        </div>
+
+        <!-- Inner Right — Feature + Compact slots -->
+        <div class="mailer-panel" style="background:var(--bg4); padding:16px;">
+          <div class="mailer-panel-label" style="margin-bottom:10px;">Inner Right Panel</div>
+          <div class="mailer-features-row">
+            <div class="mailer-slot feature-slot">
+              <div class="mailer-slot-label">Feature</div>
+              <div class="mailer-slot-price">$799</div>
+              <div style="font-size:9px; color:var(--w35); margin-top:2px;">3 available</div>
+            </div>
+            <div class="mailer-slot feature-slot">
+              <div class="mailer-slot-label">Feature</div>
+              <div class="mailer-slot-price">$799</div>
+              <div style="font-size:9px; color:var(--w35); margin-top:2px;">half-panel</div>
+            </div>
+            <div class="mailer-slot feature-slot">
+              <div class="mailer-slot-label">Feature</div>
+              <div class="mailer-slot-price">$799</div>
+              <div style="font-size:9px; color:var(--w35); margin-top:2px;">half-panel</div>
+            </div>
+          </div>
+          <div class="mailer-compact-grid" style="margin-top:3px;">
+            <div class="mailer-slot compact-slot"><div class="mailer-slot-label">Compact</div><div class="mailer-slot-price">$399</div></div>
+            <div class="mailer-slot compact-slot"><div class="mailer-slot-label">Compact</div><div class="mailer-slot-price">$399</div></div>
+            <div class="mailer-slot compact-slot"><div class="mailer-slot-label">Compact</div><div class="mailer-slot-price">$399</div></div>
+            <div class="mailer-slot compact-slot"><div class="mailer-slot-label">Compact</div><div class="mailer-slot-price">$399</div></div>
+            <div class="mailer-slot compact-slot"><div class="mailer-slot-label">Compact</div><div class="mailer-slot-price">$399</div></div>
+            <div class="mailer-slot compact-slot"><div class="mailer-slot-label">Compact</div><div class="mailer-slot-price">$399</div></div>
+            <div class="mailer-slot compact-slot"><div class="mailer-slot-label">Compact</div><div class="mailer-slot-price">$399</div></div>
+            <div class="mailer-slot compact-slot"><div class="mailer-slot-label">Compact</div><div class="mailer-slot-price">$399</div></div>
+          </div>
+        </div>
+
+        <!-- Inner Left — Main slot -->
+        <div class="mailer-panel main-slot">
+          <div class="mailer-panel-label">Inner Left Panel — Main Ad</div>
+          <div class="mailer-panel-title">Your Brand.<br>Full Panel.</div>
+          <div class="mailer-panel-sub">Maximum creative space. Dominant placement. Only 1 available per zone per drop.</div>
+          <div style="margin-top:auto; display:flex; align-items:center; justify-content:space-between;">
+            <div style="font-size:11px; color:var(--w35); font-weight:700; letter-spacing:1px; text-transform:uppercase;">Main Slot</div>
+            <div style="font-family:var(--font-heading); font-size:22px; font-weight:900; color:var(--gold);">$1,499</div>
+          </div>
+        </div>
+
+        <!-- Back Cover -->
+        <div class="mailer-panel back">
+          <div class="mailer-panel-label">Back Cover</div>
+          <div class="mailer-panel-title">Neighborhood Quick Reference</div>
+          <div class="mailer-panel-sub">Local utility strip — adds practical value that keeps the mailer on countertops.</div>
+          <div class="mailer-back-strip">
+            <div class="mailer-back-line"></div>
+            <div class="mailer-back-line" style="width:70%"></div>
+            <div class="mailer-back-line" style="width:85%"></div>
+            <div class="mailer-back-line" style="width:60%"></div>
+          </div>
+        </div>
+
+      </div>
+      <p style="text-align:center; font-size:12px; color:var(--w35); margin-top:16px;">12 ad slots total · 1 Main · 3 Feature · 8 Compact · Quarterly drops to ~10,000 homes per zone</p>
+    </div>
+
+    <!-- Pricing Cards -->
     <div class="pricing-wrap">
 
       <!-- Compact -->
       <div class="pricing-card reveal">
         <div class="pricing-name">COMPACT</div>
-        <div class="pricing-price"><sup>$</sup>199</div>
-        <div class="pricing-period">/drop</div>
-        <div class="pricing-divider"></div>
-        <div class="pricing-features">
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>~10,000 homes per zone</span></div>
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Printed &amp; delivered by Drivertise</span></div>
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Design assistance available</span></div>
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>No monthly commitment</span></div>
-        </div>
-        <a href="zones.html" class="btn btn-secondary" style="width:100%; justify-content:center;">See Mailer Zones <span class="btn-arrow">→</span></a>
-      </div>
-
-      <!-- Feature -->
-      <div class="pricing-card featured reveal reveal-delay-2">
-        <div class="pricing-name">FEATURE <span class="savings-badge">MOST POPULAR</span></div>
+        <div style="font-size:13px; color:var(--w55); margin-bottom:16px;">Quarter-panel · 8 available per drop</div>
         <div class="pricing-price"><sup>$</sup>399</div>
         <div class="pricing-period">/drop</div>
         <div class="pricing-divider"></div>
         <div class="pricing-features">
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>~10,000 homes per zone</span></div>
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Larger format — more impact</span></div>
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Printed &amp; delivered by Drivertise</span></div>
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Design assistance available</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>~10,000 homes per zone via USPS EDDM</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Category exclusivity in your zone for that drop</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Must include a special offer or QR code deal</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Digital proof approval before print</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Max reach per dollar</span></div>
         </div>
-        <a href="zones.html" class="btn btn-primary" style="width:100%; justify-content:center;">See Mailer Zones <span class="btn-arrow">→</span></a>
+        <a href="contact.html?service=mailer&tier=compact" class="btn btn-secondary" style="width:100%; justify-content:center;">Reserve This Slot <span class="btn-arrow">→</span></a>
       </div>
 
-      <!-- Half-Page -->
-      <div class="pricing-card reveal reveal-delay-3">
-        <div class="pricing-name">HALF-PAGE</div>
-        <div class="pricing-price"><sup>$</sup>699</div>
+      <!-- Feature — Featured -->
+      <div class="pricing-card featured reveal reveal-delay-2">
+        <div class="pricing-name">FEATURE</div>
+        <div style="font-size:13px; color:var(--w55); margin-bottom:16px;">Half-panel · 3 available per drop</div>
+        <div class="pricing-price"><sup>$</sup>799</div>
         <div class="pricing-period">/drop</div>
         <div class="pricing-divider"></div>
         <div class="pricing-features">
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>~10,000 homes per zone</span></div>
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Maximum creative canvas</span></div>
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Printed &amp; delivered by Drivertise</span></div>
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Priority placement in mailer</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>~10,000 homes per zone via USPS EDDM</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Category exclusivity in your zone for that drop</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Must include a special offer or QR code deal</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Stronger presence, more creative space</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Digital proof approval before print</span></div>
         </div>
-        <a href="zones.html" class="btn btn-secondary" style="width:100%; justify-content:center;">See Mailer Zones <span class="btn-arrow">→</span></a>
+        <a href="contact.html?service=mailer&tier=feature" class="btn btn-primary" style="width:100%; justify-content:center;">Reserve This Slot <span class="btn-arrow">→</span></a>
+      </div>
+
+      <!-- Main -->
+      <div class="pricing-card reveal reveal-delay-3">
+        <div class="pricing-name">MAIN</div>
+        <div style="font-size:13px; color:var(--w55); margin-bottom:16px;">Full panel · 1 available per drop</div>
+        <div class="pricing-price"><sup>$</sup>1,499</div>
+        <div class="pricing-period">/drop</div>
+        <div class="pricing-divider"></div>
+        <div class="pricing-features">
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>~10,000 homes per zone via USPS EDDM</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Category exclusivity in your zone for that drop</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Must include a special offer or QR code deal</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Full panel — dominant placement in the spread</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Your brand owns the neighborhood for that quarter</span></div>
+        </div>
+        <a href="contact.html?service=mailer&tier=main" class="btn btn-secondary" style="width:100%; justify-content:center;">Reserve This Slot <span class="btn-arrow">→</span></a>
       </div>
 
     </div>
 
-    <p style="text-align:center; font-size:13px; color:var(--w38); margin-top:28px;">Prices are per zone, per mail drop. Each drop reaches ~10,000 households in your selected zone. Multi-zone discounts available — <a href="contact.html" style="color:var(--yellow);">contact Danyon</a>.</p>
+    <div style="margin-top:32px; background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius); padding:24px; max-width:700px; margin-left:auto; margin-right:auto;">
+      <ul style="list-style:none; display:flex; flex-direction:column; gap:10px;">
+        <li style="font-size:13px; color:var(--w55);">📍 Per zone, per quarterly drop. Each drop reaches ~10,000 households via USPS EDDM.</li>
+        <li style="font-size:13px; color:var(--w55);">🚫 Category exclusivity: no competitor in your category in the same zone and drop.</li>
+        <li style="font-size:13px; color:var(--w55);">🎁 Every ad must include a special offer or QR code — this is what makes families study the mailer.</li>
+        <li style="font-size:13px; color:var(--w55);">📅 Drops go out quarterly: <strong style="color:var(--cream);">January · April · August · November</strong></li>
+        <li style="font-size:13px; color:var(--w55);">⚠️ Minimum 6 advertisers confirmed before a drop prints. Your spot rolls to next quarter if minimum isn't met — deposit held.</li>
+        <li style="font-size:13px; color:var(--w55);">🌍 Multi-zone discount available. <a href="contact.html" style="color:var(--yellow);">Contact Danyon.</a></li>
+      </ul>
+    </div>
   </div>
 </section>
 
@@ -467,9 +829,9 @@
           <div class="form-group">
             <label class="form-label" for="calc-zones">Number of Zones</label>
             <select class="form-select" id="calc-zones">
-              <option value="1">1 Zone — from $149/mo</option>
-              <option value="2">2 Zones — from $298/mo</option>
-              <option value="3">3 Zones — from $447/mo</option>
+              <option value="1">1 Ad Spot — from $299/mo</option>
+              <option value="2">2 Ad Spots — from $598/mo</option>
+              <option value="3">3 Ad Spots — from $897/mo</option>
             </select>
           </div>
           <div style="padding:20px; background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius);">
@@ -588,7 +950,7 @@
           </tr>
           <tr>
             <td>Starting cost / month</td>
-            <td class="col-us" style="color:var(--green); font-weight:700;">from $149</td>
+            <td class="col-us" style="color:var(--green); font-weight:700;">from $299</td>
             <td>$300–$1,500+</td>
             <td>$200–$800+</td>
             <td>$800–$3,000+</td>
@@ -705,38 +1067,65 @@
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="js/main.js"></script>
 <script>
 (function () {
   'use strict';
 
-  // Magnetic Zone Pricing Toggle
-  var mzp2Monthly = document.getElementById('mzp2-btn-monthly');
-  var mzp2Sixmo   = document.getElementById('mzp2-btn-sixmo');
-  if (mzp2Monthly && mzp2Sixmo) {
-    var mzp2Cards = document.querySelectorAll('[data-mzp2-monthly]');
-    function setMZP2(sixmo) {
-      mzp2Monthly.classList.toggle('mzp-toggle-active', !sixmo);
-      mzp2Sixmo.classList.toggle('mzp-toggle-active', sixmo);
-      mzp2Monthly.setAttribute('aria-pressed', String(!sixmo));
-      mzp2Sixmo.setAttribute('aria-pressed', String(sixmo));
-      mzp2Cards.forEach(function (card) {
-        var priceEl  = card.querySelector('.mzp2-price-num');
-        var periodEl = card.querySelector('.mzp2-period');
-        var noteEl   = card.querySelector('.mzp2-sixmo-note');
-        if (!priceEl) return;
-        priceEl.classList.add('swapping');
-        setTimeout(function () {
-          priceEl.textContent = sixmo ? card.dataset.mzp2Sixmo : card.dataset.mzp2Monthly;
-          if (periodEl) periodEl.textContent = sixmo ? '/ month — 6-month commitment' : '/ month, billed monthly';
-          priceEl.classList.remove('swapping');
-        }, 120);
-        if (noteEl) noteEl.style.display = sixmo ? 'flex' : 'none';
-      });
+  // ── Supabase setup ──
+  var SUPABASE_URL = 'https://dwwgavyzgogmhjaerevg.supabase.co';
+  var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3d2dhdnl6Z29nbWhqYWVyZXZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MDgwNjAsImV4cCI6MjA5MDk4NDA2MH0.4ulbzEw-AM2bIBXDyIgBMuIEjQDTOxGaHfaquG2sTaY';
+  var sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  // ── Load founding client counter ──
+  (async function loadFoundingCounter() {
+    try {
+      var res = await sb.from('settings').select('value').eq('key', 'founding_clients_remaining').single();
+      if (res.data) {
+        var count = parseInt(res.data.value, 10);
+        var spotsEl = document.getElementById('founding-spots');
+        var bannerEl = document.getElementById('founding-banner');
+        if (spotsEl) spotsEl.textContent = count;
+        if (count === 0 && bannerEl) {
+          bannerEl.style.display = 'none';
+          document.querySelectorAll('.founding-rate').forEach(function(el) { el.style.display = 'none'; });
+        }
+      }
+    } catch (e) { /* silently fail — static fallback shows */ }
+  })();
+
+  // ── Billboard waitlist form ──
+  window.submitBillboardWaitlist = async function(e) {
+    e.preventDefault();
+    var btn = e.target.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.textContent = 'Submitting…';
+
+    var payload = {
+      name:          document.getElementById('wl-name').value,
+      business_name: document.getElementById('wl-business').value || null,
+      email:         document.getElementById('wl-email').value,
+      phone:         document.getElementById('wl-phone').value || null,
+      package:       document.getElementById('wl-package').value
+    };
+
+    try {
+      var countRes = await sb.from('billboard_waitlist').select('id', { count: 'exact', head: true });
+      var position = (countRes.count || 0) + 1;
+
+      var { error } = await sb.from('billboard_waitlist').insert(payload);
+      if (error) throw error;
+
+      document.getElementById('wl-form-wrap').style.display = 'none';
+      document.getElementById('wl-position').textContent = position;
+      document.getElementById('wl-success').style.display = 'block';
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = 'Join Waitlist →';
+      alert('Something went wrong. Please call or text Danyon at (385) 204-6561.');
     }
-    mzp2Monthly.addEventListener('click', function () { setMZP2(false); });
-    mzp2Sixmo.addEventListener('click',   function () { setMZP2(true);  });
-  }
+  };
 
   // Billboard Pricing Toggle
   var bb2Monthly = document.getElementById('bb2-btn-monthly');

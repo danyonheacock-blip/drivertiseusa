@@ -447,7 +447,10 @@
         </div>
         <div class="zone-field">
           <label>Plan</label>
-          <div class="zone-value"><span id="zone-plan">—</span></div>
+          <div class="zone-value">
+            <span id="zone-plan">—</span>
+            <span id="founding-badge" style="display:none; margin-left:10px; background:rgba(200,151,58,0.15); border:1px solid rgba(200,151,58,0.40); color:#C8973A; border-radius:20px; padding:2px 10px; font-size:11px; font-weight:700; letter-spacing:0.5px;">⭐ FOUNDING RATE LOCKED</span>
+          </div>
         </div>
         <div class="zone-field">
           <label>Next Renewal</label>
@@ -545,10 +548,16 @@
         document.getElementById('client-name').textContent = profile.business_name || profile.name || user.email;
         document.getElementById('nav-user').textContent = profile.business_name || user.email;
 
+        // Show founding rate badge
+        if (profile.founding_client) {
+          const badge = document.getElementById('founding-badge');
+          if (badge) badge.style.display = 'inline-block';
+        }
+
         // Active zone card
         if (profile.subscriptions && profile.subscriptions.length) {
           const sub = profile.subscriptions[0];
-          document.getElementById('zone-name').textContent = sub.zone_name || 'Active Zone';
+          document.getElementById('zone-name').textContent = sub.zone_name || 'Active';
           document.getElementById('zone-plan').textContent = sub.plan_tier || 'Standard';
           document.getElementById('zone-renewal').textContent = sub.next_renewal ?
             new Date(sub.next_renewal).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '—';
