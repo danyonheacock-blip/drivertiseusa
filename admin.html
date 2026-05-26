@@ -389,7 +389,7 @@ input:focus,select:focus{border-color:rgba(200,151,58,0.4);}
     <!-- ROUTE MAPS -->
     <div class="page" id="page-route-maps">
       <div class="page-title">Route Maps</div>
-      <div class="page-sub">Upload daily Google Timeline screenshots for each client</div>
+      <div class="page-sub">Upload daily KML route files for each client</div>
 
       <div class="card">
   <div class="card-title">Upload KML Route</div>
@@ -445,7 +445,7 @@ input:focus,select:focus{border-color:rgba(200,151,58,0.4);}
 
       <div class="card" id="rm-preview-card" style="display:none;">
         <div class="card-title">Recent Uploads — <span id="rm-preview-client-name">Client</span></div>
-        <div id="rm-preview-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;"></div>
+        <div id="rm-preview-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;"></div>
       </div>
     </div>
 
@@ -1061,62 +1061,142 @@ async function loadClientRoutes() {
   }
 
   previewCard.style.display = 'block';
-  grid.innerHTML = data.map(r => `
-    <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--card);">
-      <a href="${r.image_url}" target="_blank">
-        <img src="${r.image_url}" alt="Route ${r.route_date}" style="width:100%;height:140px;object-fit:cover;display:block;" />
-      </a>
-      <div style="padding:8px 10px;">
-        <div style="font-size:11px;font-weight:700;color:var(--amber);">${r.route_date}</div>
-        ${r.notes ? `<div style="font-size:11px;color:var(--muted);margin-top:2px;">${r.notes}</div>` : ''}
-      </div>
-    </div>
-  `).join('');
+  grid.innerHTML = data.map(function(r) {
+    return '<div style="border:1px solid var(--border);border-radius:10px;background:var(--card);padding:12px 14px;">' +
+      '<div style="font-size:12px;font-weight:700;color:var(--amber);margin-bottom:4px;">' + r.route_date + '</div>' +
+      '<div style="font-size:13px;color:var(--text);">' + (r.area_name || 'No area label') + '</div>' +
+      (r.hours_out ? '<div style="font-size:11px;color:var(--muted);margin-top:4px;">' + r.hours_out + ' hrs</div>' : '') +
+      '</div>';
+  }).join('');
 }
 
-async function uploadRouteMap() {
-  const clientId = document.getElementById('rm-client-select').value;
-  const routeDate = document.getElementById('rm-date').value;
-  const fileInput = document.getElementById('rm-file');
-  const notes = document.getElementById('rm-notes').value;
-  const msg = document.getElementById('rm-upload-msg');
+// ── KML ROUTE UPLOAD ────────────────────────────
+var rmParsedCoords = [];
+var rmPreviewMap = null;
 
-  if (!clientId || !routeDate || !fileInput.files[0]) {
-    alert('Please select a client, date, and screenshot file.');
-    return;
-  }
+function parseKML(fileText) {
+  var parser = new DOMParser();
+  var kml = parser.parseFromString(fileText, 'text/xml');
+  var coordNodes = kml.querySelectorAll('LineString coordinates, coordinates');
+  var coords = [];
+  coordNodes.forEach(function(node) {
+    var raw = node.textContent.trim();
+    raw.split(/\s+/).forEach(function(triplet) {
+      var parts = triplet.split(',');
+      if (parts.length >= 2) {
+        var lng = parseFloat(parts[0]);
+        var lat = parseFloat(parts[1]);
+        if (!isNaN(lat) && !isNaN(lng)) coords.push([lat, lng]);
+      }
+    });
+  });
+  return coords;
+}
 
-  const file = fileInput.files[0];
-  const ext = file.name.split('.').pop();
-  const path = `${clientId}/${routeDate}-${Date.now()}.${ext}`;
+function handleKMLSelect(input) {
+  var errorEl = document.getElementById('rm-parse-error');
+  var previewWrap = document.getElementById('rm-preview-map-wrap');
+  var parseInfo = document.getElementById('rm-parse-info');
+  var saveBtn = document.getElementById('rm-save-btn');
 
-  msg.textContent = 'Uploading...';
+  errorEl.style.display = 'none';
+  errorEl.textContent = '';
+  previewWrap.style.display = 'none';
+  saveBtn.disabled = true;
+  saveBtn.style.opacity = '0.4';
+  rmParsedCoords = [];
 
-  const { error: uploadErr } = await sb.storage.from('route-maps').upload(path, file, { upsert: false });
-  if (uploadErr) {
-    msg.textContent = 'Upload failed: ' + uploadErr.message;
-    return;
-  }
+  if (!input.files || !input.files[0]) return;
 
-  const { data: urlData } = sb.storage.from('route-maps').getPublicUrl(path);
-  const imageUrl = urlData.publicUrl;
+  var file = input.files[0];
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var coords = parseKML(e.target.result);
 
-  const { error: insertErr } = await sb.from('route_maps').insert({
+    if (coords.length < 2) {
+      errorEl.textContent = 'No route coordinates found in this file — make sure you exported a KML from Google Timeline.';
+      errorEl.style.display = 'block';
+      return;
+    }
+
+    rmParsedCoords = coords;
+    previewWrap.style.display = 'block';
+    parseInfo.textContent = coords.length + ' GPS points loaded.';
+
+    if (rmPreviewMap) {
+      rmPreviewMap.remove();
+      rmPreviewMap = null;
+    }
+
+    rmPreviewMap = L.map('rm-preview-map', { zoomControl: true, scrollWheelZoom: false });
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '© OpenStreetMap © CARTO',
+      maxZoom: 18
+    }).addTo(rmPreviewMap);
+
+    var polyline = L.polyline(coords, { color: '#C8973A', weight: 3, opacity: 0.9 }).addTo(rmPreviewMap);
+    rmPreviewMap.fitBounds(polyline.getBounds(), { padding: [16, 16] });
+
+    L.circleMarker(coords[0], { radius: 6, fillColor: '#1DB870', color: '#fff', weight: 2, fillOpacity: 1 }).addTo(rmPreviewMap);
+    L.circleMarker(coords[coords.length - 1], { radius: 6, fillColor: '#e07070', color: '#fff', weight: 2, fillOpacity: 1 }).addTo(rmPreviewMap);
+
+    saveBtn.disabled = false;
+    saveBtn.style.opacity = '1';
+  };
+  reader.readAsText(file);
+}
+
+async function saveRouteMap() {
+  var clientId = document.getElementById('rm-client-select').value;
+  var routeDate = document.getElementById('rm-date').value;
+  var areaName = document.getElementById('rm-area').value.trim();
+  var hoursOut = parseFloat(document.getElementById('rm-hours').value) || null;
+  var notes = document.getElementById('rm-notes').value.trim();
+  var msg = document.getElementById('rm-upload-msg');
+  var saveBtn = document.getElementById('rm-save-btn');
+
+  if (!clientId) { alert('Select a client.'); return; }
+  if (!routeDate) { alert('Select a route date.'); return; }
+  if (!rmParsedCoords.length) { alert('No KML parsed yet. Select a KML file first.'); return; }
+
+  saveBtn.disabled = true;
+  saveBtn.style.opacity = '0.4';
+  msg.textContent = 'Saving...';
+
+  var coordsForDB = rmParsedCoords.map(function(c) { return { lat: c[0], lng: c[1] }; });
+
+  var result = await sb.from('route_maps').insert({
     client_id: clientId,
     route_date: routeDate,
-    image_url: imageUrl,
+    area_name: areaName || null,
+    hours_out: hoursOut,
+    route_coordinates: coordsForDB,
+    image_url: null,
     notes: notes || null
   });
 
-  if (insertErr) {
-    msg.textContent = 'DB insert failed: ' + insertErr.message;
+  if (result.error) {
+    msg.textContent = 'Save failed: ' + result.error.message;
+    saveBtn.disabled = false;
+    saveBtn.style.opacity = '1';
     return;
   }
 
-  msg.textContent = '✓ Uploaded successfully!';
-  fileInput.value = '';
+  var clientName = document.getElementById('rm-client-select').selectedOptions[0] ? document.getElementById('rm-client-select').selectedOptions[0].text : '';
+  msg.textContent = '✓ Route saved for ' + clientName + ' — ' + routeDate;
+
+  document.getElementById('rm-file').value = '';
+  document.getElementById('rm-area').value = '';
+  document.getElementById('rm-hours').value = '';
   document.getElementById('rm-notes').value = '';
-  setTimeout(() => { msg.textContent = ''; }, 3000);
+  document.getElementById('rm-preview-map-wrap').style.display = 'none';
+  document.getElementById('rm-parse-error').style.display = 'none';
+  rmParsedCoords = [];
+  if (rmPreviewMap) { rmPreviewMap.remove(); rmPreviewMap = null; }
+  saveBtn.disabled = true;
+  saveBtn.style.opacity = '0.4';
+
+  setTimeout(function() { msg.textContent = ''; }, 4000);
   loadClientRoutes();
 }
 
