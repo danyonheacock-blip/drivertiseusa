@@ -224,20 +224,6 @@
       margin-bottom: 24px;
     }
 
-    /* ── ROUTE GRID ── */
-    .routes-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-    }
-
-    @media (max-width: 768px) {
-      .routes-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 480px) {
-      .routes-grid { grid-template-columns: 1fr; }
-    }
-
     .route-card {
       cursor: pointer;
       border: 1px solid rgba(255,255,255,0.07);
@@ -357,47 +343,101 @@
       opacity: 0.7;
     }
 
-    /* ── LIGHTBOX ── */
-    #lightbox {
+    /* ── WEEKLY ACCORDION ── */
+    .weeks-container { display: flex; flex-direction: column; gap: 8px; }
+    .week-group { border: 1px solid rgba(247,245,241,0.08); border-radius: 12px; overflow: hidden; }
+    .week-toggle {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      background: rgba(247,245,241,0.03);
+      border: none;
+      color: #F7F5F1;
+      cursor: pointer;
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      text-align: left;
+      transition: background 0.2s;
+    }
+    .week-toggle:hover { background: rgba(247,245,241,0.06); }
+    .week-label { flex: 1; }
+    .week-count { font-size: 11px; color: rgba(247,245,241,0.40); font-weight: 400; font-family: 'DM Sans', sans-serif; }
+    .week-chevron { font-size: 10px; color: rgba(247,245,241,0.35); transition: transform 0.2s; }
+    .week-toggle.open .week-chevron { transform: rotate(180deg); }
+    .week-routes {
+      display: none;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      padding: 16px;
+      background: rgba(0,0,0,0.15);
+    }
+    .week-routes.open { display: grid; }
+    .route-map-card {
+      border: 1px solid rgba(247,245,241,0.08);
+      border-radius: 10px;
+      overflow: hidden;
+      background: rgba(247,245,241,0.03);
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .route-map-card:hover { border-color: rgba(200,151,58,0.40); }
+    .route-map-canvas { height: 180px; background: #0d1117; }
+    .route-card-info { padding: 10px 12px; }
+    .route-card-area {
+      font-size: 12px;
+      font-weight: 700;
+      color: #C8973A;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .route-card-meta { font-size: 11px; color: rgba(247,245,241,0.45); }
+    /* Map lightbox */
+    #map-lightbox {
       display: none;
       position: fixed;
       inset: 0;
+      z-index: 9000;
       background: rgba(0,0,0,0.92);
-      z-index: 9999;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      flex-direction: column;
-      padding: 24px;
     }
-    #lightbox img {
-      max-width: 90vw;
-      max-height: 80vh;
-      border-radius: 12px;
-      object-fit: contain;
+    #map-lightbox.open { display: flex; }
+    #map-lightbox-inner {
+      position: relative;
+      width: min(900px, 94vw);
+      height: min(600px, 80vh);
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(200,151,58,0.30);
     }
-    #lightbox-caption {
-      color: rgba(255,255,255,0.65);
-      margin-top: 16px;
-      font-family: 'Syne', sans-serif;
-      font-size: 14px;
+    #map-lightbox-map { width: 100%; height: 100%; }
+    #map-lightbox-caption {
+      margin-top: 14px;
+      font-size: 13px;
+      color: rgba(247,245,241,0.60);
+      text-align: center;
     }
-    .lightbox-close {
-      position: fixed;
-      top: 24px;
-      right: 32px;
-      font-size: 32px;
-      color: rgba(255,255,255,0.6);
-      cursor: pointer;
-      line-height: 1;
+    .map-lightbox-close {
+      position: absolute;
+      top: 12px;
+      right: 16px;
       background: none;
       border: none;
-      font-family: sans-serif;
+      color: rgba(247,245,241,0.70);
+      font-size: 28px;
+      cursor: pointer;
+      z-index: 9100;
+      line-height: 1;
     }
-    .lightbox-close:hover { color: white; }
-    .lightbox-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: -1;
+    .map-lightbox-close:hover { color: white; }
+    @media (max-width: 700px) {
+      .week-routes { grid-template-columns: 1fr; }
     }
 
     /* ── MONTHLY SUMMARY ── */
@@ -527,7 +567,7 @@
           <div class="monthly-summary-month" id="summary-month"></div>
         </div>
 
-        <div class="routes-grid" id="routes-grid">
+        <div class="weeks-container" id="weeks-container">
           <!-- populated by JS -->
         </div>
       </div>
@@ -572,12 +612,13 @@
     </main>
   </div>
 
-  <!-- LIGHTBOX -->
-  <div id="lightbox" role="dialog" aria-modal="true">
-    <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close">&times;</button>
-    <div class="lightbox-overlay" onclick="closeLightbox()"></div>
-    <img id="lightbox-img" src="" alt="Route map full size" />
-    <p id="lightbox-caption"></p>
+  <!-- MAP LIGHTBOX -->
+  <div id="map-lightbox" role="dialog" aria-modal="true">
+    <button class="map-lightbox-close" onclick="closeMapLightbox()" aria-label="Close">&times;</button>
+    <div id="map-lightbox-inner">
+      <div id="map-lightbox-map"></div>
+    </div>
+    <p id="map-lightbox-caption"></p>
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -648,23 +689,158 @@
       renderInvoices(invoices || []);
     }
 
+    // ── ROUTE MAP HELPERS ──────────────────────────
+    function getWeekKey(dateStr) {
+      const d = new Date(dateStr + 'T12:00:00');
+      const day = d.getDay();
+      const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+      const monday = new Date(d);
+      monday.setDate(diff);
+      return monday.toISOString().split('T')[0];
+    }
+
+    function fmtDate(dateStr) {
+      return new Date(dateStr + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    }
+
+    function fmtWeekLabel(mondayStr) {
+      const monday = new Date(mondayStr + 'T12:00:00');
+      const sunday = new Date(monday);
+      sunday.setDate(monday.getDate() + 6);
+      const opts = { month: 'short', day: 'numeric' };
+      return 'Week of ' + monday.toLocaleDateString('en-US', opts) + ' – ' + sunday.toLocaleDateString('en-US', opts);
+    }
+
     function renderRoutes(routes) {
-      const grid = document.getElementById('routes-grid');
-      const count = document.getElementById('routes-count');
-      if (count) count.textContent = routes.length;
+      const container = document.getElementById('weeks-container');
+      if (!container) return;
+
+      // Update old routes-count span if still present
+      const countEl = document.getElementById('routes-count');
+      if (countEl) countEl.textContent = routes.length;
 
       if (!routes.length) {
-        grid.innerHTML = '<p style="color:rgba(255,255,255,0.45);padding:24px 0;">No route maps uploaded yet. Check back after your first week!</p>';
+        container.innerHTML = '<p style="color:rgba(247,245,241,0.35);padding:32px 0;">No routes logged yet — check back after your campaign launches.</p>';
         return;
       }
 
-      grid.innerHTML = routes.map((r) => `
-        <div class="route-card" onclick="openLightbox('${r.image_url}', '${r.route_date}')">
-          <img src="${r.image_url}" alt="Route ${r.route_date}" loading="lazy" />
-          <div class="route-card-date">${new Date(r.route_date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
-          ${r.notes ? `<div class="route-card-notes">${r.notes}</div>` : ''}
-        </div>
-      `).join('');
+      // Group by week
+      const weekMap = {};
+      routes.forEach(r => {
+        const key = getWeekKey(r.route_date);
+        if (!weekMap[key]) weekMap[key] = [];
+        weekMap[key].push(r);
+      });
+
+      const sortedKeys = Object.keys(weekMap).sort((a, b) => b.localeCompare(a));
+
+      container.innerHTML = sortedKeys.map((key, idx) => {
+        const weekRoutes = weekMap[key];
+        const isOpen = idx === 0;
+        const cardsHTML = weekRoutes.map(r => {
+          const coordsJSON = r.route_coordinates ? JSON.stringify(r.route_coordinates).replace(/'/g, '&#39;') : '';
+          const area = r.area_name || 'Route';
+          const dateLabel = fmtDate(r.route_date);
+          const hours = r.hours_out ? r.hours_out + ' hrs' : '';
+          return `<div class="route-map-card"
+            data-coords='${coordsJSON}'
+            data-label="${area.replace(/"/g, '&quot;')}"
+            data-date="${r.route_date}"
+            data-initialized="false"
+            onclick="openMapLightbox(this)">
+            <div class="route-map-canvas" id="map-${r.id}"></div>
+            <div class="route-card-info">
+              <div class="route-card-area">${area}</div>
+              <div class="route-card-meta">${dateLabel}${hours ? ' · ' + hours : ''}</div>
+            </div>
+          </div>`;
+        }).join('');
+
+        return `<div class="week-group">
+          <button class="week-toggle${isOpen ? ' open' : ''}" onclick="toggleWeek(this)">
+            <span class="week-label">${fmtWeekLabel(key)}</span>
+            <span class="week-count">${weekRoutes.length} route${weekRoutes.length !== 1 ? 's' : ''}</span>
+            <span class="week-chevron">&#9660;</span>
+          </button>
+          <div class="week-routes${isOpen ? ' open' : ''}">${cardsHTML}</div>
+        </div>`;
+      }).join('');
+
+      // Init maps for the first open week
+      const firstOpen = container.querySelector('.week-routes.open');
+      if (firstOpen) initWeekMaps(firstOpen);
+    }
+
+    function toggleWeek(btn) {
+      btn.classList.toggle('open');
+      const routesEl = btn.nextElementSibling;
+      routesEl.classList.toggle('open');
+      if (routesEl.classList.contains('open')) initWeekMaps(routesEl);
+    }
+
+    function initWeekMaps(weekEl) {
+      const cards = weekEl.querySelectorAll('.route-map-card[data-initialized="false"]');
+      cards.forEach(card => {
+        card.dataset.initialized = 'true';
+        const coordsRaw = card.dataset.coords;
+        if (!coordsRaw) return;
+        let coords;
+        try { coords = JSON.parse(coordsRaw); } catch(e) { return; }
+        if (!coords || !coords.length) return;
+
+        const canvas = card.querySelector('.route-map-canvas');
+        if (!canvas) return;
+
+        const latlngs = coords.map(c => [c.lat, c.lng]);
+        const map = L.map(canvas, {
+          zoomControl: false,
+          scrollWheelZoom: false,
+          dragging: false,
+          touchZoom: false,
+          doubleClickZoom: false,
+          attributionControl: false
+        });
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 18 }).addTo(map);
+        const polyline = L.polyline(latlngs, { color: '#C8973A', weight: 3, opacity: 0.9 }).addTo(map);
+        map.fitBounds(polyline.getBounds(), { padding: [8, 8] });
+        L.circleMarker(latlngs[0], { radius: 5, fillColor: '#1DB870', color: '#fff', weight: 2, fillOpacity: 1 }).addTo(map);
+        L.circleMarker(latlngs[latlngs.length - 1], { radius: 5, fillColor: '#e07070', color: '#fff', weight: 2, fillOpacity: 1 }).addTo(map);
+      });
+    }
+
+    let lightboxMapInstance = null;
+
+    function openMapLightbox(cardEl) {
+      const coordsRaw = cardEl.dataset.coords;
+      const label = cardEl.dataset.label || 'Route';
+      const date = cardEl.dataset.date || '';
+      if (!coordsRaw) return;
+      let coords;
+      try { coords = JSON.parse(coordsRaw); } catch(e) { return; }
+      if (!coords || !coords.length) return;
+
+      const lb = document.getElementById('map-lightbox');
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+
+      const dateStr = date ? new Date(date + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '';
+      document.getElementById('map-lightbox-caption').textContent = label + (dateStr ? ' — ' + dateStr : '');
+
+      if (lightboxMapInstance) { lightboxMapInstance.remove(); lightboxMapInstance = null; }
+
+      const latlngs = coords.map(c => [c.lat, c.lng]);
+      lightboxMapInstance = L.map('map-lightbox-map', { zoomControl: true, scrollWheelZoom: true, attributionControl: false });
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 18 }).addTo(lightboxMapInstance);
+      const polyline = L.polyline(latlngs, { color: '#C8973A', weight: 4, opacity: 0.95 }).addTo(lightboxMapInstance);
+      lightboxMapInstance.fitBounds(polyline.getBounds(), { padding: [24, 24] });
+      L.circleMarker(latlngs[0], { radius: 7, fillColor: '#1DB870', color: '#fff', weight: 2, fillOpacity: 1 }).addTo(lightboxMapInstance);
+      L.circleMarker(latlngs[latlngs.length - 1], { radius: 7, fillColor: '#e07070', color: '#fff', weight: 2, fillOpacity: 1 }).addTo(lightboxMapInstance);
+    }
+
+    function closeMapLightbox() {
+      document.getElementById('map-lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+      if (lightboxMapInstance) { lightboxMapInstance.remove(); lightboxMapInstance = null; }
     }
 
     function renderInvoices(invoices) {
@@ -703,21 +879,6 @@
       if (monthEl) monthEl.textContent = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
     }
 
-    function openLightbox(url, date) {
-      const lb = document.getElementById('lightbox');
-      const img = document.getElementById('lightbox-img');
-      const caption = document.getElementById('lightbox-caption');
-      img.src = url;
-      caption.textContent = new Date(date + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-      lb.style.display = 'flex';
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeLightbox() {
-      document.getElementById('lightbox').style.display = 'none';
-      document.body.style.overflow = '';
-    }
-
     async function signOut() {
       await sb.auth.signOut();
       window.location.href = 'client-login.html';
@@ -725,7 +886,7 @@
 
     // Close lightbox with Escape key
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'Escape') closeMapLightbox();
     });
   </script>
 </body>
