@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Log Drop">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#C8973A">
+<link rel="manifest" href="/field-log-manifest.json">
+<link rel="apple-touch-icon" href="/assets/icons/field-log-icon-512.png">
+<title>Log Drop — Drivertise</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{
+  --ink:#0A0D12;--ink2:#111820;--amber:#C8973A;--amber-lt:#E8B84B;
+  --green:#1E8C5C;--green-lt:#4DE8A0;--red:#B83020;--red-lt:#FF7B6B;
+  --text:rgba(255,255,255,0.88);--muted:rgba(255,255,255,0.38);
+  --border:rgba(255,255,255,0.08);--card:rgba(255,255,255,0.05);
+}
+html,body{height:100%;background:var(--ink);color:var(--text);font-family:'DM Sans',sans-serif;}
+body{display:flex;flex-direction:column;}
+
+/* PIN LOCK */
+#lock{position:fixed;inset:0;background:var(--ink);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:40px 24px;}
+.pin-logo{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:white;}
+.pin-logo span{color:var(--amber);}
+.pin-sub{font-size:13px;color:var(--muted);text-align:center;}
+#pin-input{padding:16px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:14px;color:white;font-size:20px;text-align:center;width:220px;letter-spacing:6px;outline:none;-webkit-text-security:disc;}
+#pin-input:focus{border-color:rgba(200,151,58,0.4);}
+#pin-btn{padding:14px 48px;background:var(--amber);color:var(--ink);border:none;border-radius:14px;font-family:'Syne',sans-serif;font-size:15px;font-weight:800;cursor:pointer;width:220px;}
+#pin-err{color:var(--red-lt);font-size:13px;display:none;}
+
+/* APP SHELL */
+#app{display:none;flex-direction:column;min-height:100vh;}
+
+/* HEADER */
+.field-header{background:rgba(10,13,18,0.97);border-bottom:1px solid rgba(200,151,58,0.15);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;}
+.header-logo{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:white;text-decoration:none;}
+.header-logo span{color:var(--amber);}
+.header-tag{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(200,151,58,0.8);background:rgba(200,151,58,0.1);border:1px solid rgba(200,151,58,0.25);padding:5px 12px;border-radius:20px;}
+
+/* FORM VIEW */
+#form-view{flex:1;display:flex;flex-direction:column;gap:16px;padding:20px 16px 40px;overflow-y:auto;}
+.page-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:white;line-height:1.2;}
+.page-sub{font-size:12px;color:var(--muted);margin-top:4px;}
+.field{display:flex;flex-direction:column;gap:7px;}
+.field-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.field-input{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;width:100%;outline:none;-webkit-appearance:none;appearance:none;min-height:52px;}
+.field-input:focus{border-color:rgba(200,151,58,0.45);background:rgba(200,151,58,0.04);}
+.field-input::placeholder{color:rgba(255,255,255,0.22);}
+select.field-input{color:var(--text);}
+select.field-input option{background:#1B2B3A;}
+
+/* CAMERA BUTTON */
+.camera-zone{background:rgba(200,151,58,0.06);border:1.5px dashed rgba(200,151,58,0.3);border-radius:14px;padding:22px 16px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;position:relative;overflow:hidden;}
+.camera-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;font-size:0;}
+.camera-icon{font-size:30px;line-height:1;}
+.camera-label{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--amber);}
+.camera-sub{font-size:11px;color:var(--muted);}
+#photo-preview{background:rgba(30,140,92,0.1);border:1px solid rgba(30,140,92,0.3);border-radius:12px;padding:14px 16px;display:none;align-items:center;gap:12px;}
+#photo-preview .check{font-size:20px;}
+#photo-filename{font-size:13px;color:var(--green-lt);word-break:break-all;}
+
+/* SUBMIT */
+.submit-btn{background:var(--amber);color:var(--ink);border:none;border-radius:14px;padding:18px 24px;font-family:'Syne',sans-serif;font-size:16px;font-weight:800;width:100%;cursor:pointer;margin-top:4px;letter-spacing:0.3px;}
+.submit-btn:disabled{opacity:0.45;cursor:not-allowed;}
+.error-msg{color:var(--red-lt);font-size:13px;display:none;margin-top:-8px;}
+
+/* FOOTER LINKS */
+.footer-links{display:flex;flex-direction:column;align-items:center;gap:8px;padding-top:8px;}
+.footer-link{font-size:12px;color:rgba(200,151,58,0.5);text-decoration:none;}
+.install-hint{font-size:11px;color:rgba(255,255,255,0.18);text-align:center;line-height:1.6;}
+
+/* SUCCESS VIEW */
+#success-view{display:none;flex:1;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:40px 24px;text-align:center;}
+.success-check{width:80px;height:80px;background:rgba(30,140,92,0.12);border:2px solid rgba(30,140,92,0.35);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:34px;color:var(--green-lt);}
+.success-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:white;}
+.success-summary{font-size:14px;color:var(--muted);line-height:1.8;}
+.success-summary strong{color:var(--text);}
+.btn-again{background:rgba(200,151,58,0.12);border:1px solid rgba(200,151,58,0.3);border-radius:12px;padding:16px 32px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--amber);cursor:pointer;margin-top:8px;}
+</style>
+</head>
+<body>
+
+<!-- PIN LOCK -->
+<div id="lock">
+  <div class="pin-logo">Driver<span>tise</span></div>
+  <div class="pin-sub">Enter your admin PIN to continue</div>
+  <input type="password" id="pin-input" placeholder="••••" inputmode="numeric" pattern="[0-9]*" />
+  <button id="pin-btn" onclick="checkPin()">Unlock</button>
+  <div id="pin-err">Incorrect PIN — try again.</div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <header class="field-header">
+    <a class="header-logo" href="admin.html">Driver<span>tise</span></a>
+    <div class="header-tag">Field Log</div>
+  </header>
+
+  <!-- FORM -->
+  <main id="form-view">
+    <div>
+      <div class="page-title">Log Card Drop</div>
+      <div class="page-sub">Cards delivered this stop</div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Client</div>
+      <select id="client" class="field-input">
+        <option value="">— Select Client —</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Date</div>
+      <input type="date" id="date" class="field-input" />
+    </div>
+
+    <div class="field">
+      <div class="field-label">Neighborhood</div>
+      <input type="text" id="neighborhood" class="field-input" placeholder="e.g. Saratoga Springs Zone 1" autocomplete="off" />
+    </div>
+
+    <div class="field">
+      <div class="field-label">Cards Delivered</div>
+      <input type="number" id="cards" class="field-input" placeholder="e.g. 12" min="1" inputmode="numeric" />
+    </div>
+
+    <div class="field">
+      <div class="field-label">Verification Photo</div>
+      <div class="camera-zone">
+        <input type="file" id="photo" accept="image/*" capture="environment" />
+        <div id="camera-prompt">
+          <div class="camera-icon">📷</div>
+          <div class="camera-label">Tap to Open Camera</div>
+          <div class="camera-sub">Opens back camera directly</div>
+        </div>
+      </div>
+      <div id="photo-preview">
+        <span class="check">✅</span>
+        <span id="photo-filename"></span>
+      </div>
+    </div>
+
+    <div id="drop-error" class="error-msg"></div>
+    <button id="submit-btn" class="submit-btn" onclick="submitDrop()">Log This Drop →</button>
+
+    <div class="footer-links">
+      <a class="footer-link" href="admin-log-route.html">Switch to Route Logger →</a>
+      <a class="footer-link" href="admin.html">Open Full Dashboard →</a>
+      <div class="install-hint">
+        iPhone: Share → Add to Home Screen → "Log Drop"<br>
+        Android: ··· menu → Add to Home Screen
+      </div>
+    </div>
+  </main>
+
+  <!-- SUCCESS -->
+  <div id="success-view">
+    <div class="success-check">✓</div>
+    <div class="success-title">Drop Logged</div>
+    <div class="success-summary">
+      <strong id="s-client"></strong><br>
+      <span id="s-cards"></span> cards · <span id="s-neighborhood"></span><br>
+      <span id="s-date"></span>
+    </div>
+    <button class="btn-again" onclick="logAnother()">+ Log Another Drop</button>
+    <a class="footer-link" href="admin.html">Open Full Dashboard →</a>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://dwwgavyzgogmhjaerevg.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3d2dhdnl6Z29nbWhqYWVyZXZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MDgwNjAsImV4cCI6MjA5MDk4NDA2MH0.4ulbzEw-AM2bIBXDyIgBMuIEjQDTOxGaHfaquG2sTaY';
+const ADMIN_PIN = '1234'; // Change this before going live
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ── PIN ──────────────────────────────────────────
+function checkPin() {
+  if (document.getElementById('pin-input').value === ADMIN_PIN) {
+    sessionStorage.setItem('drivertise_admin_unlocked', '1');
+    document.getElementById('lock').style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
+    init();
+  } else {
+    document.getElementById('pin-err').style.display = 'block';
+    document.getElementById('pin-input').value = '';
+  }
+}
+document.getElementById('pin-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') checkPin();
+});
+
+// ── INIT ─────────────────────────────────────────
+async function init() {
+  document.getElementById('date').value = new Date().toISOString().split('T')[0];
+  await loadClients();
+  const lastClient = localStorage.getItem('drivertise_last_client');
+  if (lastClient) document.getElementById('client').value = lastClient;
+}
+
+async function loadClients() {
+  const { data } = await sb.from('profiles').select('id, business_name, name').order('business_name');
+  if (!data) return;
+  const sel = document.getElementById('client');
+  data.forEach(function(c) {
+    const opt = document.createElement('option');
+    opt.value = c.id;
+    opt.textContent = c.business_name || c.name || c.id;
+    sel.appendChild(opt);
+  });
+}
+
+// ── PHOTO PREVIEW ─────────────────────────────────
+document.getElementById('photo').addEventListener('change', function() {
+  const file = this.files[0];
+  if (file) {
+    document.getElementById('photo-filename').textContent = file.name;
+    document.getElementById('photo-preview').style.display = 'flex';
+    document.getElementById('camera-prompt').style.display = 'none';
+  }
+});
+
+// ── SUBMIT ────────────────────────────────────────
+async function submitDrop() {
+  const clientId = document.getElementById('client').value;
+  const dropDate = document.getElementById('date').value;
+  const neighborhood = document.getElementById('neighborhood').value.trim();
+  const cardsDelivered = parseInt(document.getElementById('cards').value) || 0;
+  const photoFile = document.getElementById('photo').files[0];
+  const errEl = document.getElementById('drop-error');
+  const btn = document.getElementById('submit-btn');
+
+  errEl.style.display = 'none';
+  if (!clientId)       { errEl.textContent = 'Select a client.'; errEl.style.display = 'block'; return; }
+  if (!neighborhood)   { errEl.textContent = 'Enter a neighborhood.'; errEl.style.display = 'block'; return; }
+  if (!cardsDelivered) { errEl.textContent = 'Enter the number of cards delivered.'; errEl.style.display = 'block'; return; }
+
+  btn.textContent = 'Saving...';
+  btn.disabled = true;
+
+  var photoUrl = null;
+  if (photoFile) {
+    var ext = photoFile.name.split('.').pop();
+    var path = clientId + '/' + dropDate + '-' + Date.now() + '.' + ext;
+    var { error: uploadError } = await sb.storage.from('card-drop-photos').upload(path, photoFile, { upsert: false });
+    if (uploadError) {
+      errEl.textContent = 'Photo upload failed: ' + uploadError.message;
+      errEl.style.display = 'block';
+      btn.textContent = 'Log This Drop →';
+      btn.disabled = false;
+      return;
+    }
+    photoUrl = sb.storage.from('card-drop-photos').getPublicUrl(path).data.publicUrl;
+  }
+
+  var { error } = await sb.from('card_drops').insert({
+    client_id: clientId,
+    drop_date: dropDate,
+    neighborhood: neighborhood,
+    cards_delivered: cardsDelivered,
+    photo_url: photoUrl,
+    notes: null
+  });
+
+  if (error) {
+    errEl.textContent = 'Save failed: ' + error.message;
+    errEl.style.display = 'block';
+    btn.textContent = 'Log This Drop →';
+    btn.disabled = false;
+    return;
+  }
+
+  localStorage.setItem('drivertise_last_client', clientId);
+
+  document.getElementById('s-client').textContent = document.getElementById('client').selectedOptions[0].text;
+  document.getElementById('s-cards').textContent = cardsDelivered;
+  document.getElementById('s-neighborhood').textContent = neighborhood;
+  document.getElementById('s-date').textContent = dropDate;
+  document.getElementById('form-view').style.display = 'none';
+  document.getElementById('success-view').style.display = 'flex';
+}
+
+// ── LOG ANOTHER ───────────────────────────────────
+function logAnother() {
+  document.getElementById('neighborhood').value = '';
+  document.getElementById('cards').value = '';
+  document.getElementById('photo').value = '';
+  document.getElementById('photo-preview').style.display = 'none';
+  document.getElementById('camera-prompt').style.display = 'flex';
+  document.getElementById('drop-error').style.display = 'none';
+  document.getElementById('submit-btn').textContent = 'Log This Drop →';
+  document.getElementById('submit-btn').disabled = false;
+  // Restore last client
+  var lastClient = localStorage.getItem('drivertise_last_client');
+  if (lastClient) document.getElementById('client').value = lastClient;
+  document.getElementById('success-view').style.display = 'none';
+  document.getElementById('form-view').style.display = 'flex';
+}
+
+// ── SESSION CHECK ─────────────────────────────────
+if (sessionStorage.getItem('drivertise_admin_unlocked')) {
+  document.getElementById('lock').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  init();
+}
+</script>
+</body>
+</html>
