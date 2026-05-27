@@ -486,6 +486,61 @@
       .monthly-summary-month { margin-left: 0; }
     }
 
+    /* ── CARD DROPS ── */
+    .card-drops-section { margin-top: 48px; }
+    .card-drop-entry {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(247,245,241,0.06);
+    }
+    .card-drop-entry:last-child { border-bottom: none; }
+    .card-drop-photo {
+      width: 72px;
+      height: 72px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid rgba(247,245,241,0.10);
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .card-drop-photo-placeholder {
+      width: 72px;
+      height: 72px;
+      border-radius: 8px;
+      background: rgba(247,245,241,0.04);
+      border: 1px solid rgba(247,245,241,0.08);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+    .card-drop-info { flex: 1; }
+    .card-drop-meta {
+      font-size: 11px;
+      color: rgba(247,245,241,0.40);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .card-drop-neighborhood {
+      font-size: 14px;
+      font-weight: 700;
+      color: #F7F5F1;
+      margin-bottom: 2px;
+    }
+    .card-drop-count { font-size: 13px; color: #C8973A; }
+    .card-drops-total {
+      margin-top: 16px;
+      font-size: 13px;
+      color: rgba(247,245,241,0.50);
+      border-top: 1px solid rgba(247,245,241,0.08);
+      padding-top: 14px;
+    }
+    .card-drops-total strong { color: #C8973A; }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 600px) {
       .portal-nav { padding: 0 20px; }
@@ -593,6 +648,14 @@
         </div>
       </div>
 
+      <!-- BUSINESS CARD DROPS -->
+      <div class="card-drops-section" id="card-drops-section" style="display:none;">
+        <div class="section-label" style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(247,245,241,0.40);margin-bottom:8px;">Complimentary Service</div>
+        <h2 class="section-title" style="margin-bottom:6px;">Cards Delivered This Month</h2>
+        <p class="section-sub" style="margin-bottom:24px;">Delivered directly to homes on your behalf.</p>
+        <div id="card-drops-list"></div>
+      </div>
+
       <!-- QUICK LINKS -->
       <div class="section">
         <h2 class="section-title" style="margin-bottom:20px;">Quick Links</h2>
@@ -687,6 +750,7 @@
         .limit(12);
 
       renderInvoices(invoices || []);
+      loadCardDrops(profile?.id);
     }
 
     // ── ROUTE MAP HELPERS ──────────────────────────
@@ -841,6 +905,11 @@
       document.getElementById('map-lightbox').classList.remove('open');
       document.body.style.overflow = '';
       if (lightboxMapInstance) { lightboxMapInstance.remove(); lightboxMapInstance = null; }
+      // Restore inner container in case openDropPhoto replaced it
+      const inner = document.getElementById('map-lightbox-inner');
+      if (inner && !inner.querySelector('#map-lightbox-map')) {
+        inner.innerHTML = '<div id="map-lightbox-map" style="width:100%;height:100%;"></div>';
+      }
     }
 
     function renderInvoices(invoices) {
@@ -857,6 +926,61 @@
           <td><span class="invoice-status ${inv.paid ? 'paid' : 'unpaid'}">${inv.paid ? 'Paid' : 'Due'}</span></td>
         </tr>
       `).join('');
+    }
+
+    async function loadCardDrops(clientId) {
+      const now = new Date();
+      const firstOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+      const lastOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString().split('T')[0];
+
+      const { data: drops } = await sb
+        .from('card_drops')
+        .select('*')
+        .eq('client_id', clientId)
+        .gte('drop_date', firstOfMonth)
+        .lte('drop_date', lastOfMonth)
+        .order('drop_date', { ascending: false });
+
+      renderCardDrops(drops || []);
+    }
+
+    function renderCardDrops(drops) {
+      const section = document.getElementById('card-drops-section');
+      const list = document.getElementById('card-drops-list');
+      if (!section || !list) return;
+
+      if (!drops.length) {
+        section.style.display = 'none';
+        return;
+      }
+
+      section.style.display = 'block';
+
+      const totalCards = drops.reduce((sum, d) => sum + (d.cards_delivered || 0), 0);
+
+      list.innerHTML = drops.map(d => {
+        const dateStr = new Date(d.drop_date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        const photoHTML = d.photo_url
+          ? `<img src="${d.photo_url}" class="card-drop-photo" alt="Verification photo" onclick="openDropPhoto('${d.photo_url}')" />`
+          : '<div class="card-drop-photo-placeholder">&#x1F0CF;</div>';
+        return `<div class="card-drop-entry">
+          ${photoHTML}
+          <div class="card-drop-info">
+            <div class="card-drop-meta">${dateStr}</div>
+            <div class="card-drop-neighborhood">${d.neighborhood}</div>
+            <div class="card-drop-count">${d.cards_delivered} cards delivered</div>
+          </div>
+        </div>`;
+      }).join('') + `<div class="card-drops-total"><strong>${totalCards} business cards</strong> delivered this month</div>`;
+    }
+
+    function openDropPhoto(url) {
+      const lb = document.getElementById('map-lightbox');
+      const inner = document.getElementById('map-lightbox-inner');
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      inner.innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:contain;border-radius:14px;" />`;
+      document.getElementById('map-lightbox-caption').textContent = 'Verification photo';
     }
 
     function loadMonthlySummary(routes) {
