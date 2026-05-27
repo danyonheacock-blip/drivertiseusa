@@ -541,6 +541,27 @@
     }
     .card-drops-total strong { color: #C8973A; }
 
+    /* ── RENEWAL COUNTDOWN BAR ── */
+    .renewal-bar-wrap { margin-top: 10px; }
+    .renewal-bar-label {
+      font-size: 11px;
+      color: rgba(247,245,241,0.40);
+      margin-bottom: 5px;
+    }
+    .renewal-bar-track {
+      height: 4px;
+      background: rgba(247,245,241,0.08);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .renewal-bar-fill {
+      height: 100%;
+      background: #C8973A;
+      border-radius: 4px;
+      transition: width 0.6s ease;
+    }
+    .renewal-bar-fill.urgent { background: #e09020; }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 600px) {
       .portal-nav { padding: 0 20px; }
@@ -597,6 +618,12 @@
         <div class="zone-field">
           <label>Next Renewal</label>
           <div class="zone-value"><span id="zone-renewal">—</span></div>
+          <div class="renewal-bar-wrap" id="renewal-bar-wrap" style="display:none;">
+            <div class="renewal-bar-label" id="renewal-bar-label"></div>
+            <div class="renewal-bar-track">
+              <div class="renewal-bar-fill" id="renewal-bar-fill" style="width:0%;"></div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -669,6 +696,9 @@
           <a href="contact.html" class="quick-link">
             <span class="quick-link-icon">✉</span> Contact Support
           </a>
+          <a href="mailto:danyon@drivertiseusa.com?subject=Client%20Portal%20Message" class="quick-link">
+            <span class="quick-link-icon">📩</span> Message Danyon
+          </a>
         </div>
       </div>
 
@@ -728,6 +758,9 @@
           document.getElementById('zone-plan').textContent = sub.plan_tier || 'Standard';
           document.getElementById('zone-renewal').textContent = sub.next_renewal ?
             new Date(sub.next_renewal).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '—';
+          if (sub.start_date && sub.next_renewal) {
+            renderRenewalCountdown(sub.start_date, sub.next_renewal);
+          }
         }
       }
 
@@ -942,6 +975,32 @@
         .order('drop_date', { ascending: false });
 
       renderCardDrops(drops || []);
+    }
+
+    function renderRenewalCountdown(startDateStr, renewalDateStr) {
+      const wrap = document.getElementById('renewal-bar-wrap');
+      const label = document.getElementById('renewal-bar-label');
+      const fill = document.getElementById('renewal-bar-fill');
+      if (!wrap || !label || !fill) return;
+      if (!startDateStr || !renewalDateStr) return;
+
+      const start = new Date(startDateStr + 'T00:00:00');
+      const renewal = new Date(renewalDateStr + 'T00:00:00');
+      const now = new Date();
+
+      const totalDays = Math.round((renewal - start) / (1000 * 60 * 60 * 24));
+      const daysElapsed = Math.round((now - start) / (1000 * 60 * 60 * 24));
+      const daysLeft = Math.round((renewal - now) / (1000 * 60 * 60 * 24));
+
+      if (totalDays <= 0 || daysLeft < 0) return;
+
+      const pct = Math.min(100, Math.max(0, (daysElapsed / totalDays) * 100));
+      const urgent = daysLeft <= 7;
+
+      fill.style.width = pct + '%';
+      if (urgent) fill.classList.add('urgent');
+      label.textContent = 'Renews in ' + daysLeft + ' day' + (daysLeft !== 1 ? 's' : '');
+      wrap.style.display = 'block';
     }
 
     function renderCardDrops(drops) {
