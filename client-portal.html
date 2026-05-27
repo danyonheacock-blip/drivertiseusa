@@ -783,7 +783,7 @@
         .limit(12);
 
       renderInvoices(invoices || []);
-      loadCardDrops(profile?.id);
+      if (profile?.id) loadCardDrops(profile.id);
     }
 
     // ── ROUTE MAP HELPERS ──────────────────────────
@@ -1034,6 +1034,7 @@
     }
 
     function openDropPhoto(url) {
+      if (lightboxMapInstance) { lightboxMapInstance.remove(); lightboxMapInstance = null; }
       const lb = document.getElementById('map-lightbox');
       const inner = document.getElementById('map-lightbox-inner');
       lb.classList.add('open');
