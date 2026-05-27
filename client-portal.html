@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -399,6 +400,52 @@
       z-index: -1;
     }
 
+    /* ── MONTHLY SUMMARY ── */
+    .monthly-summary {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      background: rgba(200,151,58,0.06);
+      border: 1px solid rgba(200,151,58,0.20);
+      border-radius: 12px;
+      padding: 16px 24px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+    .monthly-summary-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .monthly-summary-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 22px;
+      font-weight: 900;
+      color: #C8973A;
+      line-height: 1;
+    }
+    .monthly-summary-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: rgba(247,245,241,0.45);
+    }
+    .monthly-summary-divider {
+      width: 1px;
+      height: 36px;
+      background: rgba(200,151,58,0.20);
+    }
+    .monthly-summary-month {
+      font-size: 13px;
+      color: rgba(247,245,241,0.45);
+      margin-left: auto;
+    }
+    @media (max-width: 600px) {
+      .monthly-summary { gap: 20px; padding: 14px 16px; }
+      .monthly-summary-month { margin-left: 0; }
+    }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 600px) {
       .portal-nav { padding: 0 20px; }
@@ -464,7 +511,22 @@
           <h2 class="section-title">Route Reports</h2>
           <span style="color:rgba(255,255,255,0.35);font-size:14px;">(<span id="routes-count">0</span> total)</span>
         </div>
-        <p class="section-sub">Click any screenshot to view full size.</p>
+        <p class="section-sub">Your ad in the field — every route logged and mapped.</p>
+
+        <!-- Monthly summary -->
+        <div class="monthly-summary" id="monthly-summary">
+          <div class="monthly-summary-stat">
+            <div class="monthly-summary-num" id="summary-routes">—</div>
+            <div class="monthly-summary-label">Routes This Month</div>
+          </div>
+          <div class="monthly-summary-divider"></div>
+          <div class="monthly-summary-stat">
+            <div class="monthly-summary-num" id="summary-hours">—</div>
+            <div class="monthly-summary-label">Hours of Coverage</div>
+          </div>
+          <div class="monthly-summary-month" id="summary-month"></div>
+        </div>
+
         <div class="routes-grid" id="routes-grid">
           <!-- populated by JS -->
         </div>
@@ -518,6 +580,7 @@
     <p id="lightbox-caption"></p>
   </div>
 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
     const SUPABASE_URL = 'https://dwwgavyzgogmhjaerevg.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3d2dhdnl6Z29nbWhqYWVyZXZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MDgwNjAsImV4cCI6MjA5MDk4NDA2MH0.4ulbzEw-AM2bIBXDyIgBMuIEjQDTOxGaHfaquG2sTaY';
@@ -572,6 +635,7 @@
         .order('route_date', { ascending: false });
 
       renderRoutes(routes || []);
+      loadMonthlySummary(routes || []);
 
       // Load invoices
       const { data: invoices } = await sb
@@ -617,6 +681,26 @@
           <td><span class="invoice-status ${inv.paid ? 'paid' : 'unpaid'}">${inv.paid ? 'Paid' : 'Due'}</span></td>
         </tr>
       `).join('');
+    }
+
+    function loadMonthlySummary(routes) {
+      const now = new Date();
+      const currentMonth = now.getMonth();
+      const currentYear = now.getFullYear();
+
+      const monthRoutes = routes.filter(r => {
+        const d = new Date(r.route_date + 'T12:00:00');
+        return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+      });
+
+      const totalHours = monthRoutes.reduce((sum, r) => sum + (parseFloat(r.hours_out) || 0), 0);
+
+      const routesEl = document.getElementById('summary-routes');
+      const hoursEl = document.getElementById('summary-hours');
+      const monthEl = document.getElementById('summary-month');
+      if (routesEl) routesEl.textContent = monthRoutes.length;
+      if (hoursEl) hoursEl.textContent = totalHours % 1 === 0 ? String(totalHours) : totalHours.toFixed(1);
+      if (monthEl) monthEl.textContent = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
     }
 
     function openLightbox(url, date) {
