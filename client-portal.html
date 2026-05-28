@@ -440,50 +440,118 @@
       .week-routes { grid-template-columns: 1fr; }
     }
 
-    /* ── MONTHLY SUMMARY ── */
-    .monthly-summary {
+    /* ── MONTHLY SUMMARY CARD ── */
+    .summary-card {
+      background: var(--bg4, #141820);
+      border: 1px solid rgba(247,245,241,0.07);
+      border-top: 3px solid #C8973A;
+      border-radius: 16px;
+      padding: 28px 28px 20px;
+      margin-bottom: 32px;
+    }
+    .summary-card-header {
       display: flex;
       align-items: center;
-      gap: 32px;
-      background: rgba(200,151,58,0.06);
-      border: 1px solid rgba(200,151,58,0.20);
-      border-radius: 12px;
-      padding: 16px 24px;
-      margin-bottom: 32px;
+      justify-content: space-between;
+      margin-bottom: 24px;
       flex-wrap: wrap;
+      gap: 8px;
     }
-    .monthly-summary-stat {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-    .monthly-summary-num {
+    .summary-card-title {
       font-family: 'Syne', sans-serif;
-      font-size: 22px;
+      font-weight: 800;
+      font-size: 15px;
+      color: #F7F5F1;
+      letter-spacing: 0.02em;
+    }
+    .summary-card-month {
+      font-size: 12px;
+      color: rgba(247,245,241,0.40);
+      font-weight: 500;
+    }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px 24px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 640px) {
+      .summary-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    .summary-stat {}
+    .summary-stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 26px;
       font-weight: 900;
       color: #C8973A;
       line-height: 1;
+      margin-bottom: 4px;
     }
-    .monthly-summary-label {
+    .summary-stat-label {
       font-size: 11px;
       font-weight: 700;
-      letter-spacing: 0.8px;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: rgba(247,245,241,0.45);
+      color: rgba(247,245,241,0.40);
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
-    .monthly-summary-divider {
-      width: 1px;
-      height: 36px;
-      background: rgba(200,151,58,0.20);
+    .summary-stat-label .info-icon {
+      cursor: pointer;
+      position: relative;
+      display: inline-block;
     }
-    .monthly-summary-month {
+    .summary-stat-label .info-icon::after {
+      content: attr(data-tip);
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e2433;
+      border: 1px solid rgba(200,151,58,0.30);
+      color: rgba(247,245,241,0.75);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0;
+      text-transform: none;
+      padding: 6px 10px;
+      border-radius: 8px;
+      white-space: normal;
+      width: 200px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s;
+      z-index: 10;
+    }
+    .summary-stat-label .info-icon:hover::after { opacity: 1; }
+    .summary-neighborhoods {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(247,245,241,0.06);
+    }
+    .summary-neighborhood-tag {
+      font-size: 11px;
+      color: rgba(247,245,241,0.55);
+      background: rgba(247,245,241,0.05);
+      border: 1px solid rgba(247,245,241,0.09);
+      border-radius: 20px;
+      padding: 3px 10px;
+    }
+    .summary-empty {
       font-size: 13px;
-      color: rgba(247,245,241,0.45);
-      margin-left: auto;
+      color: rgba(247,245,241,0.35);
+      font-style: italic;
+      padding: 8px 0;
     }
-    @media (max-width: 600px) {
-      .monthly-summary { gap: 20px; padding: 14px 16px; }
-      .monthly-summary-month { margin-left: 0; }
+    .summary-footnote {
+      font-size: 11px;
+      color: rgba(247,245,241,0.28);
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(247,245,241,0.05);
     }
 
     /* ── CARD DROPS ── */
@@ -635,18 +703,15 @@
         </div>
         <p class="section-sub">Your ad in the field — every route logged and mapped.</p>
 
-        <!-- Monthly summary -->
-        <div class="monthly-summary" id="monthly-summary">
-          <div class="monthly-summary-stat">
-            <div class="monthly-summary-num" id="summary-routes">—</div>
-            <div class="monthly-summary-label">Routes This Month</div>
+        <!-- Monthly summary card -->
+        <div class="summary-card" id="monthly-summary">
+          <div class="summary-card-header">
+            <span class="summary-card-title" id="summary-title">Monthly Campaign Summary</span>
+            <span class="summary-card-month" id="summary-month"></span>
           </div>
-          <div class="monthly-summary-divider"></div>
-          <div class="monthly-summary-stat">
-            <div class="monthly-summary-num" id="summary-hours">—</div>
-            <div class="monthly-summary-label">Hours of Coverage</div>
+          <div id="summary-content">
+            <!-- Populated by JS -->
           </div>
-          <div class="monthly-summary-month" id="summary-month"></div>
         </div>
 
         <div class="weeks-container" id="weeks-container">
@@ -772,7 +837,7 @@
         .order('route_date', { ascending: false });
 
       renderRoutes(routes || []);
-      loadMonthlySummary(routes || []);
+      loadMonthlySummary(routes || [], profile?.id);
 
       // Load invoices
       const { data: invoices } = await sb
@@ -1043,7 +1108,33 @@
       document.getElementById('map-lightbox-caption').textContent = 'Verification photo';
     }
 
-    function loadMonthlySummary(routes) {
+    // ── HAVERSINE ──────────────────────────────────────
+    const IMPRESSIONS_PER_MILE = 400;
+
+    function haversineDistance(lat1, lng1, lat2, lng2) {
+      const R = 3958.8;
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLng = (lng2 - lng1) * Math.PI / 180;
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLng/2) * Math.sin(dLng/2);
+      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    }
+
+    function calcRouteMiles(coordinates) {
+      if (!coordinates || coordinates.length < 2) return 0;
+      let total = 0;
+      for (let i = 1; i < coordinates.length; i++) {
+        total += haversineDistance(
+          coordinates[i-1].lat, coordinates[i-1].lng,
+          coordinates[i].lat,   coordinates[i].lng
+        );
+      }
+      return total;
+    }
+
+    // ── MONTHLY SUMMARY CARD ───────────────────────────
+    async function loadMonthlySummary(routes, clientId) {
       const now = new Date();
       const currentMonth = now.getMonth();
       const currentYear = now.getFullYear();
@@ -1053,14 +1144,84 @@
         return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
       });
 
-      const totalHours = monthRoutes.reduce((sum, r) => sum + (parseFloat(r.hours_out) || 0), 0);
-
-      const routesEl = document.getElementById('summary-routes');
-      const hoursEl = document.getElementById('summary-hours');
       const monthEl = document.getElementById('summary-month');
-      if (routesEl) routesEl.textContent = monthRoutes.length;
-      if (hoursEl) hoursEl.textContent = totalHours % 1 === 0 ? String(totalHours) : totalHours.toFixed(1);
       if (monthEl) monthEl.textContent = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+      const titleEl = document.getElementById('summary-title');
+      if (titleEl) titleEl.textContent = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) + ' Campaign Summary';
+
+      const contentEl = document.getElementById('summary-content');
+      if (!contentEl) return;
+
+      if (!monthRoutes.length) {
+        contentEl.innerHTML = '<p class="summary-empty">Campaign summary updates as routes are logged. Check back after your first week on the road.</p>';
+        return;
+      }
+
+      // Compute stats
+      const routeCount = monthRoutes.length;
+      const totalHours = monthRoutes.reduce((sum, r) => sum + (parseFloat(r.hours_out) || 0), 0);
+      const totalMiles = monthRoutes.reduce((sum, r) => sum + calcRouteMiles(r.route_coordinates || []), 0);
+      const totalImpressions = Math.round(totalMiles * IMPRESSIONS_PER_MILE);
+
+      // Distinct neighborhoods
+      const neighborhoods = [...new Set(
+        monthRoutes.map(r => r.area_name).filter(Boolean)
+      )];
+
+      // Card drops this month
+      let cardDropCount = 0;
+      if (clientId) {
+        const firstOfMonth = new Date(currentYear, currentMonth, 1).toISOString().split('T')[0];
+        const lastOfMonth = new Date(currentYear, currentMonth + 1, 0).toISOString().split('T')[0];
+        const { data: drops } = await sb
+          .from('card_drops')
+          .select('cards_delivered')
+          .eq('client_id', clientId)
+          .gte('drop_date', firstOfMonth)
+          .lte('drop_date', lastOfMonth);
+        if (drops) cardDropCount = drops.reduce((sum, d) => sum + (parseInt(d.cards_delivered) || 0), 0);
+      }
+
+      const fmtNum = n => n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k' : String(n);
+      const fmtHours = h => h % 1 === 0 ? String(h) : h.toFixed(1);
+
+      contentEl.innerHTML = `
+        <div class="summary-grid">
+          <div class="summary-stat">
+            <div class="summary-stat-num">${routeCount}</div>
+            <div class="summary-stat-label">Routes Driven</div>
+          </div>
+          <div class="summary-stat">
+            <div class="summary-stat-num">${totalMiles.toFixed(1)}</div>
+            <div class="summary-stat-label">Miles Covered</div>
+          </div>
+          <div class="summary-stat">
+            <div class="summary-stat-num">${fmtNum(totalImpressions)}</div>
+            <div class="summary-stat-label">
+              Est. Impressions&nbsp;
+              <span class="info-icon" data-tip="Estimated based on route distance and Utah County traffic averages. Not a measured count.">ⓘ</span>
+            </div>
+          </div>
+          <div class="summary-stat">
+            <div class="summary-stat-num">${fmtHours(totalHours)}</div>
+            <div class="summary-stat-label">Hours on the Road</div>
+          </div>
+          <div class="summary-stat">
+            <div class="summary-stat-num">${neighborhoods.length || '—'}</div>
+            <div class="summary-stat-label">Areas Covered</div>
+          </div>
+          <div class="summary-stat">
+            <div class="summary-stat-num">${cardDropCount || '—'}</div>
+            <div class="summary-stat-label">Card Drops</div>
+          </div>
+        </div>
+        ${neighborhoods.length ? `
+        <div class="summary-neighborhoods">
+          ${neighborhoods.map(n => `<span class="summary-neighborhood-tag">${n}</span>`).join('')}
+        </div>` : ''}
+        <div class="summary-footnote">† Est. Impressions — based on route distance and local traffic averages.</div>
+      `;
     }
 
     async function signOut() {
