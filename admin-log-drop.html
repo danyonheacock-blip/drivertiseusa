@@ -206,8 +206,17 @@ async function init() {
 }
 
 async function loadClients() {
-  const { data } = await sb.from('profiles').select('id, business_name, name').order('business_name');
-  if (!data) return;
+  const { data, error } = await sb.from('profiles').select('id, business_name, name').order('business_name');
+  if (error || !data) {
+    var sel = document.getElementById('client');
+    var opt = document.createElement('option');
+    opt.value = '';
+    opt.textContent = '— Could not load clients —';
+    opt.disabled = true;
+    sel.appendChild(opt);
+    console.error('Failed to load clients:', error);
+    return;
+  }
   const sel = document.getElementById('client');
   data.forEach(function(c) {
     const opt = document.createElement('option');
@@ -293,7 +302,7 @@ function logAnother() {
   document.getElementById('cards').value = '';
   document.getElementById('photo').value = '';
   document.getElementById('photo-preview').style.display = 'none';
-  document.getElementById('camera-prompt').style.display = 'flex';
+  document.getElementById('camera-prompt').style.display = '';
   document.getElementById('drop-error').style.display = 'none';
   document.getElementById('submit-btn').textContent = 'Log This Drop →';
   document.getElementById('submit-btn').disabled = false;
