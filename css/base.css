@@ -284,3 +284,37 @@ p {
 @media (max-width: 480px) {
   :root { --section-pad: 60px; }
 }
+
+/* ── FOOTER SERVING STRIP ── */
+.footer-serving {
+  border-top: 1px solid var(--border);
+  padding: 16px 0;
+  background: var(--bg2);
+}
+
+.footer-serving .container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 0.8rem;
+}
+
+.footer-serving-label {
+  color: var(--w50);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin-right: 4px;
+}
+
+.footer-serving a {
+  color: var(--w60);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-serving a:hover { color: var(--gold); }
+
+.footer-serving-sep {
+  color: var(--w30);
+}
