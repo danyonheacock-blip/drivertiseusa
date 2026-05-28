@@ -554,6 +554,191 @@
       border-top: 1px solid rgba(247,245,241,0.05);
     }
 
+    /* ── TREND CHART ── */
+    .trend-section {
+      margin-bottom: 56px;
+    }
+    .trend-label-text {
+      font-size: 13px;
+      color: rgba(247,245,241,0.40);
+      margin-bottom: 20px;
+      font-style: italic;
+    }
+    .trend-bars-wrap {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      height: 120px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid rgba(247,245,241,0.07);
+      position: relative;
+    }
+    .trend-bar-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      flex: 1;
+      min-width: 0;
+      height: 100%;
+      position: relative;
+      cursor: pointer;
+    }
+    .trend-bar {
+      width: 100%;
+      max-width: 48px;
+      background: rgba(200,151,58,0.35);
+      border-radius: 4px 4px 0 0;
+      transition: background 0.2s;
+      position: relative;
+    }
+    .trend-bar-col:hover .trend-bar { background: #C8973A; }
+    .trend-bar-month {
+      font-size: 10px;
+      font-weight: 700;
+      color: rgba(247,245,241,0.35);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 6px;
+      position: absolute;
+      bottom: -22px;
+      white-space: nowrap;
+    }
+    .trend-tooltip {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e2433;
+      border: 1px solid rgba(200,151,58,0.30);
+      color: rgba(247,245,241,0.85);
+      font-size: 11px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s;
+      z-index: 10;
+    }
+    .trend-bar-col:hover .trend-tooltip { opacity: 1; }
+
+    /* ── TALLY SHEET ── */
+    .tally-section {
+      margin-bottom: 56px;
+      border: 1px solid rgba(247,245,241,0.07);
+      border-radius: 16px;
+      padding: 32px 28px;
+    }
+    .tally-section h2 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 20px;
+      color: #F7F5F1;
+      margin-bottom: 8px;
+    }
+    .tally-intro {
+      font-size: 14px;
+      color: rgba(247,245,241,0.55);
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+    .tally-tip {
+      font-size: 13px;
+      color: rgba(200,151,58,0.80);
+      background: rgba(200,151,58,0.07);
+      border: 1px solid rgba(200,151,58,0.18);
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+    .tally-table-wrap {
+      overflow-x: auto;
+      border-radius: 10px;
+      border: 1px solid rgba(247,245,241,0.08);
+      margin-bottom: 20px;
+    }
+    .tally-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .tally-table th {
+      padding: 11px 14px;
+      background: rgba(247,245,241,0.03);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(247,245,241,0.40);
+      border-bottom: 1px solid rgba(247,245,241,0.07);
+      text-align: left;
+    }
+    .tally-table td {
+      padding: 12px 14px;
+      font-size: 13px;
+      color: rgba(247,245,241,0.65);
+      border-bottom: 1px solid rgba(247,245,241,0.04);
+    }
+    .tally-table tbody tr:last-child td { border-bottom: none; }
+    .tally-table .week-num {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      color: rgba(200,151,58,0.7);
+      font-size: 12px;
+    }
+    .tally-what-to-look {
+      font-size: 13px;
+      color: rgba(247,245,241,0.40);
+      font-style: italic;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    .btn-print {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(247,245,241,0.05);
+      border: 1px solid rgba(247,245,241,0.12);
+      color: rgba(247,245,241,0.65);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .btn-print:hover {
+      background: rgba(200,151,58,0.08);
+      border-color: rgba(200,151,58,0.30);
+      color: #F7F5F1;
+    }
+
+    /* ── PRINT ── */
+    @media print {
+      body * { visibility: hidden; }
+      .tally-section, .tally-section * { visibility: visible; }
+      .tally-section {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: #fff;
+        color: #000;
+        border: none;
+        padding: 32px;
+      }
+      .tally-section h2 { color: #000; }
+      .tally-intro, .tally-tip, .tally-what-to-look { color: #333; }
+      .tally-tip { background: #f9f5ec; border-color: #c8973a; }
+      .tally-table th { color: #000; background: #f5f5f5; border-bottom: 1px solid #ccc; }
+      .tally-table td { color: #333; border-bottom: 1px solid #eee; }
+      .tally-table .week-num { color: #555; }
+      .tally-table-wrap { border-color: #ccc; }
+      .btn-print { display: none; }
+    }
+
     /* ── CARD DROPS ── */
     .card-drops-section { margin-top: 48px; }
     .card-drop-entry {
@@ -714,6 +899,14 @@
           </div>
         </div>
 
+        <!-- Trend chart (hidden until 2+ months of data) -->
+        <div class="trend-section" id="trend-section" style="display:none;">
+          <p class="trend-label-text">Your campaign reach over time — impressions accumulate as your brand builds recognition in the area.</p>
+          <div class="trend-bars-wrap" id="trend-bars">
+            <!-- populated by JS -->
+          </div>
+        </div>
+
         <div class="weeks-container" id="weeks-container">
           <!-- populated by JS -->
         </div>
@@ -748,6 +941,45 @@
         <div id="card-drops-list"></div>
       </div>
 
+      <!-- TALLY SHEET -->
+      <div class="tally-section" id="tally-sheet">
+        <h2>How to Measure Your Campaign</h2>
+        <p class="tally-intro">Every time you get a new customer or inquiry, ask: <strong style="color:#F7F5F1;">"How'd you hear about us?"</strong> Keep a tally below. Do this consistently for 90 days. Most clients are surprised by how often the car comes up.</p>
+        <div class="tally-tip">
+          <strong>Baseline tip:</strong> Before your campaign launches, write down how many new customers you're getting per month right now. That baseline is your comparison point. Without it, you're measuring change without knowing where you started.
+        </div>
+        <div class="tally-table-wrap">
+          <table class="tally-table">
+            <thead>
+              <tr>
+                <th>Week</th>
+                <th>Week Of</th>
+                <th>New Customers</th>
+                <th>Mentioned the Car</th>
+                <th>Other Source</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="week-num">1</td><td style="color:rgba(247,245,241,0.25);">________</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="week-num">2</td><td style="color:rgba(247,245,241,0.25);">________</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="week-num">3</td><td style="color:rgba(247,245,241,0.25);">________</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="week-num">4</td><td style="color:rgba(247,245,241,0.25);">________</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="week-num">5</td><td style="color:rgba(247,245,241,0.25);">________</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="week-num">6</td><td style="color:rgba(247,245,241,0.25);">________</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="week-num">7</td><td style="color:rgba(247,245,241,0.25);">________</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="week-num">8</td><td style="color:rgba(247,245,241,0.25);">________</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="week-num">9</td><td style="color:rgba(247,245,241,0.25);">________</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="week-num">10</td><td style="color:rgba(247,245,241,0.25);">________</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="week-num">11</td><td style="color:rgba(247,245,241,0.25);">________</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="week-num">12</td><td style="color:rgba(247,245,241,0.25);">________</td><td></td><td></td><td></td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tally-what-to-look">Don't evaluate week by week. Look at Month 1 vs Month 3. Brand awareness compounds — the 10th time someone sees your car, they remember it. The first time, they don't.</p>
+        <button class="btn-print" onclick="window.print()">🖨 Print Tally Sheet →</button>
+      </div>
+
       <!-- QUICK LINKS -->
       <div class="section">
         <h2 class="section-title" style="margin-bottom:20px;">Quick Links</h2>
@@ -763,6 +995,9 @@
           </a>
           <a href="mailto:danyon@drivertiseusa.com?subject=Client%20Portal%20Message" class="quick-link">
             <span class="quick-link-icon">📩</span> Message Danyon
+          </a>
+          <a href="#tally-sheet" class="quick-link">
+            <span class="quick-link-icon">📋</span> View Tally Sheet
           </a>
         </div>
       </div>
@@ -838,6 +1073,7 @@
 
       renderRoutes(routes || []);
       loadMonthlySummary(routes || [], profile?.id);
+      buildTrendChart(routes || []);
 
       // Load invoices
       const { data: invoices } = await sb
@@ -1223,6 +1459,53 @@
         </div>` : ''}
         <div class="summary-footnote">† Est. Impressions — based on route distance and local traffic averages.</div>
       `;
+    }
+
+    // ── TREND CHART ────────────────────────────────────
+    function buildTrendChart(routes) {
+      if (!routes || !routes.length) return;
+
+      // Group by YYYY-MM
+      const monthMap = {};
+      routes.forEach(r => {
+        const d = new Date(r.route_date + 'T12:00:00');
+        const key = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+        if (!monthMap[key]) monthMap[key] = { routes: 0, miles: 0 };
+        monthMap[key].routes++;
+        monthMap[key].miles += calcRouteMiles(r.route_coordinates || []);
+      });
+
+      const months = Object.keys(monthMap).sort();
+      if (months.length < 2) return; // hide if fewer than 2 months
+
+      const section = document.getElementById('trend-section');
+      const barsEl = document.getElementById('trend-bars');
+      if (!section || !barsEl) return;
+
+      const impressionsByMonth = months.map(k => Math.round(monthMap[k].miles * IMPRESSIONS_PER_MILE));
+      const maxImpressions = Math.max(...impressionsByMonth);
+
+      const fmtMonthKey = key => {
+        const [y, m] = key.split('-');
+        return new Date(parseInt(y), parseInt(m) - 1, 1).toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+      };
+
+      barsEl.innerHTML = months.map((key, i) => {
+        const impr = impressionsByMonth[i];
+        const pct = maxImpressions > 0 ? Math.max(4, Math.round((impr / maxImpressions) * 100)) : 4;
+        const label = fmtMonthKey(key);
+        const routeCount = monthMap[key].routes;
+        const miles = monthMap[key].miles.toFixed(1);
+        const fmtImpr = impr >= 1000 ? (impr/1000).toFixed(1).replace(/\.0$/,'') + 'k' : String(impr);
+        return `
+          <div class="trend-bar-col">
+            <div class="trend-tooltip">${label} · ${routeCount} route${routeCount !== 1 ? 's' : ''} · ${miles} mi · ${fmtImpr} est. impr.</div>
+            <div class="trend-bar" style="height:${pct}%"></div>
+            <span class="trend-bar-month">${label}</span>
+          </div>`;
+      }).join('');
+
+      section.style.display = '';
     }
 
     async function signOut() {
