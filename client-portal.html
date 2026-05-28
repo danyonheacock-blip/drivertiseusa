@@ -1174,12 +1174,13 @@
       if (clientId) {
         const firstOfMonth = new Date(currentYear, currentMonth, 1).toISOString().split('T')[0];
         const lastOfMonth = new Date(currentYear, currentMonth + 1, 0).toISOString().split('T')[0];
-        const { data: drops } = await sb
+        const { data: drops, error: dropsErr } = await sb
           .from('card_drops')
           .select('cards_delivered')
           .eq('client_id', clientId)
           .gte('drop_date', firstOfMonth)
           .lte('drop_date', lastOfMonth);
+        if (dropsErr) console.warn('Card drops fetch failed:', dropsErr.message);
         if (drops) cardDropCount = drops.reduce((sum, d) => sum + (parseInt(d.cards_delivered) || 0), 0);
       }
 
@@ -1218,7 +1219,7 @@
         </div>
         ${neighborhoods.length ? `
         <div class="summary-neighborhoods">
-          ${neighborhoods.map(n => `<span class="summary-neighborhood-tag">${n}</span>`).join('')}
+          ${neighborhoods.map(n => `<span class="summary-neighborhood-tag">${n.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</span>`).join('')}
         </div>` : ''}
         <div class="summary-footnote">† Est. Impressions — based on route distance and local traffic averages.</div>
       `;
