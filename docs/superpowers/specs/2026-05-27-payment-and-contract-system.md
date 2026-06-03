@@ -80,7 +80,7 @@ No other payment tools. Stripe handles every financial transaction. Dropbox Sign
 **Step 4 — Monthly Subscription Begins**
 - Danyon opens Stripe → Customers → finds the client → creates a Subscription
 - Selects the correct Product (package + rate tier)
-- Sets billing date: day of install OR 1st of the following month (Danyon's call based on install timing)
+- Sets billing date: **day of install** (e.g. installed on the 14th → billed on the 14th every month). Exception: if install falls on the 29th, 30th, or 31st, set billing date to the 28th to avoid month-end errors in February
 - Stripe emails the client: *"Your monthly billing is set up for $X on [date]"*
 - Every month thereafter: Stripe charges automatically → sends receipt
 - 7 days before each charge: Stripe sends an automatic upcoming invoice email (no action required from Danyon)
@@ -139,7 +139,7 @@ One clean page. Plain language.
 **Service Package:** [Package Name] (e.g. Front Pair — Founding Rate)
 **Monthly Rate:** $[Amount]/month
 **Service Start Date:** [Date]
-**Monthly Billing Date:** [Day of month]
+**Monthly Billing Date:** [Install date — e.g. the 14th of each month]
 
 ---
 
