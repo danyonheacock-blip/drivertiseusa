@@ -333,7 +333,7 @@
       });
     }
 
-    async function sendOtp(email, btnId, msgId, errId, btnLabel) {
+    async function sendOtp(email, btnId, msgId, errId, btnLabel, onSuccess) {
       const btn = document.getElementById(btnId);
       const msg = document.getElementById(msgId);
       const err = document.getElementById(errId);
@@ -360,9 +360,9 @@
         return;
       }
 
-      // Hide form fields, show success
       btn.style.display = 'none';
       msg.style.display = 'block';
+      if (onSuccess) onSuccess();
     }
 
     function sendSignIn() {
@@ -372,15 +372,30 @@
 
     function sendSignUp() {
       const first = document.getElementById('su-first').value.trim();
+      const last  = document.getElementById('su-last').value.trim();
       const biz   = document.getElementById('su-biz').value.trim();
       const email = document.getElementById('su-email').value.trim();
+      const phone = document.getElementById('su-phone').value.trim();
       const err   = document.getElementById('su-err');
 
       if (!first) { err.textContent = 'Please enter your first name.'; return; }
       if (!biz)   { err.textContent = 'Please enter your business name.'; return; }
       if (!email || !email.includes('@')) { err.textContent = 'Please enter a valid email address.'; return; }
 
-      sendOtp(email, 'su-btn', 'su-msg', 'su-err', 'Request Access →');
+      sendOtp(email, 'su-btn', 'su-msg', 'su-err', 'Request Access →', () => {
+        fetch('https://formsubmit.co/ajax/drivertiseusa@gmail.com', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            _subject: 'New client sign-up: ' + biz,
+            _template: 'box',
+            Name: first + ' ' + last,
+            Business: biz,
+            Email: email,
+            Phone: phone || '—'
+          })
+        }).catch(() => {});
+      });
     }
 
     // Enter key support
