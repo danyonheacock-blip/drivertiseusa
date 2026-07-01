@@ -274,7 +274,9 @@
       if (error) {
         btn.disabled = false;
         btn.textContent = 'Send Login Link →';
-        if (errMsg) errMsg.textContent = 'Something went wrong. Please try again or contact Danyon directly.';
+        console.error('Supabase signInWithOtp error:', error);
+        const msg = error.message || 'Something went wrong. Please try again.';
+        if (errMsg) errMsg.textContent = msg;
         return;
       }
 
