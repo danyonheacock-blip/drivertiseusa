@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Client Login — Drivertise</title>
+  <title>Client Portal — Drivertise</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -25,7 +25,6 @@
       overflow: hidden;
     }
 
-    /* Subtle background glow */
     body::before {
       content: '';
       position: fixed;
@@ -61,7 +60,7 @@
       background: #0E1219;
       border: 1px solid rgba(200,151,58,0.2);
       border-radius: 20px;
-      padding: 48px 44px 44px;
+      padding: 44px 44px 40px;
       position: relative;
       box-shadow:
         0 0 0 1px rgba(200,151,58,0.08),
@@ -86,22 +85,51 @@
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: #C8973A;
-      margin-bottom: 36px;
+      margin-bottom: 28px;
     }
 
-    .divider {
-      width: 40px;
-      height: 2px;
-      background: linear-gradient(90deg, #C8973A, transparent);
-      margin: 20px 0 32px;
+    /* Tab switcher */
+    .tab-switcher {
+      display: flex;
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      padding: 4px;
+      gap: 4px;
+      margin-bottom: 32px;
     }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 9px;
+      background: transparent;
+      color: rgba(255,255,255,0.4);
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      letter-spacing: 0.02em;
+    }
+    .tab-btn.active {
+      background: #C8973A;
+      color: #0A0D12;
+    }
+    .tab-btn:not(.active):hover {
+      color: rgba(255,255,255,0.75);
+    }
+
+    /* Panels */
+    .panel { display: none; }
+    .panel.active { display: block; }
 
     h1 {
       font-family: 'Syne', sans-serif;
       font-weight: 800;
-      font-size: 28px;
+      font-size: 26px;
       color: #F7F5F1;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       letter-spacing: -0.3px;
     }
 
@@ -109,7 +137,7 @@
       color: rgba(255,255,255,0.5);
       font-size: 14px;
       line-height: 1.6;
-      margin-bottom: 32px;
+      margin-bottom: 28px;
     }
 
     .input-wrapper {
@@ -118,36 +146,44 @@
 
     label {
       display: block;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
-      color: rgba(255,255,255,0.55);
-      margin-bottom: 8px;
-      letter-spacing: 0.05em;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 7px;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
     }
 
-    input[type="email"] {
+    input[type="email"],
+    input[type="text"],
+    input[type="tel"] {
       width: 100%;
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.1);
       border-radius: 10px;
-      padding: 14px 16px;
+      padding: 13px 16px;
       color: #F7F5F1;
       font-family: 'DM Sans', sans-serif;
       font-size: 15px;
       outline: none;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
-    input[type="email"]::placeholder { color: rgba(255,255,255,0.3); }
-    input[type="email"]:focus {
+    input::placeholder { color: rgba(255,255,255,0.25); }
+    input:focus {
       border-color: #C8973A;
       box-shadow: 0 0 0 3px rgba(200,151,58,0.12);
+    }
+
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
     }
 
     .error-msg {
       font-size: 12px;
       color: #ff6b6b;
-      min-height: 18px;
+      min-height: 16px;
       margin-bottom: 4px;
     }
 
@@ -172,31 +208,25 @@
       box-shadow: 0 8px 24px rgba(200,151,58,0.3);
     }
     .btn-primary:active:not(:disabled) { transform: translateY(0); }
-    .btn-primary:disabled {
-      opacity: 0.65;
-      cursor: not-allowed;
-    }
+    .btn-primary:disabled { opacity: 0.65; cursor: not-allowed; }
 
     .success-msg {
       display: none;
-      background: rgba(77,232,160,0.1);
-      border: 1px solid rgba(77,232,160,0.25);
+      background: rgba(77,232,160,0.08);
+      border: 1px solid rgba(77,232,160,0.22);
       border-radius: 10px;
       padding: 16px 18px;
       color: #4DE8A0;
       font-size: 14px;
       font-weight: 500;
-      line-height: 1.5;
+      line-height: 1.55;
       margin-top: 8px;
     }
-    .success-msg .check {
-      font-size: 18px;
-      margin-right: 4px;
-    }
+    .success-msg .check { font-size: 17px; margin-right: 5px; }
 
     .card-footer {
-      margin-top: 32px;
-      padding-top: 24px;
+      margin-top: 28px;
+      padding-top: 22px;
       border-top: 1px solid rgba(255,255,255,0.07);
       text-align: center;
       font-size: 13px;
@@ -207,6 +237,7 @@
       text-decoration: none;
       font-weight: 500;
       transition: color 0.2s;
+      cursor: pointer;
     }
     .card-footer a:hover { color: #d9a849; }
   </style>
@@ -219,26 +250,73 @@
     <div class="logo">DRIVERTISE<span>.</span></div>
     <div class="portal-label">Client Portal</div>
 
-    <div class="divider"></div>
-
-    <h1>Sign In</h1>
-    <p class="subtext">Enter your email to receive a secure one-time login link.</p>
-
-    <div class="input-wrapper">
-      <label for="login-email">Email Address</label>
-      <input type="email" id="login-email" placeholder="you@yourbusiness.com" autocomplete="email" />
+    <!-- Tab switcher -->
+    <div class="tab-switcher">
+      <button class="tab-btn active" id="tab-signin" onclick="switchTab('signin')">Sign In</button>
+      <button class="tab-btn" id="tab-signup" onclick="switchTab('signup')">Sign Up</button>
     </div>
 
-    <div class="error-msg" id="login-err"></div>
+    <!-- Sign In Panel -->
+    <div class="panel active" id="panel-signin">
+      <h1>Welcome back.</h1>
+      <p class="subtext">Enter your email and we'll send you a secure one-time login link.</p>
 
-    <button class="btn-primary" id="login-btn" onclick="sendMagicLink()">Send Login Link →</button>
+      <div class="input-wrapper">
+        <label for="si-email">Email Address</label>
+        <input type="email" id="si-email" placeholder="you@yourbusiness.com" autocomplete="email" />
+      </div>
 
-    <div class="success-msg" id="login-msg">
-      <span class="check">✓</span> Check your inbox — login link sent!
+      <div class="error-msg" id="si-err"></div>
+      <button class="btn-primary" id="si-btn" onclick="sendSignIn()">Send Login Link →</button>
+      <div class="success-msg" id="si-msg">
+        <span class="check">✓</span> Check your inbox — your login link is on the way.
+      </div>
+
+      <div class="card-footer">
+        New client? <a onclick="switchTab('signup')">Sign up here</a>
+      </div>
     </div>
 
-    <div class="card-footer">
-      Not a client yet? <a href="contact.html">Get in touch</a>
+    <!-- Sign Up Panel -->
+    <div class="panel" id="panel-signup">
+      <h1>Get started.</h1>
+      <p class="subtext">Fill out your details and we'll send you a secure link to your portal.</p>
+
+      <div class="input-row">
+        <div class="input-wrapper">
+          <label for="su-first">First Name</label>
+          <input type="text" id="su-first" placeholder="Jane" autocomplete="given-name" />
+        </div>
+        <div class="input-wrapper">
+          <label for="su-last">Last Name</label>
+          <input type="text" id="su-last" placeholder="Smith" autocomplete="family-name" />
+        </div>
+      </div>
+
+      <div class="input-wrapper">
+        <label for="su-biz">Business Name</label>
+        <input type="text" id="su-biz" placeholder="Smith Auto Repair" autocomplete="organization" />
+      </div>
+
+      <div class="input-wrapper">
+        <label for="su-email">Email Address</label>
+        <input type="email" id="su-email" placeholder="you@yourbusiness.com" autocomplete="email" />
+      </div>
+
+      <div class="input-wrapper">
+        <label for="su-phone">Phone <span style="opacity:0.5;font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+        <input type="tel" id="su-phone" placeholder="(801) 555-0100" autocomplete="tel" />
+      </div>
+
+      <div class="error-msg" id="su-err"></div>
+      <button class="btn-primary" id="su-btn" onclick="sendSignUp()">Request Access →</button>
+      <div class="success-msg" id="su-msg">
+        <span class="check">✓</span> You're in! Check your email for your secure portal link. Danyon will have your account ready shortly.
+      </div>
+
+      <div class="card-footer">
+        Already a client? <a onclick="switchTab('signin')">Sign in here</a>
+      </div>
     </div>
   </div>
 
@@ -248,52 +326,69 @@
     const { createClient } = supabase;
     const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    async function sendMagicLink() {
-      const emailInput = document.getElementById('login-email');
-      const btn = document.getElementById('login-btn');
-      const msg = document.getElementById('login-msg');
-      const errMsg = document.getElementById('login-err');
+    function switchTab(tab) {
+      ['signin','signup'].forEach(t => {
+        document.getElementById('tab-' + t).classList.toggle('active', t === tab);
+        document.getElementById('panel-' + t).classList.toggle('active', t === tab);
+      });
+    }
 
-      const email = emailInput.value.trim();
+    async function sendOtp(email, btnId, msgId, errId, btnLabel) {
+      const btn = document.getElementById(btnId);
+      const msg = document.getElementById(msgId);
+      const err = document.getElementById(errId);
+
       if (!email || !email.includes('@')) {
-        if (errMsg) errMsg.textContent = 'Please enter a valid email address.';
+        err.textContent = 'Please enter a valid email address.';
         return;
       }
 
       btn.disabled = true;
       btn.textContent = 'Sending...';
-      if (errMsg) errMsg.textContent = '';
+      err.textContent = '';
 
       const { error } = await sb.auth.signInWithOtp({
         email,
-        options: {
-          emailRedirectTo: 'https://drivertiseusa.com/client-portal.html'
-        }
+        options: { emailRedirectTo: 'https://drivertiseusa.com/client-portal.html' }
       });
 
       if (error) {
         btn.disabled = false;
-        btn.textContent = 'Send Login Link →';
-        console.error('Supabase signInWithOtp error:', error);
-        const msg = error.message || 'Something went wrong. Please try again.';
-        if (errMsg) errMsg.textContent = msg;
+        btn.textContent = btnLabel;
+        console.error('Supabase OTP error:', error);
+        err.textContent = error.message || 'Something went wrong. Please try again.';
         return;
       }
 
-      // Success state
-      emailInput.style.display = 'none';
+      // Hide form fields, show success
       btn.style.display = 'none';
-      if (msg) msg.style.display = 'block';
+      msg.style.display = 'block';
     }
 
-    // Allow Enter key to submit
+    function sendSignIn() {
+      const email = document.getElementById('si-email').value.trim();
+      sendOtp(email, 'si-btn', 'si-msg', 'si-err', 'Send Login Link →');
+    }
+
+    function sendSignUp() {
+      const first = document.getElementById('su-first').value.trim();
+      const biz   = document.getElementById('su-biz').value.trim();
+      const email = document.getElementById('su-email').value.trim();
+      const err   = document.getElementById('su-err');
+
+      if (!first) { err.textContent = 'Please enter your first name.'; return; }
+      if (!biz)   { err.textContent = 'Please enter your business name.'; return; }
+      if (!email || !email.includes('@')) { err.textContent = 'Please enter a valid email address.'; return; }
+
+      sendOtp(email, 'su-btn', 'su-msg', 'su-err', 'Request Access →');
+    }
+
+    // Enter key support
     document.addEventListener('DOMContentLoaded', () => {
-      const emailInput = document.getElementById('login-email');
-      if (emailInput) {
-        emailInput.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter') sendMagicLink();
-        });
-      }
+      document.getElementById('si-email').addEventListener('keydown', e => { if (e.key === 'Enter') sendSignIn(); });
+      ['su-first','su-last','su-biz','su-email','su-phone'].forEach(id => {
+        document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') sendSignUp(); });
+      });
     });
   </script>
 </body>
