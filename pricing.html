@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Transparent pricing for mobile advertising in Utah County. Magnetic Zone Ads from $199/month (founding rate), electric billboard from $179/month, direct mail co-op from $399/drop. No hidden fees, no long-term contracts required.">
+  <meta name="description" content="Transparent pricing for mobile advertising in Utah County. Intro trial from $149 (2 weeks). 1 Zone from $199/month founding rate. 2 Zones from $299/month founding rate. Electric billboard waitlist open — launching October 2026.">
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Drivertise USA">
   <meta property="og:title" content="Mobile Advertising Pricing in Utah County — Drivertise USA">
-  <meta property="og:description" content="Transparent mobile advertising pricing for Utah County businesses. Magnetic zone ads from $199/month. Electric billboard from $179/month. Direct mail from $399/drop.">
+  <meta property="og:description" content="Transparent mobile advertising pricing for Utah County businesses. Intro trial $149 (2 weeks). 1 Zone from $199/month founding rate. Electric billboard waitlist open, launching October 2026.">
   <meta property="og:url" content="https://drivertiseusa.com/pricing.html">
   <meta property="og:image" content="https://drivertiseusa.com/assets/danyon-car.jpg">
   <meta property="og:image:width" content="1200">
@@ -16,7 +16,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Mobile Advertising Pricing in Utah County — Drivertise USA">
-  <meta name="twitter:description" content="Transparent pricing for Utah County mobile advertising. Zone ads from $199/month, billboard from $179/month, direct mail from $399/drop.">
+  <meta name="twitter:description" content="Intro trial $149 · 1 Zone from $199/month · 2 Zones from $299/month. Electric billboard waitlist open, launching October 2026. Serving Utah County.">
   <meta name="twitter:image" content="https://drivertiseusa.com/assets/danyon-car.jpg">
   <!-- Canonical -->
   <link rel="canonical" href="https://drivertiseusa.com/pricing.html">
@@ -504,96 +504,93 @@
       <p>High-quality magnetic signs on a vehicle driven daily through Saratoga Springs, Lehi, Alpine, and Highland — 6AM to 9PM. Your brand moving through Utah County's fastest-growing corridor.</p>
     </div>
 
-    <!-- Founding client banner — hidden by JS when spots hit 0 -->
+    <!-- Founding client banner — hidden by JS once 10 clients sign up -->
     <div class="founding-banner reveal" id="founding-banner">
       <span>⭐</span>
-      <strong id="founding-spots">10</strong> of 10 founding spots remaining — founding rates are locked in permanently for the life of your contract.
+      <strong id="founding-spots">10</strong> of 10 founding spots remaining — lock in this rate permanently. Price goes up $100 once all 10 spots fill.
     </div>
 
     <div class="pricing-wrap">
 
-      <!-- Single Door -->
+      <!-- Intro Trial -->
       <div class="pricing-card reveal">
-        <div class="pricing-name">Single Door</div>
-        <div style="font-size:13px; color:var(--w55); margin-bottom:20px;">1 front door — driver or passenger side</div>
+        <div class="pricing-name">Intro Trial</div>
+        <div style="font-size:13px; color:var(--w55); margin-bottom:20px;">2 weeks · 1 door panel</div>
 
-        <div class="founding-rate">
+        <div class="pricing-price"><sup>$</sup>149</div>
+        <div class="pricing-period">flat · 2-week term</div>
+
+        <div class="pricing-divider"></div>
+        <div class="pricing-features">
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>1 magnetic door sign — driver or passenger side</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>~10,000–15,000 impressions over 2 weeks</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Exclusive category for the full term</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Digital proof approval before print</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>$149 applies toward your first month if you continue</span></div>
+        </div>
+        <a href="contact.html?package=intro-trial" class="btn btn-secondary" style="width:100%; justify-content:center;">Start Here <span class="btn-arrow">→</span></a>
+      </div>
+
+      <!-- 1 Zone — monthly -->
+      <div class="pricing-card reveal reveal-delay-1">
+        <div class="pricing-name">1 Zone</div>
+        <div style="font-size:13px; color:var(--w55); margin-bottom:20px;">1 door panel — driver or passenger side</div>
+
+        <div class="founding-rate" id="fr-1zone">
           <div style="font-size:11px; font-weight:700; letter-spacing:1px; color:var(--gold); text-transform:uppercase; margin-bottom:4px;">⭐ Founding Rate</div>
           <div class="pricing-price"><sup>$</sup>199</div>
           <div class="pricing-period">/ month · rate locked permanently</div>
+          <div style="font-size:11px; font-weight:700; letter-spacing:1px; color:var(--w35); text-transform:uppercase; margin-top:14px; margin-bottom:4px;">Regular Rate After</div>
+          <div style="font-size:22px; font-weight:700; color:var(--w45);">$299<span style="font-size:14px;">/mo</span></div>
         </div>
-        <div class="regular-rate">
-          <div style="font-size:11px; font-weight:700; letter-spacing:1px; color:var(--w35); text-transform:uppercase; margin-top:12px; margin-bottom:4px;">Regular Rate After</div>
-          <div style="font-size:26px; font-weight:700; color:var(--w55);">$299<span style="font-size:15px;">/mo</span></div>
+        <div class="regular-rate" id="rr-1zone" style="display:none;">
+          <div class="pricing-price"><sup>$</sup>299</div>
+          <div class="pricing-period">/ month</div>
         </div>
 
         <div class="pricing-divider"></div>
         <div class="pricing-features">
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>1 magnetic door sign — driver or passenger front</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>1 magnetic door sign — driver or passenger side</span></div>
           <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>~30,000–40,000 monthly impressions</span></div>
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Exclusive category — no competitor on that ad spot</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Exclusive category — no competitor on your ad spot</span></div>
           <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Digital proof approval before print</span></div>
           <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Cancel with 30-day notice</span></div>
         </div>
-        <a href="contact.html?package=single-door" class="btn btn-secondary" style="width:100%; justify-content:center;">Reserve This Spot <span class="btn-arrow">→</span></a>
+        <a href="contact.html?package=1-zone" class="btn btn-secondary" style="width:100%; justify-content:center;">Reserve This Spot <span class="btn-arrow">→</span></a>
       </div>
 
-      <!-- Front Pair — Featured -->
+      <!-- 2 Zones — Featured -->
       <div class="pricing-card featured reveal reveal-delay-2">
-        <div class="pricing-name">Front Pair</div>
-        <div style="font-size:13px; color:var(--w55); margin-bottom:20px;">Driver front + passenger front doors</div>
+        <div class="pricing-name">2 Zones</div>
+        <div style="font-size:13px; color:var(--w55); margin-bottom:20px;">Both door panels — one on each side</div>
 
-        <div class="founding-rate">
+        <div class="founding-rate" id="fr-2zone">
           <div style="font-size:11px; font-weight:700; letter-spacing:1px; color:var(--gold); text-transform:uppercase; margin-bottom:4px;">⭐ Founding Rate</div>
-          <div class="pricing-price"><sup>$</sup>349</div>
+          <div class="pricing-price"><sup>$</sup>299</div>
           <div class="pricing-period">/ month · rate locked permanently</div>
+          <div style="font-size:11px; font-weight:700; letter-spacing:1px; color:var(--w35); text-transform:uppercase; margin-top:14px; margin-bottom:4px;">Regular Rate After</div>
+          <div style="font-size:22px; font-weight:700; color:var(--w45);">$399<span style="font-size:14px;">/mo</span></div>
         </div>
-        <div class="regular-rate">
-          <div style="font-size:11px; font-weight:700; letter-spacing:1px; color:var(--w35); text-transform:uppercase; margin-top:12px; margin-bottom:4px;">Regular Rate After</div>
-          <div style="font-size:26px; font-weight:700; color:var(--w55);">$499<span style="font-size:15px;">/mo</span></div>
+        <div class="regular-rate" id="rr-2zone" style="display:none;">
+          <div class="pricing-price"><sup>$</sup>399</div>
+          <div class="pricing-period">/ month</div>
         </div>
 
         <div class="pricing-divider"></div>
         <div class="pricing-features">
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>2 magnetic signs — both front doors, both sides visible</span></div>
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>~55,000–65,000 monthly impressions</span></div>
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Exclusive category across both front ad spots</span></div>
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Digital proof approval before print</span></div>
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Direct contact with Danyon — call or text</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>2 magnetic door signs — driver side + passenger side</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>~55,000–70,000 monthly impressions</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Maximum visibility — seen from every angle</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Exclusive category on both ad spots</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Direct contact with Danyon — call or text anytime</span></div>
         </div>
-        <a href="contact.html?package=front-pair" class="btn btn-primary" style="width:100%; justify-content:center;">Reserve This Spot <span class="btn-arrow">→</span></a>
-      </div>
-
-      <!-- Rear Pair -->
-      <div class="pricing-card reveal reveal-delay-3">
-        <div class="pricing-name">Rear Pair</div>
-        <div style="font-size:13px; color:var(--w55); margin-bottom:20px;">Rear driver + rear passenger doors</div>
-
-        <div class="founding-rate">
-          <div style="font-size:11px; font-weight:700; letter-spacing:1px; color:var(--gold); text-transform:uppercase; margin-bottom:4px;">⭐ Founding Rate</div>
-          <div class="pricing-price"><sup>$</sup>279</div>
-          <div class="pricing-period">/ month · rate locked permanently</div>
-        </div>
-        <div class="regular-rate">
-          <div style="font-size:11px; font-weight:700; letter-spacing:1px; color:var(--w35); text-transform:uppercase; margin-top:12px; margin-bottom:4px;">Regular Rate After</div>
-          <div style="font-size:26px; font-weight:700; color:var(--w55);">$399<span style="font-size:15px;">/mo</span></div>
-        </div>
-
-        <div class="pricing-divider"></div>
-        <div class="pricing-features">
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>2 magnetic signs — rear driver + rear passenger</span></div>
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>~45,000–55,000 monthly impressions</span></div>
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Exclusive category across both rear ad spots</span></div>
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Digital proof approval before print</span></div>
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Cancel with 30-day notice</span></div>
-        </div>
-        <a href="contact.html?package=rear-pair" class="btn btn-secondary" style="width:100%; justify-content:center;">Reserve This Spot <span class="btn-arrow">→</span></a>
+        <a href="contact.html?package=2-zones" class="btn btn-primary" style="width:100%; justify-content:center;">Reserve This Spot <span class="btn-arrow">→</span></a>
       </div>
 
     </div>
 
     <div style="margin-top:28px; text-align:center;">
-      <p style="font-size:13px; color:var(--w55); margin-bottom:8px;">50% due upfront to reserve your exclusive category ad spot and cover production. 50% due at install.</p>
+      <p style="font-size:13px; color:var(--w55); margin-bottom:8px;">Intro trial $149 applies toward your first full month if you continue. Monthly plans billed at the start of each 30-day cycle.</p>
       <p style="font-size:13px; color:var(--w38); margin-bottom:8px;">Rear window perforated vinyl available — <a href="contact.html" style="color:var(--yellow);">contact for quote</a>.</p>
       <p style="font-size:13px; color:var(--w38);">6-month commitment saves 20% — ask Danyon.</p>
     </div>
@@ -629,9 +626,9 @@
 <section class="section-pad" id="billboard-pricing" style="background:var(--bg3);">
   <div class="container">
     <div class="section-header reveal">
-      <span class="eyebrow">Electric Billboard Pricing</span>
-      <h2>Go solo or share.<br><em class="display-italic">You choose.</em></h2>
-      <p>Billboard Solo starts immediately — your ad on screen all day, every day. Shared slots activate when co-advertisers fill their spots. A $50 deposit holds your waitlist position and applies to your first month.</p>
+      <span class="eyebrow">Electric Billboard — Coming October 2026</span>
+      <h2>Lock your spot now.<br><em class="display-italic">Launching October.</em></h2>
+      <p>The electric roof billboard is launching October 2026. Join the waitlist now to lock your rate and position — no payment due until launch. Free to join.</p>
     </div>
 
     <div class="mzp-toggle-wrap reveal reveal-delay-1" id="bb2-toggle-wrap" role="group" aria-label="Billboard billing period">
@@ -644,7 +641,7 @@
       <!-- Solo -->
       <div class="pricing-card reveal" data-bb2-monthly="449" data-bb2-sixmo="359">
         <div class="pricing-name">Billboard Solo</div>
-        <div style="font-size:12px; color:var(--green); font-weight:700; letter-spacing:1px; margin-bottom:16px; display:flex; align-items:center; gap:6px;"><span style="width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;"></span> Starts Immediately</div>
+        <div style="font-size:12px; color:var(--gold); font-weight:700; letter-spacing:1px; margin-bottom:16px; background:rgba(200,151,58,0.12); border:1px solid rgba(200,151,58,0.30); border-radius:20px; padding:4px 12px; width:fit-content;">Launching October 2026</div>
         <div class="pricing-price"><sup>$</sup><span class="bb2-price-num">449</span></div>
         <div class="pricing-period bb2-period">/ month, billed monthly</div>
         <div class="bb2-sixmo-note" style="display:none;"><span style="font-size:13px; color:var(--w55);">$2,154 billed every 6 months</span> <span class="savings-badge">Save $540</span></div>
@@ -652,7 +649,7 @@
         <div class="pricing-features">
           <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>100% display time — your ad all day</span></div>
           <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>15,000+ daily impressions</span></div>
-          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>No waiting — activates immediately</span></div>
+          <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>First in line when we launch</span></div>
           <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Remote creative updates anytime</span></div>
           <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Weekly impression reports included</span></div>
         </div>
@@ -674,7 +671,7 @@
           <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Remote creative updates anytime</span></div>
           <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Deposit applies to first month</span></div>
         </div>
-        <a href="contact.html?service=Billboard+Share" class="btn btn-primary" style="width:100%; justify-content:center;">Join Waitlist <span class="btn-arrow">→</span></a>
+        <a href="#billboard-waitlist" class="btn btn-primary" style="width:100%; justify-content:center;">Join Waitlist <span class="btn-arrow">→</span></a>
       </div>
 
       <!-- Share 3-Slot -->
@@ -692,15 +689,15 @@
           <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Remote creative updates anytime</span></div>
           <div class="pricing-feature"><span class="pricing-feature-check">✓</span><span>Deposit applies to first month</span></div>
         </div>
-        <a href="contact.html?service=Billboard+Share" class="btn btn-secondary" style="width:100%; justify-content:center;">Join Waitlist <span class="btn-arrow">→</span></a>
+        <a href="#billboard-waitlist" class="btn btn-secondary" style="width:100%; justify-content:center;">Join Waitlist <span class="btn-arrow">→</span></a>
       </div>
 
     </div>
 
     <!-- Billboard Waitlist Form -->
     <div class="waitlist-section reveal" id="billboard-waitlist">
-      <h3>Join the Billboard Waitlist</h3>
-      <p>$50 deposit holds your spot and applies to your first month when the billboard launches. We'll contact you directly when it's ready — no pressure, no spam.</p>
+      <h3>Starting October — Join the Waitlist Now</h3>
+      <p>Free to join. No payment until launch. Tell us which package you're interested in and we'll reach out directly when the billboard is ready to go. Your spot is held in order — first come, first served.</p>
       <div id="wl-form-wrap">
         <form class="waitlist-form" onsubmit="submitBillboardWaitlist(event)">
           <input type="text" id="wl-name" placeholder="Your Name" required>
@@ -719,7 +716,7 @@
         <span class="success-icon">✅</span>
         <h4>You're on the list!</h4>
         <p>You're <strong>#<span id="wl-position"></span></strong> on the billboard waitlist.</p>
-        <p>You'll receive a secure Stripe payment link at your email within 24 hours to lock in your $50 deposit — takes less than a minute to pay. We'll reach out directly when the billboard launches.</p>
+        <p>No payment needed right now — your spot is reserved. Danyon will reach out directly closer to the October launch to confirm your package and get you set up.</p>
       </div>
     </div>
 
@@ -1229,19 +1226,26 @@
   var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3d2dhdnl6Z29nbWhqYWVyZXZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MDgwNjAsImV4cCI6MjA5MDk4NDA2MH0.4ulbzEw-AM2bIBXDyIgBMuIEjQDTOxGaHfaquG2sTaY';
   var sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  // ── Load founding client counter ──
+  // ── Load founding client counter (auto from profiles table) ──
   (async function loadFoundingCounter() {
     try {
-      var res = await sb.from('settings').select('value').eq('key', 'founding_clients_remaining').single();
-      if (res.data) {
-        var count = parseInt(res.data.value, 10);
-        var spotsEl = document.getElementById('founding-spots');
-        var bannerEl = document.getElementById('founding-banner');
-        if (spotsEl) spotsEl.textContent = count;
-        if (count === 0 && bannerEl) {
-          bannerEl.style.display = 'none';
-          document.querySelectorAll('.founding-rate').forEach(function(el) { el.style.display = 'none'; });
-        }
+      var res = await sb.from('profiles').select('id', { count: 'exact', head: true }).in('status', ['active', 'pending']);
+      var signed = res.count || 0;
+      var remaining = Math.max(0, 10 - signed);
+      var spotsEl = document.getElementById('founding-spots');
+      var bannerEl = document.getElementById('founding-banner');
+      if (spotsEl) spotsEl.textContent = remaining;
+      if (remaining === 0) {
+        if (bannerEl) bannerEl.style.display = 'none';
+        // Hide founding rates, show regular rates
+        var fr1 = document.getElementById('fr-1zone');
+        var rr1 = document.getElementById('rr-1zone');
+        var fr2 = document.getElementById('fr-2zone');
+        var rr2 = document.getElementById('rr-2zone');
+        if (fr1) fr1.style.display = 'none';
+        if (rr1) rr1.style.display = 'block';
+        if (fr2) fr2.style.display = 'none';
+        if (rr2) rr2.style.display = 'block';
       }
     } catch (e) { /* silently fail — static fallback shows */ }
   })();

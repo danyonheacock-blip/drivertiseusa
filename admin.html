@@ -232,17 +232,23 @@ input:focus,select:focus{border-color:rgba(200,151,58,0.4);}
         <div class="form-row">
           <div class="form-group"><label>Package</label>
             <select id="sub-pkg">
-              <option>Package 01 — Starter ($149)</option>
-              <option>Package 01 — Popular ($249)</option>
-              <option>Package 01 — Pro ($349)</option>
-              <option>Package 02 — 1 Zone ($260)</option>
-              <option>Package 02 — 2 Zones ($410)</option>
-              <option>Package 02 — Full Vehicle ($760)</option>
-              <option>Package 03 — Exclusive LED ($400)</option>
-              <option>Package 03 — Shared LED ($250)</option>
-              <option>Package 03 — Rotation ($175)</option>
-              <option>Package 04 — Standard Mailer ($500)</option>
-              <option>Package 04 — Premium Mailer ($700)</option>
+              <optgroup label="Magnetic Zone Ads">
+                <option>Intro Trial — 1 Zone, 2 weeks ($149)</option>
+                <option>1 Zone — Founding Rate ($199/mo)</option>
+                <option>1 Zone — Regular Rate ($299/mo)</option>
+                <option>2 Zones — Founding Rate ($299/mo)</option>
+                <option>2 Zones — Regular Rate ($399/mo)</option>
+              </optgroup>
+              <optgroup label="Electric Billboard">
+                <option>Billboard Solo ($449/mo)</option>
+                <option>Billboard Share 2-Slot ($249/mo)</option>
+                <option>Billboard Share 3-Slot ($179/mo)</option>
+              </optgroup>
+              <optgroup label="Direct Mailer">
+                <option>Mailer — Standard ($399/drop)</option>
+                <option>Mailer — Premium ($799/drop)</option>
+                <option>Mailer — Full Page ($1,499/drop)</option>
+              </optgroup>
             </select>
           </div>
           <div class="form-group"><label>Duration</label>
@@ -264,19 +270,24 @@ input:focus,select:focus{border-color:rgba(200,151,58,0.4);}
     <!-- ADD CLIENT -->
     <div id="page-add-client" class="page">
       <div class="page-title">Add / Update Client Profile</div>
-      <div class="page-sub">Paste the client's Supabase UUID from Auth → Users after they sign up at login.html</div>
+      <div class="page-sub">Enter the client's email to look them up — UUID fills automatically once they've signed up.</div>
       <div class="msg" id="client-msg"></div>
       <div class="card">
+        <div class="form-group">
+          <label>Client Email</label>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <input type="email" id="c-email" placeholder="client@theirbusiness.com" style="flex:1;" oninput="resetUUIDStatus()"/>
+            <button class="btn btn-ghost" onclick="lookupClientUUID()" id="lookup-btn" style="white-space:nowrap;flex-shrink:0;">Look Up →</button>
+          </div>
+          <div id="c-uuid-status" style="font-size:12px;margin-top:6px;color:var(--muted);min-height:16px;"></div>
+          <input type="hidden" id="c-id"/>
+        </div>
         <div class="form-row">
-          <div class="form-group"><label>Client UUID (from Supabase Auth)</label><input type="text" id="c-id" placeholder="paste uuid here"/></div>
+          <div class="form-group"><label>Contact Name</label><input type="text" id="c-name" placeholder="Jane Smith"/></div>
           <div class="form-group"><label>Business Name</label><input type="text" id="c-biz" placeholder="Acme HVAC"/></div>
         </div>
         <div class="form-row">
-          <div class="form-group"><label>Contact Name</label><input type="text" id="c-name"/></div>
-          <div class="form-group"><label>Email</label><input type="email" id="c-email"/></div>
-        </div>
-        <div class="form-row">
-          <div class="form-group"><label>Phone</label><input type="tel" id="c-phone" placeholder="(210) 000-0000"/></div>
+          <div class="form-group"><label>Phone</label><input type="tel" id="c-phone" placeholder="(801) 555-0100"/></div>
           <div class="form-group"><label>Status</label>
             <select id="c-status"><option value="active">Active</option><option value="pending">Pending</option><option value="paused">Paused</option></select>
           </div>
@@ -911,12 +922,52 @@ async function createSubscription() {
   }
 }
 
+// ── LOOKUP CLIENT UUID ─────────────────────
+function resetUUIDStatus() {
+  document.getElementById('c-uuid-status').textContent = '';
+  document.getElementById('c-id').value = '';
+}
+
+async function lookupClientUUID() {
+  const email = document.getElementById('c-email').value.trim();
+  const status = document.getElementById('c-uuid-status');
+  if (!email || !email.includes('@')) {
+    status.textContent = 'Enter a valid email first.';
+    status.style.color = '#FF7B6B';
+    return;
+  }
+  const btn = document.getElementById('lookup-btn');
+  btn.disabled = true; btn.textContent = 'Looking up...';
+  status.textContent = '';
+  status.style.color = 'var(--muted)';
+
+  const { data, error } = await sb.rpc('get_user_id_by_email', { user_email: email });
+
+  btn.disabled = false; btn.textContent = 'Look Up →';
+
+  if (error || !data) {
+    status.textContent = '✗ No account found — have them sign up at client-login.html first.';
+    status.style.color = '#FF7B6B';
+    document.getElementById('c-id').value = '';
+    return;
+  }
+
+  document.getElementById('c-id').value = data;
+  status.textContent = '✓ Account found — ready to save.';
+  status.style.color = '#4DE8A0';
+}
+
 // ── UPSERT CLIENT ──────────────────────────
 async function upsertClient() {
+  const uuid = document.getElementById('c-id').value;
+  if (!uuid) {
+    showMsg('client-msg', 'Look up the client email first to auto-fill their UUID.', 'e');
+    return;
+  }
   const btn = document.getElementById('client-btn');
   btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>Saving...';
   const { error } = await sb.from('profiles').upsert({
-    id: document.getElementById('c-id').value,
+    id: uuid,
     business_name: document.getElementById('c-biz').value,
     contact_name: document.getElementById('c-name').value,
     email: document.getElementById('c-email').value,
