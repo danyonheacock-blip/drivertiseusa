@@ -312,6 +312,50 @@
       color: #C8973A;
     }
 
+    /* ── DOCUMENTS ── */
+    .doc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 14px;
+      margin-top: 20px;
+    }
+    .doc-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .doc-card:hover { border-color: rgba(200,151,58,0.30); background: rgba(200,151,58,0.04); }
+    .doc-card-top { display: flex; align-items: center; gap: 12px; }
+    .doc-card-icon { font-size: 22px; flex-shrink: 0; }
+    .doc-card-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: #F7F5F1;
+      line-height: 1.3;
+    }
+    .doc-card-desc { font-size: 12px; color: rgba(247,245,241,0.45); line-height: 1.55; }
+    .doc-card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #C8973A;
+      text-decoration: none;
+      margin-top: auto;
+      padding-top: 4px;
+      transition: color 0.2s;
+    }
+    .doc-card-link:hover { color: #E8B84B; }
+    .doc-card.locked { opacity: 0.45; pointer-events: none; }
+    .doc-card.locked .doc-card-name { color: rgba(247,245,241,0.4); }
+
     /* ── QUICK LINKS ── */
     .quick-links {
       display: flex;
@@ -980,6 +1024,56 @@
         <button class="btn-print" onclick="window.print()">🖨 Print Tally Sheet →</button>
       </div>
 
+      <!-- DOCUMENTS -->
+      <div class="section">
+        <div class="section-label">Your Documents</div>
+        <h2 class="section-title" style="margin-bottom:6px;">Resources &amp; Files</h2>
+        <p class="section-sub">Everything related to your campaign — open or download anytime.</p>
+        <div class="doc-grid">
+
+          <!-- Signed Contract — per client, shown when contract_url is set -->
+          <div class="doc-card" id="doc-contract" style="display:none;">
+            <div class="doc-card-top">
+              <span class="doc-card-icon">📄</span>
+              <div class="doc-card-name">Signed Service Agreement</div>
+            </div>
+            <div class="doc-card-desc">Your signed contract — terms, zone details, and billing summary.</div>
+            <a id="doc-contract-link" href="#" target="_blank" class="doc-card-link">Open PDF →</a>
+          </div>
+
+          <!-- Spec Sheet — static -->
+          <div class="doc-card">
+            <div class="doc-card-top">
+              <span class="doc-card-icon">📐</span>
+              <div class="doc-card-name">Magnetic Ad Spec Sheet</div>
+            </div>
+            <div class="doc-card-desc">Artwork dimensions, bleed requirements, and file format specs for your door panel ad.</div>
+            <a href="docs/magnetic-ad-spec-sheet.html" target="_blank" class="doc-card-link">Open →</a>
+          </div>
+
+          <!-- Creative Best Practices — static -->
+          <div class="doc-card">
+            <div class="doc-card-top">
+              <span class="doc-card-icon">🎨</span>
+              <div class="doc-card-name">Creative Best Practices</div>
+            </div>
+            <div class="doc-card-desc">Six rules for designing a mobile ad that works at 35 mph — font size, contrast, layout, and more.</div>
+            <a href="docs/creative-best-practices.html" target="_blank" class="doc-card-link">Open →</a>
+          </div>
+
+          <!-- Mailer Pitch — static -->
+          <div class="doc-card">
+            <div class="doc-card-top">
+              <span class="doc-card-icon">📬</span>
+              <div class="doc-card-name">Why Add the Direct Mailer</div>
+            </div>
+            <div class="doc-card-desc">How combining the car ad with a 10,000-home mailer turns awareness into action.</div>
+            <a href="docs/mailer-pitch.html" target="_blank" class="doc-card-link">Open →</a>
+          </div>
+
+        </div>
+      </div>
+
       <!-- QUICK LINKS -->
       <div class="section">
         <h2 class="section-title" style="margin-bottom:20px;">Quick Links</h2>
@@ -1044,6 +1138,14 @@
       if (profile) {
         document.getElementById('client-name').textContent = profile.business_name || profile.name || user.email;
         document.getElementById('nav-user').textContent = profile.business_name || user.email;
+
+        // Show contract if uploaded
+        if (profile.contract_url) {
+          const card = document.getElementById('doc-contract');
+          const link = document.getElementById('doc-contract-link');
+          if (card) card.style.display = 'flex';
+          if (link) link.href = profile.contract_url;
+        }
 
         // Show founding rate badge
         if (profile.founding_client) {

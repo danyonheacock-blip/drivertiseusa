@@ -292,6 +292,7 @@ input:focus,select:focus{border-color:rgba(200,151,58,0.4);}
             <select id="c-status"><option value="active">Active</option><option value="pending">Pending</option><option value="paused">Paused</option></select>
           </div>
         </div>
+        <div class="form-group"><label>Signed Contract URL</label><input type="url" id="c-contract" placeholder="https://... (paste link to signed PDF)"/></div>
         <button class="btn btn-amber" id="client-btn" onclick="upsertClient()">Save Client</button>
       </div>
     </div>
@@ -966,6 +967,7 @@ async function upsertClient() {
   }
   const btn = document.getElementById('client-btn');
   btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>Saving...';
+  const contractVal = document.getElementById('c-contract').value.trim();
   const { error } = await sb.from('profiles').upsert({
     id: uuid,
     business_name: document.getElementById('c-biz').value,
@@ -973,6 +975,7 @@ async function upsertClient() {
     email: document.getElementById('c-email').value,
     phone: document.getElementById('c-phone').value,
     status: document.getElementById('c-status').value,
+    ...(contractVal && { contract_url: contractVal }),
   });
   btn.disabled = false; btn.innerHTML = 'Save Client';
   if (error) showMsg('client-msg', error.message, 'e');
